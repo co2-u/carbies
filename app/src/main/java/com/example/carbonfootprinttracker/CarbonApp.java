@@ -11,9 +11,9 @@ public class CarbonApp extends Application {
         super.onCreate();
 
         final Parse.Configuration configuration = new Parse.Configuration.Builder(this)
-                .applicationId("myCarbie")
-                .clientKey("fbu_class_of_2019")
-                .server("https://carbon-footprint-tracker.herokuapp.com/parse")
+                .applicationId(getResources().getString(R.string.myAppId))
+                .clientKey(getResources().getString(R.string.myClientKey))
+                .server(getResources().getString(R.string.myServer))
                 .build();
 
         Parse.initialize(configuration);
