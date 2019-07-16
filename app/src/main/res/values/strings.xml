@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CarbonFootprintTracker</string>
+    <string name="passwordHint">Password</string>
+    <string name="usernameHint">Username</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_up">Sign Up</string>
+</resources>
