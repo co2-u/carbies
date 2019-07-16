@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/currentScoreTab"
+        android:enabled="true"
+        android:icon="?attr/actionModeSelectAllDrawable"
+        android:title="home"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/composeTab"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="add"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/dailyLogTab"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_today"
+        android:title="daily log"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/infoTab"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="info"
+        app:showAsAction="ifRoom" />
+</menu>
