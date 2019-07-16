@@ -58,7 +58,7 @@ public class HomeActivity extends AppCompatActivity {
                                 fragment = currentScoreFragment;
                                 break;
                         }
-                        fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, fragment).addToBackStack(null).commit();
+                        fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, fragment).commit();
                         return true;
                     }
                 });
