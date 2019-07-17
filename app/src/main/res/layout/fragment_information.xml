@@ -205,7 +205,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="564dp" />
+        tools:layout_editor_absoluteY="531dp" />
 
     <TextView
         android:id="@+id/tvFurtherLinks"
@@ -239,7 +239,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="436dp" />
+        tools:layout_editor_absoluteY="409dp" />
 
     <TextView
         android:id="@+id/tvWhatYouCanDo"
