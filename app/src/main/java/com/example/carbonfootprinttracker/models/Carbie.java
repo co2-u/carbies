@@ -10,6 +10,7 @@ import java.util.Date;
 @ParseClassName("Carbie")
 public class Carbie extends ParseObject {
 
+    public static final String KEY_USER = "user";
     public static final String KEY_SCORE = "score";
     public static final String KEY_DISTANCE = "distance";
     public static final String KEY_RIDERS = "riders";
@@ -19,21 +20,23 @@ public class Carbie extends ParseObject {
     public static final String KEY_START_LOCATION = "startLocation";
     public static final String KEY_END_LOCATION = "endLocation";
 
-    public static int getScore() { return Integer.parseInt(KEY_SCORE); }
+    public ParseUser getUser() { return getParseUser(KEY_USER); }
 
-    public static int getDistance() { return Integer.parseInt(KEY_DISTANCE); }
+    public int getScore() { return Integer.parseInt(KEY_SCORE); }
 
-    public static int getRiders() { return Integer.parseInt(KEY_RIDERS); }
+    public int getDistance() { return Integer.parseInt(KEY_DISTANCE); }
 
-    public static String getTransportation() { return KEY_TRANSPORTATION; }
+    public int getRiders() { return Integer.parseInt(KEY_RIDERS); }
 
-    public static String getTitle() { return KEY_TITLE; }
+    public String getTransportation() { return KEY_TRANSPORTATION; }
 
-    public static String getStartLocation() { return KEY_START_LOCATION; }
+    public String getTitle() { return KEY_TITLE; }
 
-    public static String getEndLocation() { return KEY_END_LOCATION; }
+    public String getStartLocation() { return KEY_START_LOCATION; }
 
-    public static String getKeyCreatedAt() { return KEY_CREATED_AT; }
+    public String getEndLocation() { return KEY_END_LOCATION; }
+
+    public String getKeyCreatedAt() { return KEY_CREATED_AT; }
 
     public void setScore(int score) {
         //TODO make actual equation
