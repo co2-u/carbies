@@ -56,7 +56,6 @@ public class CurrentScoreFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
         mCarbies = new ArrayList<>();
         queryCarbies();
     }
@@ -64,10 +63,10 @@ public class CurrentScoreFragment extends Fragment {
     private void setScore() {
 //        TODO split up by time
         tvQuantScore.setText(String.valueOf(currentScore));
-        if (currentScore > MAX_CO2) {
+        if (currentScore > MAX_CO2 * 1.1) {
             ivQualScore.setBackgroundColor(getResources().getColor(R.color.colorRed));
             tvGeneralTips.setText(RED_SCORE);
-        } else if (currentScore < MAX_CO2 && currentScore >= MAX_CO2 - 1000) {
+        } else if (currentScore < MAX_CO2 && currentScore >= MAX_CO2 * 1.1) {
             ivQualScore.setBackgroundColor(getResources().getColor(R.color.colorYellow));
             tvGeneralTips.setText(YELLOW_SCORE);
         } else {
@@ -78,7 +77,7 @@ public class CurrentScoreFragment extends Fragment {
 
     protected void queryCarbies() {
         ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
-        query.include(Carbie.KEY_SCORE);
+        query.include(Carbie.KEY_USER);
         query.addDescendingOrder(Carbie.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Carbie>() {
             @Override
