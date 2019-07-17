@@ -1,5 +1,6 @@
 package com.example.carbonfootprinttracker.fragments;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,52 +12,93 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 import com.example.carbonfootprinttracker.R;
+import com.example.carbonfootprinttracker.models.Carbie;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class CurrentScoreFragment extends Fragment {
 
     //TODO Butterknife
 
     public static final String TAG = "CurrentScoreFragment";
-    private ImageView ivQualScore;
-    private TextView tvQuantScore;
-    private TextView tvGeneralTips;
+    @BindView(R.id.ivQualScore) ImageView ivQualScore;
+    @BindView(R.id.tvQuantScore) TextView tvQuantScore;
+    @BindView(R.id.tvGeneralTips) TextView tvGeneralTips;
+    private int currentScore;
     private final String GREEN_SCORE = "good job";
     private final String YELLOW_SCORE = "watch out";
     private final String RED_SCORE = "oof";
-    private final int MAX_CO2 = 8050;
+    private final int MAX_CO2 = 9000;
+    private List<Carbie> mCarbies;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
-        return inflater.inflate(R.layout.fragment_current_score, parent, false);
+        View view = inflater.inflate(R.layout.fragment_current_score, parent, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        // Setup any handles to view objects here
-        ivQualScore = view.findViewById(R.id.ivQualScore);
-        tvQuantScore = view.findViewById(R.id.tvQuantScore);
-        tvGeneralTips = view.findViewById(R.id.tvGeneralTips);
 
-        setScore();
+        mCarbies = new ArrayList<>();
+        queryCarbies();
     }
 
     private void setScore() {
-//        tvQuantScore.setText(getCurrentScore().toString());
-//        if (getCurrentScore() > MAX_CO2) {
-//            ivQualScore.setBackgroundColor(Color.RED);
-//            tvGeneralTips.setText(RED_SCORE);
-//        } else if (getCurrentScore() < MAX_CO2 && getCurrentScore() >= MAX_CO2 - 100) {
-//            ivQualScore.setBackgroundColor(Color.YELLOW);
-//            tvGeneralTips.setText(YELLOW_SCORE);
-//        } else {
-//            ivQualScore.setBackgroundColor(Color.GREEN);
-//            tvGeneralTips.setText(GREEN_SCORE);
-//        }
+//        TODO split up by time
+        tvQuantScore.setText(String.valueOf(currentScore));
+        if (currentScore > MAX_CO2) {
+            ivQualScore.setBackgroundColor(getResources().getColor(R.color.colorRed));
+            tvGeneralTips.setText(RED_SCORE);
+        } else if (currentScore < MAX_CO2 && currentScore >= MAX_CO2 - 1000) {
+            ivQualScore.setBackgroundColor(getResources().getColor(R.color.colorYellow));
+            tvGeneralTips.setText(YELLOW_SCORE);
+        } else {
+            ivQualScore.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+            tvGeneralTips.setText(GREEN_SCORE);
+        }
+    }
+
+    protected void queryCarbies() {
+        ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
+        query.include(Carbie.KEY_SCORE);
+        query.addDescendingOrder(Carbie.KEY_CREATED_AT);
+        query.findInBackground(new FindCallback<Carbie>() {
+            @Override
+            public void done(List<Carbie> carbies, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error with query");
+                    e.printStackTrace();
+                    return;
+                }
+                //TODO only query new carbies
+                mCarbies.addAll(carbies);
+                currentScore = 0;
+                for (int i = 0; i < carbies.size(); i++) {
+                    Carbie carbie = carbies.get(i);
+                    Log.d(TAG, "Carbie:" + carbie.getTitle()
+                            + "Score" + carbie.getScore());
+                    currentScore += carbie.getScore();
+                }
+            }
+        });
+        setScore();
     }
 }
