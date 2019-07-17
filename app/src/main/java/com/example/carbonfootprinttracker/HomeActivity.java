@@ -1,20 +1,21 @@
 package com.example.carbonfootprinttracker;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.fragments.ComposeFragment;
 import com.example.carbonfootprinttracker.fragments.CurrentScoreFragment;
 import com.example.carbonfootprinttracker.fragments.DailyLogFragment;
 import com.example.carbonfootprinttracker.fragments.InfoFragment;
 import com.example.carbonfootprinttracker.fragments.SettingsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
