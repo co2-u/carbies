@@ -31,6 +31,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
