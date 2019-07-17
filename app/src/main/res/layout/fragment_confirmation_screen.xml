@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvConfrimMiniTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvConfirmMiniTitle" />
 
     <TextView
         android:id="@+id/tvEndPointConfirm"
@@ -110,7 +110,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvModeConfirm" />
 
     <TextView
-        android:id="@+id/tvConfrimMiniTitle"
+        android:id="@+id/tvConfirmMiniTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -136,7 +136,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvMode2" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnConfirmYes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="96dp"
