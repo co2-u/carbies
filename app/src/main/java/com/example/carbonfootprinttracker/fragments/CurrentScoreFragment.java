@@ -18,14 +18,14 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CurrentScoreFragment extends Fragment {
-
-    //TODO Butterknife
 
     public static final String TAG = "CurrentScoreFragment";
     @BindView(R.id.ivQualScore)
@@ -38,7 +38,7 @@ public class CurrentScoreFragment extends Fragment {
     private final String GREEN_SCORE = "good job";
     private final String YELLOW_SCORE = "watch out";
     private final String RED_SCORE = "oof";
-    private final int MAX_CO2 = 9000;
+    private int maxCarbon = 8000;
     private List<Carbie> mCarbies;
 
 
@@ -58,12 +58,17 @@ public class CurrentScoreFragment extends Fragment {
     }
 
     private void setScore() {
-//        TODO split up by time
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        if (calendar.get(Calendar.HOUR_OF_DAY) < 12) {
+            maxCarbon = 4000;
+        }
         tvQuantScore.setText(String.valueOf(currentScore));
-        if (currentScore > MAX_CO2 * 1.1) {
+        if (currentScore > maxCarbon * 1.1) {
             ivQualScore.setBackgroundColor(getResources().getColor(R.color.colorRed));
             tvGeneralTips.setText(RED_SCORE);
-        } else if (currentScore < MAX_CO2 && currentScore >= MAX_CO2 * 1.1) {
+        } else if (currentScore > maxCarbon && currentScore <= maxCarbon * 1.1) {
             ivQualScore.setBackgroundColor(getResources().getColor(R.color.colorYellow));
             tvGeneralTips.setText(YELLOW_SCORE);
         } else {
@@ -73,8 +78,18 @@ public class CurrentScoreFragment extends Fragment {
     }
 
     protected void queryCarbies() {
+        Date date = new Date();
+        Calendar calendarA = Calendar.getInstance();
+        calendarA.setTime(date);
+        calendarA.set(Calendar.HOUR_OF_DAY, 0);
+        Calendar calendarB = Calendar.getInstance();
+        calendarB.setTime(date);
+        calendarB.set(Calendar.HOUR_OF_DAY, 23);
+        calendarB.set(Calendar.MINUTE, 59);
         ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
         query.include(Carbie.KEY_USER);
+        query.whereGreaterThanOrEqualTo(Carbie.KEY_CREATED_AT, calendarA.getTime());
+        query.whereLessThan(Carbie.KEY_CREATED_AT, calendarB.getTime());
         query.addDescendingOrder(Carbie.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Carbie>() {
             @Override
@@ -84,7 +99,6 @@ public class CurrentScoreFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
-                //TODO only query new carbies
                 mCarbies.addAll(carbies);
                 currentScore = 0;
                 for (int i = 0; i < carbies.size(); i++) {

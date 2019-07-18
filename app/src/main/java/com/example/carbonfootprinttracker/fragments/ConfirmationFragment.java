@@ -56,7 +56,7 @@ public class ConfirmationFragment extends Fragment {
         btnConfirmNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goHome();
+                goToMainFragment();
             }
         });
         btnConfirmYes.setOnClickListener(new View.OnClickListener() {
@@ -73,12 +73,12 @@ public class ConfirmationFragment extends Fragment {
                         Log.d(TAG, "Success!");
                     }
                 });
-                goHome();
+                goToMainFragment();
             }
         });
     }
 
-    private void goHome() {
+    private void goToMainFragment() {
         Fragment fragment = new CurrentScoreFragment();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()

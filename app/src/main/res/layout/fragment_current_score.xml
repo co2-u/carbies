@@ -30,6 +30,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toBottomOf="@+id/ivQualScore"
         app:layout_constraintEnd_toEndOf="@+id/ivQualScore"
+        app:layout_constraintHorizontal_bias="0.272"
         app:layout_constraintStart_toStartOf="@+id/ivQualScore"
         app:layout_constraintTop_toTopOf="@+id/ivQualScore" />
 
@@ -50,4 +51,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivQualScore"
         app:layout_constraintVertical_bias="0.233" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
