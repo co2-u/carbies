@@ -57,7 +57,7 @@ public class CurrentScoreFragment extends Fragment {
         queryCarbies();
     }
 
-    private void setScore() {
+    private void setScore(int currentScore) {
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -100,15 +100,13 @@ public class CurrentScoreFragment extends Fragment {
                     return;
                 }
                 mCarbies.addAll(carbies);
-                //currentScore = 0;
                 for (int i = 0; i < carbies.size(); i++) {
                     Carbie carbie = carbies.get(i);
-                    Log.d(TAG, "Carbie:" + carbie.getTitle()
-                            + "Score" + carbie.getScore().intValue());
-                    currentScore += carbie.getScore().intValue();
+                    currentScore += carbie.getScore();
                 }
+                setScore(currentScore);
             }
         });
-        setScore();
+       ;
     }
 }
