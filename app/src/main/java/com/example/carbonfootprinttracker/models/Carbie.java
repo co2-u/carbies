@@ -21,21 +21,29 @@ public class Carbie extends ParseObject {
 
     public ParseUser getUser() { return getParseUser(KEY_USER); }
 
-    public int getScore() { return Integer.parseInt(KEY_SCORE); }
+    public Integer getScore() {
+        Integer i = new Integer(5);
+        try {
+            i = getInt(KEY_SCORE);
+            return i;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return i;
+    }
+    public Integer getDistance() { return getInt(KEY_DISTANCE); }
 
-    public int getDistance() { return Integer.parseInt(KEY_DISTANCE); }
+    public Integer getRiders() { return getInt(KEY_RIDERS); }
 
-    public int getRiders() { return Integer.parseInt(KEY_RIDERS); }
+    public String getTransportation() { return getString(KEY_TRANSPORTATION); }
 
-    public String getTransportation() { return KEY_TRANSPORTATION; }
+    public String getTitle() { return getString(KEY_TITLE); }
 
-    public String getTitle() { return KEY_TITLE; }
+    public String getStartLocation() { return getString(KEY_START_LOCATION); }
 
-    public String getStartLocation() { return KEY_START_LOCATION; }
+    public String getEndLocation() { return getString(KEY_END_LOCATION); }
 
-    public String getEndLocation() { return KEY_END_LOCATION; }
-
-    public String getKeyCreatedAt() { return KEY_CREATED_AT; }
+    public String getKeyCreatedAt() { return getString(KEY_CREATED_AT); }
 
     public void setScore() {
         int footprint = 0;

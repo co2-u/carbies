@@ -100,12 +100,12 @@ public class CurrentScoreFragment extends Fragment {
                     return;
                 }
                 mCarbies.addAll(carbies);
-                currentScore = 0;
+                //currentScore = 0;
                 for (int i = 0; i < carbies.size(); i++) {
                     Carbie carbie = carbies.get(i);
                     Log.d(TAG, "Carbie:" + carbie.getTitle()
-                            + "Score" + carbie.getScore());
-                    currentScore += carbie.getScore();
+                            + "Score" + carbie.getScore().intValue());
+                    currentScore += carbie.getScore().intValue();
                 }
             }
         });
