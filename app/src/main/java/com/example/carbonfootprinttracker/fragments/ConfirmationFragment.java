@@ -32,6 +32,12 @@ public class ConfirmationFragment extends Fragment {
     @BindView(R.id.btnConfirmYes)
     EditText btnConfirmYes;
     private final String TAG = "ConfirmationFragment";
+    private Carbie carbie;
+
+    public ConfirmationFragment(Carbie carbie) {
+        super();
+        this.carbie = carbie;
+    }
 
     @Nullable
     @Override
@@ -45,8 +51,8 @@ public class ConfirmationFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         String title = etCarbieName.getText().toString();
         //TODO make a new carbie in compose fragment??
-        Carbie carbie = new Carbie();
-        carbie.put("title", title);
+        carbie.setTitle("title");
+        carbie.setScore();
         btnConfirmNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +62,7 @@ public class ConfirmationFragment extends Fragment {
         btnConfirmYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                carbie.saveInBackground(new SaveCallback() {
+                    carbie.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         if (e != null) {
