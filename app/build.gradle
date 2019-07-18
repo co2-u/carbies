@@ -41,4 +41,8 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+
+    // Google Directions API
+    implementation 'com.google.maps:google-maps-services:0.9.3'
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
 }
