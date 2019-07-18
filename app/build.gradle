@@ -45,4 +45,8 @@ dependencies {
     // Google Directions API
     implementation 'com.google.maps:google-maps-services:0.9.3'
     implementation 'org.slf4j:slf4j-simple:1.7.25'
+    implementation 'androidx.fragment:fragment:1.0.0'
+
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+    implementation 'com.mikhaellopez:circularimageview:3.2.0'
 }

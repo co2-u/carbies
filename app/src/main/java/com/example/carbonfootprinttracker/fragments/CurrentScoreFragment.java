@@ -28,9 +28,12 @@ public class CurrentScoreFragment extends Fragment {
     //TODO Butterknife
 
     public static final String TAG = "CurrentScoreFragment";
-    @BindView(R.id.ivQualScore) ImageView ivQualScore;
-    @BindView(R.id.tvQuantScore) TextView tvQuantScore;
-    @BindView(R.id.tvGeneralTips) TextView tvGeneralTips;
+    @BindView(R.id.ivQualScore)
+    ImageView ivQualScore;
+    @BindView(R.id.tvQuantScore)
+    TextView tvQuantScore;
+    @BindView(R.id.tvGeneralTips)
+    TextView tvGeneralTips;
     private int currentScore;
     private final String GREEN_SCORE = "good job";
     private final String YELLOW_SCORE = "watch out";
