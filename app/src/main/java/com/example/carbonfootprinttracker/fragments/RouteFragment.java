@@ -9,11 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Route;
@@ -24,6 +27,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -33,6 +37,7 @@ import com.google.maps.PendingResult;
 import com.google.maps.internal.PolylineEncoding;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.Distance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,16 +47,23 @@ import butterknife.ButterKnife;
 
 public class RouteFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPolylineClickListener {
     private static final String TAG = "RouteFragment";
-    private static final Integer ZOOM_LEVEL = 12;
+    private static final Integer ANIMATION_DURATION_MS = 600;
+    private static final Integer ROUTE_PADDING = 120;
 
     private GoogleMap mGoogleMap;
     private GeoApiContext mGeoApiContext = null;
     private ArrayList<Route> mRoutes = new ArrayList<>();
+    private Marker startMarker;
+    private Marker endMarker;
+    private Route selectedRoute;
+    private FragmentManager fragmentManager;
 
     @BindView(R.id.mapView) MapView mMapView;
-    @BindView(R.id.btSetRoute) Button btSetRoute;
+    @BindView(R.id.btSeeRoutes) Button btSeeRoutes;
+    @BindView(R.id.btAcceptRoute) Button btAcceptRoute;
     @BindView(R.id.etStart) EditText etStart;
     @BindView(R.id.etEnd) EditText etEnd;
+    @BindView(R.id.progressBar) ProgressBar pbLoading;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,8 +74,10 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        fragmentManager = getFragmentManager();
 
         mMapView.onCreate(savedInstanceState);
+        pbLoading.setVisibility(ProgressBar.VISIBLE);
         mMapView.getMapAsync(this);
         if (mGeoApiContext == null) {
             mGeoApiContext = new GeoApiContext.Builder()
@@ -71,23 +85,44 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                     .build();
         }
 
-        btSetRoute.setOnClickListener(new View.OnClickListener() {
+        btSeeRoutes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String start = etStart.getText().toString();
                 final String end = etEnd.getText().toString();
 
-                // clear map and mRoutes before adding new routes
-                mGoogleMap.clear();
-                mRoutes.clear();
+                if (start.isEmpty() || end.isEmpty()) {
+                    Toast.makeText(getContext(), "Missing start/end location.", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "start:" + start);
+                } else {
+                    // clear map and mRoutes before adding new routes
+                    mGoogleMap.clear();
+                    mRoutes.clear();
 
-                calculateDirections(start, end);
+                    calculateDirections(start, end);
+                }
+            }
+        });
+
+        btAcceptRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedRoute == null) {
+                    Toast.makeText(getContext(), "Need to select a route!", Toast.LENGTH_SHORT).show();
+                } else {
+//                    Fragment confirmationFragment = new ConfirmationFragment();
+//                    fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, confirmationFragment).commit();
+                    Log.d(TAG, "calculateDirections: routes: " + selectedRoute.toString());
+                    Log.d(TAG, "calculateDirections: duration: " + selectedRoute.getDuration());
+                    Log.d(TAG, "calculateDirections: distance: " + selectedRoute.getDistance());
+                }
             }
         });
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        pbLoading.setVisibility(ProgressBar.INVISIBLE);
         mGoogleMap = googleMap;
         mGoogleMap.setOnPolylineClickListener(this);
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
@@ -99,6 +134,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
     }
 
     private void calculateDirections(String startLocation, String endLocation){
+        pbLoading.setVisibility(ProgressBar.VISIBLE);
         Log.d(TAG, "calculateDirections: calculating directions.");
 
         DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
@@ -115,7 +151,6 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                 Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString());
                 Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
                 Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
-                Log.d(TAG, "calculateDirections: geocodedWayPoints: " + result.geocodedWaypoints[0].toString());
 
                 // Start and End LatLng coordinates and user-friendly addresses
                 final com.google.maps.model.LatLng startLatLng = result.routes[0].legs[0].startLocation;
@@ -130,16 +165,23 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                 final LatLng southwest = new LatLng(preSW.lat, preSW.lng);
                 final LatLngBounds route = new LatLngBounds(southwest, northeast);
 
+                pbLoading.setVisibility(ProgressBar.INVISIBLE);
+                addMarker(startLatLng.lat, startLatLng.lng, startAddress, BitmapDescriptorFactory.HUE_RED, true);
+                addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_GREEN, false);
                 addPolylinesToMap(result);
                 centerCameraOn(route);
-                addMarker(startLatLng.lat, startLatLng.lng, startAddress, BitmapDescriptorFactory.HUE_RED);
-                addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_GREEN);
             }
 
             @Override
             public void onFailure(Throwable e) {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "Failed to get directions!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                pbLoading.setVisibility(ProgressBar.INVISIBLE);
                 Log.e(TAG, "calculateDirections: Failed to get directions: " + e.getMessage() );
-
             }
         });
     }
@@ -150,6 +192,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
             @Override
             public void run() {
                 Log.d(TAG, "run: result routes: " + result.routes.length);
+                Distance minDistance = null;
                 // Iterate through the available routes
                 for (DirectionsRoute route: result.routes){
                     Log.d(TAG, "run: leg: " + route.legs[0].toString());
@@ -165,6 +208,11 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                     polyline.setColor(ContextCompat.getColor(getActivity(), R.color.colorGrey));
                     polyline.setClickable(true);
                     mRoutes.add(new Route(polyline, route.legs[0]));
+                    // Highlight shortest route
+                    if (minDistance == null || route.legs[0].distance.inMeters < minDistance.inMeters) {
+                        minDistance = route.legs[0].distance;
+                        onPolylineClick(polyline);
+                    }
                 }
             }
         });
@@ -174,19 +222,28 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(bounds.getCenter(), ZOOM_LEVEL));
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, ROUTE_PADDING), ANIMATION_DURATION_MS, null);
             }
         });
     }
 
-    private void addMarker(double lat, double lng, String name, float color) {
+    private void addMarker(double lat, double lng, String name, float color, boolean isStart) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                final LatLng markerLocation = new LatLng(lat,lng);
-                mGoogleMap.addMarker(new MarkerOptions().position(markerLocation)
-                                                        .title(name)
-                                                        .icon(BitmapDescriptorFactory.defaultMarker(color)));
+                if (isStart) {
+                    final LatLng markerLocation = new LatLng(lat,lng);
+                    startMarker = mGoogleMap.addMarker(
+                            new MarkerOptions().position(markerLocation)
+                                                .title(name)
+                                                .icon(BitmapDescriptorFactory.defaultMarker(color)));
+                } else {
+                    final LatLng markerLocation = new LatLng(lat,lng);
+                    endMarker = mGoogleMap.addMarker(
+                            new MarkerOptions().position(markerLocation)
+                                    .title(name)
+                                    .icon(BitmapDescriptorFactory.defaultMarker(color)));
+                }
             }
         });
     }
@@ -211,12 +268,16 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
 
     @Override
     public void onPolylineClick(Polyline polyline) {
-        polyline.setColor(ContextCompat.getColor(getActivity(), R.color.colorSkyBlue));
-        polyline.setZIndex(1); // brings polyline to front
         for (Route route: mRoutes) {
             if (!route.getPolyline().getId().equals(polyline.getId())) {
                 route.getPolyline().setColor(ContextCompat.getColor(getActivity(), R.color.colorGrey));
-                route.getPolyline().setZIndex(0); // brings polyline to front
+                route.getPolyline().setZIndex(0); // sends polyline to back
+            } else {
+                selectedRoute = route;
+                route.getPolyline().setColor(ContextCompat.getColor(getActivity(), R.color.colorSkyBlue));
+                route.getPolyline().setZIndex(1); // brings polyline to front
+                endMarker.setSnippet("Distance: " + route.getDistance());
+                endMarker.showInfoWindow();
             }
         }
     }
