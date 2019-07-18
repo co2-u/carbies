@@ -9,7 +9,6 @@ import java.util.Date;
 
 @ParseClassName("Carbie")
 public class Carbie extends ParseObject {
-
     public static final String KEY_USER = "user";
     public static final String KEY_SCORE = "score";
     public static final String KEY_DISTANCE = "distance";
@@ -38,8 +37,29 @@ public class Carbie extends ParseObject {
 
     public String getKeyCreatedAt() { return KEY_CREATED_AT; }
 
-    public void setScore(int score) {
-        //TODO make actual equation
+    public void setScore() {
+        int footprint = 0;
+        switch (KEY_TRANSPORTATION) {
+            case "Car":
+                footprint = 400;
+                break;
+            case "Bike":
+                footprint = 25;
+                break;
+            case "eCar":
+                footprint = 160;
+                break;
+            case "Public Transportation":
+                footprint = 200;
+                break;
+            case "Walk":
+                footprint = 10;
+                break;
+            case "Rideshare":
+                footprint = 400 / getRiders();
+                break;
+        }
+        int score = footprint * getDistance();
         put(KEY_SCORE, score);
     }
 
@@ -56,5 +76,4 @@ public class Carbie extends ParseObject {
     public void setEndLocation(String endLocation) { put(KEY_END_LOCATION, endLocation); }
 
     public void setCreatedAt(Date createdAt) { put(KEY_CREATED_AT, createdAt); }
-
 }
