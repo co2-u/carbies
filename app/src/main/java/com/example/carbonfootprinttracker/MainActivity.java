@@ -1,103 +1,91 @@
 package com.example.carbonfootprinttracker;
 
-import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SignUpCallback;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.example.carbonfootprinttracker.fragments.ComposeFragment;
+import com.example.carbonfootprinttracker.fragments.CurrentScoreFragment;
+import com.example.carbonfootprinttracker.fragments.DailyLogFragment;
+import com.example.carbonfootprinttracker.fragments.InfoFragment;
+import com.example.carbonfootprinttracker.fragments.SettingsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivty";
+    private static final String TAG = "MainActivity";
 
-    @BindView(R.id.etUsername) EditText etUsername;
-    @BindView(R.id.etPassword) EditText etPassword;
-    @BindView(R.id.btLogin) Button btLogin;
-    @BindView(R.id.btSignup) Button btSignup;
+    @BindView(R.id.bottomNavigation) BottomNavigationView bottomNavigationView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-            ButterKnife.bind(this);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
 
-            ParseUser currentUser = ParseUser.getCurrentUser();
-            if (currentUser != null) {
-                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
+        fragmentManager = getSupportFragmentManager();
+        final Fragment currentScoreFragment = new CurrentScoreFragment();
+        final Fragment composeFragment = new ComposeFragment();
+        final Fragment dailyLogFragment = new DailyLogFragment();
+        final Fragment infoFragment = new InfoFragment();
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        Fragment fragment;
+                        switch (item.getItemId()) {
+                            case R.id.currentScoreTab:
+                                fragment = currentScoreFragment;
+                                break;
+                            case R.id.composeTab:
+                                fragment = composeFragment;
+                                break;
+                            case R.id.dailyLogTab:
+                                fragment = dailyLogFragment;
+                                break;
+                            case R.id.infoTab:
+                                fragment = infoFragment;
+                                break;
+                            default:
+                                fragment = currentScoreFragment;
+                                break;
+                        }
+                        fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, fragment).commit();
+                        return true;
+                    }
+                });
+
+        fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, currentScoreFragment).commit();
+    }
+
+    // Inflate toolbar with
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.settingsTab:
+                Fragment settingsFragment = new SettingsFragment();
+                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, settingsFragment).commit();
         }
-
-
-        btLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String username = etUsername.getText().toString();
-                final String password = etPassword.getText().toString();
-
-                login(username, password);
-            }
-        });
-
-        btSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String username = etUsername.getText().toString();
-                final String password = etPassword.getText().toString();
-
-                signup(username, password);
-            }
-        });
-    }
-
-    private void login (String username, String password) {
-        ParseUser.logInInBackground(username, password, new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException e) {
-                if (e == null) {
-                    Log.d(TAG, "Login successful");
-                    goHomeAndFinish();
-                } else {
-
-                    Log.e(TAG, "Login failed");
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private void signup (String username, String password) {
-        ParseUser user = new ParseUser();
-        user.setUsername(etUsername.getText().toString());
-        user.setPassword(etPassword.getText().toString());
-
-        user.signUpInBackground(new SignUpCallback() {
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d(TAG, "Sign-up successful!");
-                    goHomeAndFinish();
-                } else {
-                    Log.e(TAG, "Sign-up failed");
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-    
-    private void goHomeAndFinish() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-        finish();
+        return super.onOptionsItemSelected(item);
     }
 }

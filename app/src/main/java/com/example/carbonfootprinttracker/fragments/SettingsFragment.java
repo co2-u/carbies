@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.carbonfootprinttracker.MainActivity;
+import com.example.carbonfootprinttracker.LoginActivity;
 import com.example.carbonfootprinttracker.R;
 import com.parse.ParseUser;
 
@@ -46,7 +46,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 ParseUser.logOut();
                 Log.d(TAG, "Logged out successfully");
-                Intent intent = new Intent(getContext(), MainActivity.class);
+                Intent intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();
             }

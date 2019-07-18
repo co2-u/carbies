@@ -26,8 +26,8 @@
 
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" />
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
