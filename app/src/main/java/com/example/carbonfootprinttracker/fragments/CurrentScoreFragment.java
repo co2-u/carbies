@@ -16,6 +16,7 @@ import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -88,6 +89,7 @@ public class CurrentScoreFragment extends Fragment {
         calendarB.set(Calendar.MINUTE, 59);
         ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
         query.include(Carbie.KEY_USER);
+        query.whereEqualTo(Carbie.KEY_USER, ParseUser.getCurrentUser());
         query.whereGreaterThanOrEqualTo(Carbie.KEY_CREATED_AT, calendarA.getTime());
         query.whereLessThan(Carbie.KEY_CREATED_AT, calendarB.getTime());
         query.addDescendingOrder(Carbie.KEY_CREATED_AT);
