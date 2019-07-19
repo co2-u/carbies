@@ -1,9 +1,6 @@
 package com.example.carbonfootprinttracker.fragments;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -29,7 +24,6 @@ public class SettingsFragment extends Fragment {
     private static final String TAG = "SettingsFragment";
 
     @BindView(R.id.btLogout) public Button btLogout;
-    @BindView(R.id.btMapTest) public Button btMapTest;
 
     private FragmentManager fragmentManager;
 
@@ -57,13 +51,6 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        btMapTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment mapFragment = new RouteFragment();
-                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, mapFragment).commit();
-            }
-        });
 
 //    public void sendNotification(View view) {
 //        createNotificationChannel();

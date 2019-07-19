@@ -32,7 +32,7 @@ public class Carbie extends ParseObject {
         }
         return i;
     }
-    public Integer getDistance() { return getInt(KEY_DISTANCE); }
+    public Double getDistance() { return getDouble(KEY_DISTANCE); }
 
     public Integer getRiders() { return getInt(KEY_RIDERS); }
 
@@ -49,17 +49,32 @@ public class Carbie extends ParseObject {
     public void setScore() {
         int footprint = 0;
         switch (getString(KEY_TRANSPORTATION)) {
-            case "Car":
+            case "SmallCar":
                 footprint = 400;
+                break;
+            case "MediumCar":
+                footprint = 400;
+                break;
+            case "LargeCar":
+                footprint = 400;
+                break;
+            case "Hybrid":
+                footprint = 196;
+                break;
+            case "Electric":
+                footprint = 129;
+                break;
+            case "Bus":
+                footprint = 290;
+                break;
+            case "LightRail":
+                footprint = 163;
                 break;
             case "Bike":
                 footprint = 25;
                 break;
-            case "eCar":
-                footprint = 160;
-                break;
-            case "PublicTransportation":
-                footprint = 200;
+            case "HeavyRail":
+                footprint = 100;
                 break;
             case "Walk":
                 footprint = 10;
@@ -68,7 +83,7 @@ public class Carbie extends ParseObject {
                 footprint = 400 / getRiders();
                 break;
         }
-        int score = footprint * getDistance();
+        int score = (int)(footprint * getDistance());
         put(KEY_SCORE, score);
     }
 
