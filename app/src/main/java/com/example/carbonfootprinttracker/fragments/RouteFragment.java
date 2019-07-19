@@ -39,6 +39,7 @@ import com.google.maps.internal.PolylineEncoding;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.Distance;
+import com.google.maps.model.TravelMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
     private Route selectedRoute;
     private FragmentManager fragmentManager;
     private Carbie carbie;
+    private TravelMode travelMode;
 
     @BindView(R.id.mapView) MapView mMapView;
     @BindView(R.id.btSeeRoutes) Button btSeeRoutes;
@@ -78,6 +80,28 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         ButterKnife.bind(this, view);
         fragmentManager = getFragmentManager();
         carbie = getArguments().getParcelable("carbie");
+
+        // Set TravelMode for Directions API request from our TransportationMode
+        switch (carbie.getTransportation()) {
+            case "Car":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "Bike":
+                travelMode = TravelMode.BICYCLING;
+                break;
+            case "eCar":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "PublicTransportation":
+                travelMode = TravelMode.TRANSIT;
+                break;
+            case "Walk":
+                travelMode = TravelMode.WALKING;
+                break;
+            case "Rideshare":
+                travelMode = TravelMode.DRIVING;
+                break;
+        }
 
         mMapView.onCreate(savedInstanceState);
         pbLoading.setVisibility(ProgressBar.VISIBLE);
@@ -154,32 +178,34 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         );
 
         Log.d(TAG, "calculateDirections: destination: " + endLocation);
-        directions.destination(endLocation).setCallback(new PendingResult.Callback<DirectionsResult>() {
-            @Override
-            public void onResult(DirectionsResult result) {
-                Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString());
-                Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
-                Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
+        directions.destination(endLocation)
+                  .mode(travelMode)
+                  .setCallback(new PendingResult.Callback<DirectionsResult>() {
+                      @Override
+                      public void onResult(DirectionsResult result) {
+                          Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString());
+                          Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
+                          Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
 
-                // Start and End LatLng coordinates and user-friendly addresses
-                final com.google.maps.model.LatLng startLatLng = result.routes[0].legs[0].startLocation;
-                final com.google.maps.model.LatLng endLatLng = result.routes[0].legs[0].endLocation;
-                final String startAddress = result.routes[0].legs[0].startAddress;
-                final String endAddress= result.routes[0].legs[0].endAddress;
+                          // Start and End LatLng coordinates and user-friendly addresses
+                          final com.google.maps.model.LatLng startLatLng = result.routes[0].legs[0].startLocation;
+                          final com.google.maps.model.LatLng endLatLng = result.routes[0].legs[0].endLocation;
+                          final String startAddress = result.routes[0].legs[0].startAddress;
+                          final String endAddress= result.routes[0].legs[0].endAddress;
 
-                // Get northeast and southwest LatLngBounds to use for centering camera
-                final com.google.maps.model.LatLng preNE = result.routes[0].bounds.northeast;
-                final com.google.maps.model.LatLng preSW = result.routes[0].bounds.southwest;
-                final LatLng northeast = new LatLng(preNE.lat, preNE.lng);
-                final LatLng southwest = new LatLng(preSW.lat, preSW.lng);
-                final LatLngBounds route = new LatLngBounds(southwest, northeast);
+                          // Get northeast and southwest LatLngBounds to use for centering camera
+                          final com.google.maps.model.LatLng preNE = result.routes[0].bounds.northeast;
+                          final com.google.maps.model.LatLng preSW = result.routes[0].bounds.southwest;
+                          final LatLng northeast = new LatLng(preNE.lat, preNE.lng);
+                          final LatLng southwest = new LatLng(preSW.lat, preSW.lng);
+                          final LatLngBounds route = new LatLngBounds(southwest, northeast);
 
-                pbLoading.setVisibility(ProgressBar.INVISIBLE);
-                addMarker(startLatLng.lat, startLatLng.lng, startAddress, BitmapDescriptorFactory.HUE_RED, true);
-                addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_GREEN, false);
-                addPolylinesToMap(result);
-                centerCameraOn(route);
-            }
+                          pbLoading.setVisibility(ProgressBar.INVISIBLE);
+                          addMarker(startLatLng.lat, startLatLng.lng, startAddress, BitmapDescriptorFactory.HUE_RED, true);
+                          addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_GREEN, false);
+                          addPolylinesToMap(result);
+                          centerCameraOn(route);
+                      }
 
             @Override
             public void onFailure(Throwable e) {

@@ -7,11 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
@@ -22,6 +22,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ConfirmationFragment extends Fragment {
+    @BindView(R.id.tvStartPoint2)
+    TextView tvStartPoint2;
+    @BindView(R.id.tvEndPoint2)
+    TextView tvEndPoint2;
+    @BindView(R.id.tvMode2)
+    TextView tvMode2;
     @BindView(R.id.etCarbieName)
     EditText etCarbieName;
     @BindView(R.id.btnConfirmNo)
@@ -30,11 +36,6 @@ public class ConfirmationFragment extends Fragment {
     Button btnConfirmYes;
     private final String TAG = "ConfirmationFragment";
     private Carbie carbie;
-
-//    public ConfirmationFragment(Carbie carbie) {
-//        super();
-//        this.carbie = carbie;
-//    }
 
     @Nullable
     @Override
@@ -47,9 +48,11 @@ public class ConfirmationFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         carbie = getArguments().getParcelable("carbie");
-        String title = etCarbieName.getText().toString();
         carbie.setScore();
         carbie.setUser();
+        tvStartPoint2.setText(carbie.getStartLocation());
+        tvEndPoint2.setText(carbie.getEndLocation());
+        tvMode2.setText(carbie.getTransportation());
         btnConfirmNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,10 +80,11 @@ public class ConfirmationFragment extends Fragment {
     }
 
     private void goToMainFragment() {
-        Fragment fragment = new CurrentScoreFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragmentPlaceholder, fragment)
-                .commit();
+//        Fragment fragment = new CurrentScoreFragment();
+//        FragmentManager fragmentManager = getFragmentManager();
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.fragmentPlaceholder, fragment)
+//                .commit();
+        getActivity().findViewById(R.id.currentScoreTab).performClick();
     }
 }
