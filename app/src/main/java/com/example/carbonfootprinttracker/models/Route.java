@@ -29,4 +29,8 @@ public class Route {
     public Distance getDistance() {
         return  leg.distance;
     }
+
+    public String getStartAddress() { return leg.startAddress; }
+
+    public String getEndAddress() { return leg.endAddress; }
 }

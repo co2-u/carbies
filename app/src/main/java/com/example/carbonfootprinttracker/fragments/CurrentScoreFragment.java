@@ -105,6 +105,7 @@ public class CurrentScoreFragment extends Fragment {
                 }
                 currentScore = 0;
                 mCarbies.addAll(carbies);
+                currentScore = 0;
                 for (int i = 0; i < carbies.size(); i++) {
                     Carbie carbie = carbies.get(i);
                     currentScore += carbie.getScore();

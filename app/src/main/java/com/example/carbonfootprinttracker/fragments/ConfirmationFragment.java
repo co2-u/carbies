@@ -1,43 +1,40 @@
 package com.example.carbonfootprinttracker.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
 
-import java.util.ArrayList;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ConfirmationFragment extends Fragment {
     @BindView(R.id.etCarbieName)
     EditText etCarbieName;
     @BindView(R.id.btnConfirmNo)
-    EditText btnConfirmNo;
+    Button btnConfirmNo;
     @BindView(R.id.btnConfirmYes)
-    EditText btnConfirmYes;
+    Button btnConfirmYes;
     private final String TAG = "ConfirmationFragment";
     private Carbie carbie;
 
-    public ConfirmationFragment(Carbie carbie) {
-        super();
-        this.carbie = carbie;
-    }
+//    public ConfirmationFragment(Carbie carbie) {
+//        super();
+//        this.carbie = carbie;
+//    }
 
     @Nullable
     @Override
@@ -49,10 +46,10 @@ public class ConfirmationFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        carbie = getArguments().getParcelable("carbie");
         String title = etCarbieName.getText().toString();
-        //TODO make a new carbie in compose fragment
-        carbie.setTitle("title");
         carbie.setScore();
+        carbie.setUser();
         btnConfirmNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +59,7 @@ public class ConfirmationFragment extends Fragment {
         btnConfirmYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                carbie.setTitle(etCarbieName.getText().toString());
                     carbie.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
