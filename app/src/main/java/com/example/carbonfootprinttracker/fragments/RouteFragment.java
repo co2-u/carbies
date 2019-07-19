@@ -202,7 +202,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
 
                           pbLoading.setVisibility(ProgressBar.INVISIBLE);
                           addMarker(startLatLng.lat, startLatLng.lng, startAddress, BitmapDescriptorFactory.HUE_RED, true);
-                          addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_GREEN, false);
+                          addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_ORANGE, false);
                           addPolylinesToMap(result);
                           centerCameraOn(route);
                       }

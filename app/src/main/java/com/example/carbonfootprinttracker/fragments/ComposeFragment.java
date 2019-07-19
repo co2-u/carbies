@@ -69,7 +69,7 @@ public class ComposeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 carbie.setTransportation("eCar");
-                goRoute(TransportationMode.eCar);
+                showElectricCarDialog();
             }
         });
 
@@ -125,7 +125,10 @@ public class ComposeFragment extends Fragment {
     public void showCarpoolDialog(){
         RideshareDialogFragment RideShareDialog = new RideshareDialogFragment();
         RideShareDialog.show(fm, "compose_fragment");
+    }
 
-
+    public void showElectricCarDialog(){
+        ElectricCarDialogFragment ElectricCarDialog = new ElectricCarDialogFragment();
+        ElectricCarDialog.show(fm, "compose_fragment");
     }
 }
