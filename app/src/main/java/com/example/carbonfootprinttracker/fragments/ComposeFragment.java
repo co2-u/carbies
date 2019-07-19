@@ -64,7 +64,7 @@ public class ComposeFragment extends Fragment {
         btnElectricCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goRoute(TransportationMode.eCar);
+                showElectricCarDialog();
             }
         });
 
@@ -124,5 +124,15 @@ public class ComposeFragment extends Fragment {
         RideShareDialog.setArguments(args);
 
         RideShareDialog.show(fm, "compose_fragment");
+    }
+
+    public void showElectricCarDialog(){
+        ElectricCarDialogFragment ElectricCarDialog = new ElectricCarDialogFragment();
+        Bundle args = new Bundle();
+        Carbie carbie = new Carbie();
+        carbie.setTransportation(TransportationMode.eCar.toString());
+        args.putParcelable("carbie", carbie);
+        ElectricCarDialog.setArguments(args);
+        ElectricCarDialog.show(fm, "compose_fragment");
     }
 }
