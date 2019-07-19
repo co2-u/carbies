@@ -4,25 +4,25 @@
     <item
         android:id="@+id/currentScoreTab"
         android:enabled="true"
-        android:icon="?attr/actionModeSelectAllDrawable"
+        android:icon="@drawable/home_outline"
         android:title="home"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/composeTab"
         android:enabled="true"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/plus_box"
         android:title="add"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/dailyLogTab"
         android:enabled="true"
-        android:icon="@android:drawable/ic_menu_today"
+        android:icon="@drawable/calendar_month"
         android:title="daily log"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/infoTab"
         android:enabled="true"
-        android:icon="@android:drawable/ic_menu_info_details"
+        android:icon="@drawable/information_outline"
         android:title="info"
         app:showAsAction="ifRoom" />
 </menu>

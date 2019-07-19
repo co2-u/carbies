@@ -20,8 +20,6 @@ import butterknife.ButterKnife;
 
 public class ComposeFragment extends Fragment {
 
-
-
     @BindView(R.id.btnBike) Button btnBike;
     @BindView(R.id.btnElectricCar) Button btnElectricCar;
     @BindView(R.id.btnGasCar) Button btnGasCar;
@@ -33,7 +31,6 @@ public class ComposeFragment extends Fragment {
     @BindView(R.id.btnCarpool) Button btnCarpool;
 
     private FragmentManager fm;
-
 
     @Nullable
     @Override

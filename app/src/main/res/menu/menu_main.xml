@@ -4,7 +4,7 @@
     <item
         android:id="@+id/settingsTab"
         android:enabled="true"
-        android:icon="@android:drawable/ic_menu_manage"
+        android:icon="@drawable/settings_outline"
         android:title="settings"
         app:showAsAction="ifRoom" />
 
