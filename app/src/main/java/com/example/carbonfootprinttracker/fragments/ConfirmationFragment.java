@@ -81,30 +81,30 @@ public class ConfirmationFragment extends Fragment {
                 goToMainFragment();
             }
         });
-        btnYesAndGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                carbie.setTitle(etCarbieName.getText().toString());
-                carbie.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.d(TAG, "Error while saving");
-                            e.printStackTrace();
-                            return;
-                        }
-                        Log.d(TAG, "Success!");
-                    }
-                });
-                //TODO wire to google maps
-                // Map point based on address
-                Uri gmmIntentUri = Uri.parse("google.navigation:q=Taronga+Zoo,+Sydney+Australia");
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                startActivity(mapIntent);
-                goToMainFragment();
-            }
-        });
+//        btnYesAndGo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                carbie.setTitle(etCarbieName.getText().toString());
+//                carbie.saveInBackground(new SaveCallback() {
+//                    @Override
+//                    public void done(ParseException e) {
+//                        if (e != null) {
+//                            Log.d(TAG, "Error while saving");
+//                            e.printStackTrace();
+//                            return;
+//                        }
+//                        Log.d(TAG, "Success!");
+//                    }
+//                });
+//                //TODO wire to google maps
+//                // Map point based on address
+//                Uri gmmIntentUri = Uri.parse("google.navigation:q=Taronga+Zoo,+Sydney+Australia");
+//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//                mapIntent.setPackage("com.google.android.apps.maps");
+//                startActivity(mapIntent);
+//                goToMainFragment();
+//            }
+//        });
     }
 
     private void goToMainFragment() {
