@@ -1,5 +1,7 @@
 package com.example.carbonfootprinttracker.fragments;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.carbonfootprinttracker.R;
@@ -16,6 +19,7 @@ import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,7 +44,6 @@ public class CurrentScoreFragment extends Fragment {
     private final String RED_SCORE = "oof";
     private int maxCarbon = 8000;
     private List<Carbie> mCarbies;
-
 
     @Nullable
     @Override
@@ -88,6 +91,7 @@ public class CurrentScoreFragment extends Fragment {
         calendarB.set(Calendar.MINUTE, 59);
         ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
         query.include(Carbie.KEY_USER);
+        query.whereEqualTo(Carbie.KEY_USER, ParseUser.getCurrentUser());
         query.whereGreaterThanOrEqualTo(Carbie.KEY_CREATED_AT, calendarA.getTime());
         query.whereLessThan(Carbie.KEY_CREATED_AT, calendarB.getTime());
         query.addDescendingOrder(Carbie.KEY_CREATED_AT);
@@ -99,6 +103,7 @@ public class CurrentScoreFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
+                currentScore = 0;
                 mCarbies.addAll(carbies);
                 for (int i = 0; i < carbies.size(); i++) {
                     Carbie carbie = carbies.get(i);
@@ -107,6 +112,6 @@ public class CurrentScoreFragment extends Fragment {
                 setScore(currentScore);
             }
         });
-       ;
     }
+
 }

@@ -50,7 +50,7 @@ public class ConfirmationFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         String title = etCarbieName.getText().toString();
-        //TODO make a new carbie in compose fragment??
+        //TODO make a new carbie in compose fragment
         carbie.setTitle("title");
         carbie.setScore();
         btnConfirmNo.setOnClickListener(new View.OnClickListener() {
@@ -85,5 +85,4 @@ public class ConfirmationFragment extends Fragment {
                 .replace(R.id.fragmentPlaceholder, fragment)
                 .commit();
     }
-
 }
