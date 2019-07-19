@@ -55,7 +55,7 @@ public class DetailsFragment extends Fragment {
         tvStartPoint2.setText(carbie.getStartLocation());
         tvEndPoint2.setText(carbie.getEndLocation());
         tvMode2.setText(carbie.getTransportation());
-        tvDistance2.setText(carbie.getDistance());
+        tvDistance2.setText(carbie.getDistance().toString());
         tvScore2.setText(carbie.getScore());
     }
 }

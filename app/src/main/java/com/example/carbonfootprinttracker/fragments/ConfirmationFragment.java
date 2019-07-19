@@ -98,11 +98,11 @@ public class ConfirmationFragment extends Fragment {
                 });
                 //TODO wire to google maps
                 // Map point based on address
-                Uri location = Uri.parse("geo:0,0?q=1600+Amphitheatre+Parkway,+Mountain+View,+California");
-                // Or map point based on latitude/longitude
-                // Uri location = Uri.parse("geo:37.422219,-122.08364?z=14"); // z param is zoom level
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, location);
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=Taronga+Zoo,+Sydney+Australia");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
                 startActivity(mapIntent);
+                goToMainFragment();
             }
         });
     }

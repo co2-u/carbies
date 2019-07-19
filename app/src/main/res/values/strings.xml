@@ -16,4 +16,12 @@
         <item>Eight  </item>
     </string-array>
 
+    <!--TODO add suggestions-->
+    <string name="oneMileSuggestion"></string>
+    <string name="fiveMileSuggestion"></string>
+    <string name="carSuggestion"></string>
+    <string name="eCarSuggestion"></string>
+    <string name="CarSuggestion"></string>
+
+
 </resources>
