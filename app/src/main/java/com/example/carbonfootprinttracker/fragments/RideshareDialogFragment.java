@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,13 +24,23 @@ import butterknife.ButterKnife;
 
 public class RideshareDialogFragment extends AppCompatDialogFragment {
 
-    @BindView(R.id.etNumPassengers) EditText etNumPassengers;
+    @BindView(R.id.spNumPassengers) Spinner spNumPassengers;
     @BindView(R.id.btnAccept) Button btnAccept;
+    //@BindView(R.id.spNumPassengers) Spinner getSpNumPassengers;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_rideshare_dialog, container, false);
+
+
+        String [] values =
+                {"2","3","4","5","6","7","8",};
+        Spinner spinner = (Spinner) view.findViewById(R.id.spNumPassengers);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(adapter);
 
         return view;
     }
