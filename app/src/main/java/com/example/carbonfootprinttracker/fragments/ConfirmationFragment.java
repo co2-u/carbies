@@ -11,7 +11,6 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
@@ -77,11 +76,12 @@ public class ConfirmationFragment extends Fragment {
     }
 
     private void goToMainFragment() {
-        Fragment fragment = new CurrentScoreFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragmentPlaceholder, fragment)
-                .commit();
+//        Fragment fragment = new CurrentScoreFragment();
+//        FragmentManager fragmentManager = getFragmentManager();
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.fragmentPlaceholder, fragment)
+//                .commit();
+        getActivity().findViewById(R.id.currentScoreTab).performClick();
     }
 
 }
