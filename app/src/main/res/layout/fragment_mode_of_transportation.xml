@@ -98,4 +98,5 @@
         app:layout_constraintHorizontal_bias="0.823"
         app:layout_constraintStart_toEndOf="@+id/btnPublicTransportation"
         app:layout_constraintTop_toBottomOf="@+id/btnElectricCar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
