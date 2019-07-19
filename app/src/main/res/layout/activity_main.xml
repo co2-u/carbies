@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_bottom_navigation"/>
+        app:menu="@menu/menu_bottom_navigation"
+        android:background="#E0EADB"/>
 
     <FrameLayout
         android:id="@+id/fragmentPlaceholder"
@@ -28,7 +29,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/white"
+        android:background="#E0EADB"
         android:elevation="@dimen/cardview_default_elevation"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintStart_toStartOf="parent"

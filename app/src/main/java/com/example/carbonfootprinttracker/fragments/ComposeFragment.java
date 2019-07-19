@@ -26,6 +26,7 @@ public class ComposeFragment extends Fragment {
     @BindView(R.id.btnPublicTransportation) Button btnPublicTransportation;
     @BindView(R.id.btnWalk) Button btnWalk;
     // @BindView(R.id.btnBack) Button btnBack;
+    private Carbie carbie;
 
     //this is the button that will have the dialog
     @BindView(R.id.btnCarpool) Button btnCarpool;
@@ -45,12 +46,13 @@ public class ComposeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
+        Carbie carbie = new Carbie();
         fm = getFragmentManager();
 
         btnBike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                carbie.setTransportation("Bike");
                 goRoute(TransportationMode.Bike);
             }
         });
@@ -58,6 +60,7 @@ public class ComposeFragment extends Fragment {
         btnCarpool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                carbie.setTransportation("Rideshare");
                 showCarpoolDialog();
             }
         });
@@ -65,6 +68,7 @@ public class ComposeFragment extends Fragment {
         btnElectricCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                carbie.setTransportation("eCar");
                 goRoute(TransportationMode.eCar);
             }
         });
@@ -72,6 +76,7 @@ public class ComposeFragment extends Fragment {
         btnGasCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                carbie.setTransportation("Car");
                 goRoute(TransportationMode.Car);
             }
         });
@@ -79,6 +84,7 @@ public class ComposeFragment extends Fragment {
         btnPublicTransportation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                carbie.setTransportation("PublicTransportation");
                 goRoute(TransportationMode.PublicTransportation);
             }
         });
@@ -86,6 +92,7 @@ public class ComposeFragment extends Fragment {
         btnWalk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                carbie.setTransportation("Walk");
                 goRoute(TransportationMode.Walk);
             }
         });

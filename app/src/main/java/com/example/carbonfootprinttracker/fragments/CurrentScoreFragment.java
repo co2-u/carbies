@@ -1,5 +1,7 @@
 package com.example.carbonfootprinttracker.fragments;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.carbonfootprinttracker.R;
@@ -41,7 +44,6 @@ public class CurrentScoreFragment extends Fragment {
     private final String RED_SCORE = "oof";
     private int maxCarbon = 8000;
     private List<Carbie> mCarbies;
-
 
     @Nullable
     @Override
@@ -101,6 +103,7 @@ public class CurrentScoreFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
+                currentScore = 0;
                 mCarbies.addAll(carbies);
                 currentScore = 0;
                 for (int i = 0; i < carbies.size(); i++) {
@@ -110,6 +113,6 @@ public class CurrentScoreFragment extends Fragment {
                 setScore(currentScore);
             }
         });
-       ;
     }
+
 }
