@@ -1,17 +1,15 @@
 package com.example.carbonfootprinttracker.fragments;
 
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.carbonfootprinttracker.R;
@@ -32,12 +30,12 @@ import butterknife.ButterKnife;
 public class CurrentScoreFragment extends Fragment {
 
     public static final String TAG = "CurrentScoreFragment";
-    @BindView(R.id.ivQualScore)
-    ImageView ivQualScore;
-    @BindView(R.id.tvQuantScore)
-    TextView tvQuantScore;
-    @BindView(R.id.tvGeneralTips)
-    TextView tvGeneralTips;
+
+    @BindView(R.id.ivQualScore) ImageView ivQualScore;
+    @BindView(R.id.tvQuantScore) TextView tvQuantScore;
+    @BindView(R.id.tvGeneralTips) TextView tvGeneralTips;
+    @BindView(R.id.pbLoading) ProgressBar pbLoading;
+
     private int currentScore;
     private final String GREEN_SCORE = "good job";
     private final String YELLOW_SCORE = "watch out";
@@ -69,18 +67,19 @@ public class CurrentScoreFragment extends Fragment {
         }
         tvQuantScore.setText(String.valueOf(currentScore));
         if (currentScore > maxCarbon * 1.1) {
-            ivQualScore.setBackgroundColor(getResources().getColor(R.color.colorRed));
+            ivQualScore.setBackground(getResources().getDrawable(R.drawable.red_circle));
             tvGeneralTips.setText(RED_SCORE);
         } else if (currentScore > maxCarbon && currentScore <= maxCarbon * 1.1) {
-            ivQualScore.setBackgroundColor(getResources().getColor(R.color.colorYellow));
+            ivQualScore.setBackground(getResources().getDrawable(R.drawable.yellow_circle));
             tvGeneralTips.setText(YELLOW_SCORE);
         } else {
-            ivQualScore.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+            ivQualScore.setBackground(getResources().getDrawable(R.drawable.green_circle));
             tvGeneralTips.setText(GREEN_SCORE);
         }
     }
 
     protected void queryCarbies() {
+        pbLoading.setVisibility(ProgressBar.VISIBLE);
         Date date = new Date();
         Calendar calendarA = Calendar.getInstance();
         calendarA.setTime(date);
@@ -103,6 +102,7 @@ public class CurrentScoreFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
+                pbLoading.setVisibility(ProgressBar.INVISIBLE);
                 currentScore = 0;
                 mCarbies.addAll(carbies);
                 currentScore = 0;
@@ -110,7 +110,16 @@ public class CurrentScoreFragment extends Fragment {
                     Carbie carbie = carbies.get(i);
                     currentScore += carbie.getScore();
                 }
-                setScore(currentScore);
+
+                if (getFragmentManager() != null) {
+                    CurrentScoreFragment currentScoreFragment = (CurrentScoreFragment) getFragmentManager().findFragmentByTag("CurrentScoreFragment");
+                    if (currentScoreFragment.isVisible()) {
+                        setScore(currentScore);
+                    }
+                } else {
+                    Log.d(TAG, "CurrentScoreFragment is not visible");
+                }
+//                setScore(currentScore);
             }
         });
     }

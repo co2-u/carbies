@@ -80,11 +80,6 @@ public class ConfirmationFragment extends Fragment {
     }
 
     private void goToMainFragment() {
-//        Fragment fragment = new CurrentScoreFragment();
-//        FragmentManager fragmentManager = getFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.fragmentPlaceholder, fragment)
-//                .commit();
         getActivity().findViewById(R.id.currentScoreTab).performClick();
     }
 }

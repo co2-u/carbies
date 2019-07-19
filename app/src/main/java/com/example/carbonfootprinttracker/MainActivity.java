@@ -1,18 +1,12 @@
 package com.example.carbonfootprinttracker;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -54,29 +48,35 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         Fragment fragment;
+                        String fragTag = "";
                         switch (item.getItemId()) {
                             case R.id.currentScoreTab:
                                 fragment = currentScoreFragment;
+                                fragTag = "CurrentScoreFragment";
                                 break;
                             case R.id.composeTab:
                                 fragment = composeFragment;
+                                fragTag = "ComposeFragment";
                                 break;
                             case R.id.dailyLogTab:
                                 fragment = dailyLogFragment;
+                                fragTag = "DailyLogFragment";
                                 break;
                             case R.id.infoTab:
                                 fragment = infoFragment;
+                                fragTag = "InfoFragment";
                                 break;
                             default:
                                 fragment = currentScoreFragment;
+                                fragTag = "CurrentScoreFragment";
                                 break;
                         }
-                        fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, fragment).commit();
+                        fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, fragment, fragTag).commit();
                         return true;
                     }
                 });
 
-        fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, currentScoreFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, currentScoreFragment, "CurrentScoreFragment").commit();
     }
 
     // Inflate toolbar with
