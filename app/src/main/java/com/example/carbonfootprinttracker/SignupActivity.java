@@ -72,12 +72,6 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
-    private void goHomeAndFinish() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
 }
 
 
