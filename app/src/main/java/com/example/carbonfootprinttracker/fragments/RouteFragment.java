@@ -79,7 +79,13 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         fragmentManager = getFragmentManager();
-        carbie = getArguments().getParcelable("carbie");
+
+        try {
+            carbie = getArguments().getParcelable("carbie");
+        } catch (NullPointerException e) {
+            Log.e(TAG, "Carbie was not passed into RouteFragment");
+            e.printStackTrace();
+        }
 
         // Set TravelMode for Directions API request from our TransportationMode
         switch (carbie.getTransportation()) {
