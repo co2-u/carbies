@@ -1,27 +1,22 @@
 package com.example.carbonfootprinttracker.fragments;
 
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.carbonfootprinttracker.LoginActivity;
-import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
-import com.example.carbonfootprinttracker.SignupActivity;
+import com.example.carbonfootprinttracker.models.Carbie;
+import com.example.carbonfootprinttracker.models.TransportationMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class ComposeFragment extends Fragment {
 
@@ -59,7 +54,7 @@ public class ComposeFragment extends Fragment {
         btnBike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goRoute();
+                goRoute(TransportationMode.Bike);
             }
         });
 
@@ -73,28 +68,28 @@ public class ComposeFragment extends Fragment {
         btnElectricCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goRoute();
+                goRoute(TransportationMode.eCar);
             }
         });
 
         btnGasCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goRoute();
+                goRoute(TransportationMode.Car);
             }
         });
 
         btnPublicTransportation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goRoute();
+                goRoute(TransportationMode.PublicTransportation);
             }
         });
 
         btnWalk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goRoute();
+                goRoute(TransportationMode.Walk);
             }
         });
 
@@ -108,8 +103,15 @@ public class ComposeFragment extends Fragment {
 
     //this is a helper method -- it tells the buttons to go to the RouteFragment
     //once you are in the RouteFragment, you inflate the view and the route xml file shows up
-    private void goRoute() {
+    private void goRoute(TransportationMode mode) {
         Fragment fragment = new RouteFragment();
+
+        Bundle args = new Bundle();
+        Carbie carbie = new Carbie();
+        carbie.setTransportation(mode.toString());
+        args.putParcelable("carbie", carbie);
+        fragment.setArguments(args);
+
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragmentPlaceholder, fragment)

@@ -1,7 +1,6 @@
 package com.example.carbonfootprinttracker.models;
 
 import com.parse.ParseClassName;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -20,6 +19,8 @@ public class Carbie extends ParseObject {
     public static final String KEY_END_LOCATION = "endLocation";
 
     public ParseUser getUser() { return getParseUser(KEY_USER); }
+
+    public void setUser() { put(KEY_USER, ParseUser.getCurrentUser()); }
 
     public Integer getScore() {
         Integer i = new Integer(5);
@@ -47,7 +48,7 @@ public class Carbie extends ParseObject {
 
     public void setScore() {
         int footprint = 0;
-        switch (KEY_TRANSPORTATION) {
+        switch (getString(KEY_TRANSPORTATION)) {
             case "Car":
                 footprint = 400;
                 break;
@@ -57,7 +58,7 @@ public class Carbie extends ParseObject {
             case "eCar":
                 footprint = 160;
                 break;
-            case "Public Transportation":
+            case "PublicTransportation":
                 footprint = 200;
                 break;
             case "Walk":

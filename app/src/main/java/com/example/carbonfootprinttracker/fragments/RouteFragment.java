@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.R;
+import com.example.carbonfootprinttracker.models.Carbie;
 import com.example.carbonfootprinttracker.models.Route;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -57,6 +58,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
     private Marker endMarker;
     private Route selectedRoute;
     private FragmentManager fragmentManager;
+    private Carbie carbie;
 
     @BindView(R.id.mapView) MapView mMapView;
     @BindView(R.id.btSeeRoutes) Button btSeeRoutes;
@@ -75,6 +77,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         fragmentManager = getFragmentManager();
+        carbie = getArguments().getParcelable("carbie");
 
         mMapView.onCreate(savedInstanceState);
         pbLoading.setVisibility(ProgressBar.VISIBLE);
@@ -110,11 +113,17 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                 if (selectedRoute == null) {
                     Toast.makeText(getContext(), "Need to select a route!", Toast.LENGTH_SHORT).show();
                 } else {
-//                    Fragment confirmationFragment = new ConfirmationFragment();
-//                    fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, confirmationFragment).commit();
+                    carbie.setDistance(toMiles(selectedRoute.getDistance().inMeters));
+                    carbie.setStartLocation(selectedRoute.getStartAddress());
+                    carbie.setEndLocation(selectedRoute.getEndAddress());
+                    Fragment confirmationFragment = new ConfirmationFragment();
+
+                    Bundle args = new Bundle();
+                    args.putParcelable("carbie", carbie);
+                    confirmationFragment.setArguments(args);
+
+                    fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, confirmationFragment).commit();
                     Log.d(TAG, "calculateDirections: routes: " + selectedRoute.toString());
-                    Log.d(TAG, "calculateDirections: duration: " + selectedRoute.getDuration());
-                    Log.d(TAG, "calculateDirections: distance: " + selectedRoute.getDistance());
                 }
             }
         });
@@ -280,5 +289,9 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                 endMarker.showInfoWindow();
             }
         }
+    }
+
+    private int toMiles(long meters) {
+        return (int) (meters * 0.00062137);
     }
 }
