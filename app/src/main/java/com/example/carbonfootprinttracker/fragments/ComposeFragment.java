@@ -133,6 +133,7 @@ public class ComposeFragment extends Fragment {
         carbie.setTransportation(TransportationMode.eCar.toString());
         args.putParcelable("carbie", carbie);
         ElectricCarDialog.setArguments(args);
+
         ElectricCarDialog.show(fm, "compose_fragment");
     }
 }
