@@ -1,24 +1,17 @@
 package com.example.carbonfootprinttracker.fragments;
 
-import androidx.fragment.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
-import com.parse.ParseException;
-import com.parse.SaveCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +49,6 @@ public class DetailsFragment extends Fragment {
         tvEndPoint2.setText(carbie.getEndLocation());
         tvMode2.setText(carbie.getTransportation());
         tvDistance2.setText(carbie.getDistance().toString());
-        tvScore2.setText(carbie.getScore());
+        tvScore2.setText(carbie.getScore().toString());
     }
 }
