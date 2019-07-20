@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="350dp"
-    android:layout_height="250dp">
+    android:layout_height="220dp">
 
     <TextView
         android:id="@+id/tvRidshareTitle"
         android:layout_width="330dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
@@ -27,11 +27,10 @@
     <Button
         android:id="@+id/btnAccept"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginBottom="20dp"
         android:background="@color/mainButtons"
         android:text="Next"
-        android:background="#66DBE9D2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -49,5 +48,6 @@
         app:layout_constraintBottom_toTopOf="@+id/btnAccept"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRidshareTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvRidshareTitle"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
