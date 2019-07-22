@@ -50,13 +50,13 @@ public class Carbie extends ParseObject {
         int footprint = 0;
         switch (getString(KEY_TRANSPORTATION)) {
             case "SmallCar":
-                footprint = 400;
+                footprint = 390;
                 break;
             case "MediumCar":
-                footprint = 400;
+                footprint = 430;
                 break;
             case "LargeCar":
-                footprint = 400;
+                footprint = 600;
                 break;
             case "Hybrid":
                 footprint = 196;
