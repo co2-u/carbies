@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -74,7 +75,33 @@ public class DailyLogFragment extends Fragment {
             }
         });
 
+//        rvCarbies.setOnFlingListener(new RecyclerViewSwipeListener(false) {
+//            @Override
+//            public void onSwipeRight() {
+//                Toast.makeText(context, "swiped right", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onSwipeDown() {
+//                Toast.makeText(context, "swiped down", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onSwipeLeft() {
+//                Toast.makeText(context, "swiped left", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onSwipeUp() {
+//                Toast.makeText(context, "swiped up", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
         queryCarbies();
+    }
+
+    private void removeCarbie() {
+        Toast.makeText(context, "swiped right", Toast.LENGTH_SHORT).show();
     }
 
     // Get the current user's carbies from today and add them to recycler view
