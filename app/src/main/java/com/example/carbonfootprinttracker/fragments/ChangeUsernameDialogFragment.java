@@ -1,6 +1,7 @@
 package com.example.carbonfootprinttracker.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.carbonfootprinttracker.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,9 +48,32 @@ public class ChangeUsernameDialogFragment extends AppCompatDialogFragment {
                 if (newUsername.isEmpty()) {
                     Toast.makeText(getContext(), "Missing new username", Toast.LENGTH_SHORT).show();
                 } else {
-                    //TODO - change username
+                    checkUsernameAvailability(newUsername);
                 }
             }
         });
     }
+
+    private void checkUsernameAvailability(String newUsername) {
+        ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
+        query.whereEqualTo("username", newUsername);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    if (objects.size() > 0) {
+                        Toast.makeText(getContext(), "Username already exists", Toast.LENGTH_SHORT).show();
+                    } else {
+                        changeUsername(newUsername);
+                    }
+                } else {
+                    Log.d(TAG, "Error while querying usernames.");
+                }
+            }
+        });
+    }
+
+    private void changeUsername(String newUsername) {
+        Log.d(TAG, "Got into changeUsername method");
+    };
 }
