@@ -28,6 +28,8 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
     private List<Carbie> carbies;
     private Context context;
     private FragmentManager fragmentManager;
+    private Carbie mRecentlyDeletedItem;
+    private int mRecentlyDeletedItemPosition;
 
     public CarbiesAdapter (Context context, FragmentManager fragmentManager, List<Carbie> carbies) {
         this.context = context;
@@ -78,5 +80,12 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public void deleteItem(int position) {
+        mRecentlyDeletedItem = carbies.get(position);
+        mRecentlyDeletedItemPosition = position;
+        carbies.remove(position);
+        notifyItemRemoved(position);
     }
 }

@@ -65,6 +65,7 @@ public class DailyLogFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvCarbies.setLayoutManager(linearLayoutManager);
 
+        // item click listener to launch a detail fragment of the carbie
         ItemClickSupport.addTo(rvCarbies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
@@ -76,6 +77,7 @@ public class DailyLogFragment extends Fragment {
             }
         });
 
+        // item touch helper that listens for swipe to delete
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(carbiesAdapter));
         itemTouchHelper.attachToRecyclerView(rvCarbies);
 
