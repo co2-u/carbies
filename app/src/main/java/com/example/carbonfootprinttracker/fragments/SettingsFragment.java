@@ -64,7 +64,7 @@ public class SettingsFragment extends Fragment {
         btChangeUsername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               //TODO - implement change username
+               showChangeUsernameDialog();
             }
         });
 
@@ -107,6 +107,11 @@ public class SettingsFragment extends Fragment {
 //            NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
 //            notificationManager.createNotificationChannel(channel);
 //        }
+    }
+
+    private void showChangeUsernameDialog() {
+        ChangeUsernameDialogFragment usernameDialogFragment = new ChangeUsernameDialogFragment();
+        usernameDialogFragment.show(fragmentManager, "username_dialog");
     }
 
 }
