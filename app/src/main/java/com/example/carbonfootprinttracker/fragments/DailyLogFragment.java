@@ -77,6 +77,7 @@ public class DailyLogFragment extends Fragment {
         queryCarbies();
     }
 
+    // Get the current user's carbies from today and add them to recycler view
     protected void queryCarbies() {
         pbLoading.setVisibility(ProgressBar.VISIBLE);
 
