@@ -76,7 +76,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="Small Car: up to 1.4 L Medium Car: 1.4L - 2.0L Large Car: 2.0 and above"
+        android:text="Small Car: up to 1.5 L Medium Car: 1.5L - 2.0L Large Car: 2.0 and above"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
