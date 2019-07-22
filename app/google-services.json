@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1003012657031",
+    "firebase_url": "https://co2-u-a9865.firebaseio.com",
+    "project_id": "co2-u-a9865",
+    "storage_bucket": "co2-u-a9865.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1003012657031:android:8d3606a96ea570d9",
+        "android_client_info": {
+          "package_name": "com.example.carbonfootprinttracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1003012657031-3l6f4l9gtlkfv6c8tqhjgq6f5altef4i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDK0WdcRlwUcERfIjvVmLOTu6ZyXHMWI0Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1003012657031-3l6f4l9gtlkfv6c8tqhjgq6f5altef4i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
