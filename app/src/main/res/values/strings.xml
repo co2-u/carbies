@@ -17,11 +17,39 @@
     </string-array>
 
     <!--TODO add suggestions-->
-    <string name="oneMileSuggestion"></string>
-    <string name="fiveMileSuggestion"></string>
-    <string name="carSuggestion"></string>
-    <string name="eCarSuggestion"></string>
-    <string name="CarSuggestion"></string>
+    <string name="oneMileSuggestion">
+        Your trip was under one mile. Next time consider walking or biking to your destination!
+    </string>
+    <string name="fiveMileSuggestion">
+        Your trip was under five miles. Next time consider biking to your destination!
+    </string>
+    <string name="carSuggestion">
+        Did you know cars are responsible for over 12% of greenhouse gas emissions? Next time try to choose a greener option
+        such as public transportation. Hybrid and electric cars are also great ways to cut down your carbon footprint!
+    </string>
+    <string name="electricSuggestion">
+        Great job cutting down your carbon footprint by choosing to drive a hybrid car! Next time consider using a greener
+        option such as public transportation.
+    </string>
+    <string name="hybridSuggestion">
+        Great job cutting down your carbon footprint by choosing to drive a hybrid car! Next time consider using a greener
+        option such as public transportation. Electric an electric car also another eco friendly option!
+    </string>
+    <string name="rideShareSuggestion">
+        Great job cutting down your carbon footprint by choosing to carpool! Next time consider using a greener
+        option such as public transportation.
+    </string>
+    <string name="publicTransportSuggestion">
+        Great job cutting down your carbon footprint by choosing public transportation!
+    </string>
+
+    <string name="walkSuggestion">
+        Great job cutting down your carbon footprint by walking!
+    </string>
+
+    <string name="bikeSuggestion">
+        Great job cutting down your carbon footprint by biking!
+    </string>
 
 
 </resources>

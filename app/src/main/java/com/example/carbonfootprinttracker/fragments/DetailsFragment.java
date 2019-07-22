@@ -1,17 +1,24 @@
 package com.example.carbonfootprinttracker.fragments;
 
+import androidx.fragment.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
+import com.parse.ParseException;
+import com.parse.SaveCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +37,8 @@ public class DetailsFragment extends Fragment {
     TextView tvDistance2;
     @BindView(R.id.tvScore2)
     TextView tvScore2;
+    @BindView(R.id.tvSuggestion)
+    TextView tvSuggestion;
     Carbie carbie;
 
     @Nullable
@@ -49,6 +58,50 @@ public class DetailsFragment extends Fragment {
         tvEndPoint2.setText(carbie.getEndLocation());
         tvMode2.setText(carbie.getTransportation());
         tvDistance2.setText(carbie.getDistance().toString());
-        tvScore2.setText(carbie.getScore().toString());
+        tvScore2.setText(Integer.toString(carbie.getScore()));
+        setMessage(carbie.getTransportation());
+    }
+
+    private void setMessage(String transportation) {
+        if (carbie.getDistance() < 1 && (carbie.getTransportation().equals("Walk") == false)
+            && (carbie.getTransportation().equals("Bike") == false)) {
+            tvSuggestion.setText(getString(R.string.oneMileSuggestion));
+        } else if (carbie.getDistance() < 5 && (carbie.getTransportation().equals("Walk") == false)
+                   && (carbie.getTransportation().equals("Bike") == false)) {
+            tvSuggestion.setText(getString(R.string.fiveMileSuggestion));
+        } else {
+            switch (carbie.getTransportation()) {
+                case "SmallCar":
+                    tvSuggestion.setText(getString(R.string.carSuggestion));
+                    break;
+                case "MediumCar":
+                    tvSuggestion.setText(getString(R.string.carSuggestion));
+                    break;
+                case "LargeCar":
+                    tvSuggestion.setText(getString(R.string.carSuggestion));
+                    break;
+                case "Hybrid":
+                    tvSuggestion.setText(getString(R.string.hybridSuggestion));
+                    break;
+                case "Electric":
+                    tvSuggestion.setText(getString(R.string.electricSuggestion));
+                    break;
+                case "Bus":
+                    tvSuggestion.setText(getString(R.string.publicTransportSuggestion));
+                    break;
+                case "Bike":
+                    tvSuggestion.setText(getString(R.string.bikeSuggestion));
+                    break;
+                case "Rail":
+                    tvSuggestion.setText(getString(R.string.publicTransportSuggestion));
+                    break;
+                case "Walk":
+                    tvSuggestion.setText(getString(R.string.walkSuggestion));
+                    break;
+                case "Rideshare":
+                    tvSuggestion.setText(getString(R.string.walkSuggestion));
+                    break;
+            }
+        }
     }
 }

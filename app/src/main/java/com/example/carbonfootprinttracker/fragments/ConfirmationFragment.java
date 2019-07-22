@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
@@ -40,6 +42,7 @@ public class ConfirmationFragment extends Fragment {
     Button btnYesAndGo;
     private final String TAG = "ConfirmationFragment";
     private Carbie carbie;
+    private FragmentManager fragmentManager;
 
     @Nullable
     @Override
@@ -51,6 +54,7 @@ public class ConfirmationFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        fragmentManager = getFragmentManager();
         carbie = getArguments().getParcelable("carbie");
         carbie.setScore();
         carbie.setUser();
@@ -66,21 +70,28 @@ public class ConfirmationFragment extends Fragment {
         btnConfirmYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                carbie.setTitle(etCarbieName.getText().toString());
+                if (etCarbieName.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
+                } else {
+                    carbie.setTitle(etCarbieName.getText().toString());
                     carbie.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.d(TAG, "Error while saving");
-                            e.printStackTrace();
-                            return;
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Log.d(TAG, "Error while saving");
+                                e.printStackTrace();
+                                return;
+                            }
+                            Log.d(TAG, "Success!");
                         }
-                        Log.d(TAG, "Success!");
-                    }
-                });
-                goToMainFragment();
+                    });
+                    goToMainFragment();
+                }
             }
         });
+
+
+
 //        btnYesAndGo.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

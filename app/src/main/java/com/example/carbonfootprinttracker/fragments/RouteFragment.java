@@ -323,7 +323,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         }
     }
 
-    private int toMiles(long meters) {
-        return (int) (meters * 0.00062137);
+    private double toMiles(long meters) {
+        return (meters * 0.00062137);
     }
 }

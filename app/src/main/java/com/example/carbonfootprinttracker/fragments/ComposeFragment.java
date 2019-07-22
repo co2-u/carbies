@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -78,7 +79,7 @@ public class ComposeFragment extends Fragment {
         btnPublicTransportation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goRoute(TransportationMode.PublicTransportation);
+                showPublicTransDialog();
             }
         });
 
@@ -146,5 +147,16 @@ public class ComposeFragment extends Fragment {
         GasCarDialog.setArguments(args);
 
         GasCarDialog.show(fm, "compose_fragment");
+    }
+
+    public void showPublicTransDialog(){
+        PublicTransDialogFragment PublicTransDialog = new PublicTransDialogFragment();
+        Bundle args = new Bundle();
+        Carbie carbie = new Carbie();
+        carbie.setTransportation(TransportationMode.eCar.toString());
+        args.putParcelable("carbie", carbie);
+        PublicTransDialog.setArguments(args);
+
+        PublicTransDialog.show(fm, "compose_fragment");
     }
 }
