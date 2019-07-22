@@ -89,16 +89,28 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
 
         // Set TravelMode for Directions API request from our TransportationMode
         switch (carbie.getTransportation()) {
-            case "Car":
+            case "SmallCar":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "MediumCar":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "LargeCar":
                 travelMode = TravelMode.DRIVING;
                 break;
             case "Bike":
                 travelMode = TravelMode.BICYCLING;
                 break;
-            case "eCar":
+            case "Hybrid":
                 travelMode = TravelMode.DRIVING;
                 break;
-            case "PublicTransportation":
+            case "Electric":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "Bus":
+                travelMode = TravelMode.TRANSIT;
+                break;
+            case "Rail":
                 travelMode = TravelMode.TRANSIT;
                 break;
             case "Walk":
