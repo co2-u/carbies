@@ -1,5 +1,6 @@
 package com.example.carbonfootprinttracker;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -12,10 +13,12 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private static final String TAG = "SwipeToDeleteCall";
 
     private CarbiesAdapter mAdapter;
+    private Context mContext;
 
-    public SwipeToDeleteCallback(CarbiesAdapter adapter) {
+    public SwipeToDeleteCallback(CarbiesAdapter adapter, Context context) {
         super(0, ItemTouchHelper.RIGHT);
         mAdapter = adapter;
+        mContext = context;
     }
 
     @Override

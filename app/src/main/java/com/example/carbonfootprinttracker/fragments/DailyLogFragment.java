@@ -60,7 +60,7 @@ public class DailyLogFragment extends Fragment {
 
         rvCarbies.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         mCarbies = new ArrayList<>();
-        carbiesAdapter = new CarbiesAdapter(context, fragmentManager, mCarbies);
+        carbiesAdapter = new CarbiesAdapter(context, fragmentManager, mCarbies, getActivity());
         rvCarbies.setAdapter(carbiesAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvCarbies.setLayoutManager(linearLayoutManager);
@@ -78,7 +78,7 @@ public class DailyLogFragment extends Fragment {
         });
 
         // item touch helper that listens for swipe to delete
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(carbiesAdapter));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(carbiesAdapter, context));
         itemTouchHelper.attachToRecyclerView(rvCarbies);
 
         queryCarbies();
