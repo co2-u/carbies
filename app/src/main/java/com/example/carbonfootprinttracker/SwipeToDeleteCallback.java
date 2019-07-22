@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.carbonfootprinttracker.fragments.CarbiesAdapter;
+import com.example.carbonfootprinttracker.adapters.CarbiesAdapter;
 
 public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private static final String TAG = "SwipeToDeleteCall";

@@ -1,4 +1,4 @@
-package com.example.carbonfootprinttracker.fragments;
+package com.example.carbonfootprinttracker.adapters;
 
 import android.app.Activity;
 import android.content.Context;
