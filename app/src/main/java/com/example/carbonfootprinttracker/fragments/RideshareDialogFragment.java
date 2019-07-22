@@ -70,11 +70,9 @@ public class RideshareDialogFragment extends AppCompatDialogFragment {
 
     private void goRoute() {
         Fragment fragment = new RouteFragment();
-
         Bundle args = new Bundle();
         args.putParcelable("carbie", carbie);
         fragment.setArguments(args);
-
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragmentPlaceholder, fragment)
