@@ -14,7 +14,7 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private CarbiesAdapter mAdapter;
 
     public SwipeToDeleteCallback(CarbiesAdapter adapter) {
-        super(0, ItemTouchHelper.LEFT| ItemTouchHelper.RIGHT);
+        super(0, ItemTouchHelper.RIGHT);
         mAdapter = adapter;
     }
 
@@ -26,6 +26,6 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         int position = viewHolder.getAdapterPosition();
-        Log.d(TAG, "swiped");
+        Log.d(TAG, "swiped" + mAdapter.getItemId(position));
     }
 }

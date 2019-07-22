@@ -7,18 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.carbonfootprinttracker.ItemClickSupport;
 import com.example.carbonfootprinttracker.R;
+import com.example.carbonfootprinttracker.SwipeToDeleteCallback;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -75,33 +76,10 @@ public class DailyLogFragment extends Fragment {
             }
         });
 
-//        rvCarbies.setOnFlingListener(new RecyclerViewSwipeListener(false) {
-//            @Override
-//            public void onSwipeRight() {
-//                Toast.makeText(context, "swiped right", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onSwipeDown() {
-//                Toast.makeText(context, "swiped down", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onSwipeLeft() {
-//                Toast.makeText(context, "swiped left", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onSwipeUp() {
-//                Toast.makeText(context, "swiped up", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(carbiesAdapter));
+        itemTouchHelper.attachToRecyclerView(rvCarbies);
 
         queryCarbies();
-    }
-
-    private void removeCarbie() {
-        Toast.makeText(context, "swiped right", Toast.LENGTH_SHORT).show();
     }
 
     // Get the current user's carbies from today and add them to recycler view
