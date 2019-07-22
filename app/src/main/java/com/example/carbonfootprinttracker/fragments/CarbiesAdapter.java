@@ -1,6 +1,7 @@
 package com.example.carbonfootprinttracker.fragments;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
+import com.parse.DeleteCallback;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -85,7 +88,13 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
     public void deleteItem(int position) {
         mRecentlyDeletedItem = carbies.get(position);
         mRecentlyDeletedItemPosition = position;
-        carbies.remove(position);
-        notifyItemRemoved(position);
+        mRecentlyDeletedItem.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                carbies.remove(position);
+                notifyItemRemoved(position);
+                Log.d(TAG, "Successfully deleted item " + mRecentlyDeletedItem.getObjectId());
+            }
+        });
     }
 }
