@@ -89,13 +89,10 @@ public class DetailsFragment extends Fragment {
                 case "Bus":
                     tvSuggestion.setText(getString(R.string.publicTransportSuggestion));
                     break;
-                case "LightRail":
-                    tvSuggestion.setText(getString(R.string.publicTransportSuggestion));
-                    break;
                 case "Bike":
                     tvSuggestion.setText(getString(R.string.bikeSuggestion));
                     break;
-                case "HeavyRail":
+                case "Rail":
                     tvSuggestion.setText(getString(R.string.publicTransportSuggestion));
                     break;
                 case "Walk":

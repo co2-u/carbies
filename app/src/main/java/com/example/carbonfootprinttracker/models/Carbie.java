@@ -67,14 +67,11 @@ public class Carbie extends ParseObject {
             case "Bus":
                 footprint = 290;
                 break;
-            case "LightRail":
-                footprint = 163;
+            case "Rail":
+                footprint = 130;
                 break;
             case "Bike":
                 footprint = 25;
-                break;
-            case "HeavyRail":
-                footprint = 100;
                 break;
             case "Walk":
                 footprint = 10;
@@ -87,7 +84,7 @@ public class Carbie extends ParseObject {
         put(KEY_SCORE, score);
     }
 
-    public void setDistance(int distance) { put(KEY_DISTANCE, distance); }
+    public void setDistance(double distance) { put(KEY_DISTANCE, distance); }
 
     public void setRiders(int riders) { put(KEY_RIDERS, riders); }
 
