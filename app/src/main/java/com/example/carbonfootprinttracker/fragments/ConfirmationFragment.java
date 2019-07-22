@@ -40,8 +40,6 @@ public class ConfirmationFragment extends Fragment {
     Button btnConfirmYes;
     @BindView(R.id.btnYesAndGo)
     Button btnYesAndGo;
-    @BindView(R.id.btnDetailTest)
-    Button btnDetailTest;
     private final String TAG = "ConfirmationFragment";
     private Carbie carbie;
     private FragmentManager fragmentManager;
@@ -92,29 +90,6 @@ public class ConfirmationFragment extends Fragment {
             }
         });
 
-        btnDetailTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                carbie.setTitle(etCarbieName.getText().toString());
-                carbie.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.d(TAG, "Error while saving");
-                            e.printStackTrace();
-                            return;
-                        }
-                        Log.d(TAG, "Success!");
-                    }
-                });
-                Fragment detialsFragment = new DetailsFragment();
-                Bundle args = new Bundle();
-                args.putParcelable("carbie", carbie);
-                detialsFragment.setArguments(args);
-
-                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, detialsFragment).commit();
-            }
-        });
 
 
 //        btnYesAndGo.setOnClickListener(new View.OnClickListener() {

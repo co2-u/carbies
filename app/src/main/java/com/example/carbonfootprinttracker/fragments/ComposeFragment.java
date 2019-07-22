@@ -71,7 +71,7 @@ public class ComposeFragment extends Fragment {
         btnGasCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goRoute(TransportationMode.Car);
+                showGasCarDialog();
             }
         });
 
@@ -133,6 +133,18 @@ public class ComposeFragment extends Fragment {
         carbie.setTransportation(TransportationMode.eCar.toString());
         args.putParcelable("carbie", carbie);
         ElectricCarDialog.setArguments(args);
+
         ElectricCarDialog.show(fm, "compose_fragment");
+    }
+
+    public void showGasCarDialog(){
+        GasCarDialogFragment GasCarDialog = new GasCarDialogFragment();
+        Bundle args = new Bundle();
+        Carbie carbie = new Carbie();
+        carbie.setTransportation(TransportationMode.eCar.toString());
+        args.putParcelable("carbie", carbie);
+        GasCarDialog.setArguments(args);
+
+        GasCarDialog.show(fm, "compose_fragment");
     }
 }

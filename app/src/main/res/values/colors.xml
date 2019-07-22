@@ -9,5 +9,7 @@
     <color name="colorGrey">#A9A9A9</color>
     <color name="colorSkyBlue">#00BFFF</color>
     <color name="mainBackground">#E0EADB</color>
+    <color name="mainButtons">#66DBE9D2</color>
+
 
 </resources>

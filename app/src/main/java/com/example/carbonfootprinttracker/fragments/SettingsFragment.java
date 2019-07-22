@@ -1,19 +1,16 @@
 package com.example.carbonfootprinttracker.fragments;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -29,9 +26,14 @@ public class SettingsFragment extends Fragment {
     private static final String TAG = "SettingsFragment";
 
     @BindView(R.id.btLogout) public Button btLogout;
-    @BindView(R.id.btMapTest) public Button btMapTest;
+    @BindView(R.id.btChangeUsername) public Button btChangeUsername;
+    @BindView(R.id.btChangeEmail) public Button btChangeEmail;
+    @BindView(R.id.btChangePassword) public Button btChangePassword;
+    @BindView(R.id.tvUsername) public TextView tvUsername;
+    @BindView(R.id.ivProfileImage) public ImageView ivProfileImage;
 
     private FragmentManager fragmentManager;
+    private ParseUser user;
 
     @Nullable
     @Override
@@ -42,9 +44,11 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         ButterKnife.bind(this, view);
         fragmentManager = getFragmentManager();
+        user = ParseUser.getCurrentUser();
+
+        tvUsername.setText(user.getUsername());
 
         btLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,13 +61,27 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        btMapTest.setOnClickListener(new View.OnClickListener() {
+        btChangeUsername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment mapFragment = new RouteFragment();
-                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, mapFragment).commit();
+               //TODO - implement change username
             }
         });
+
+        btChangeEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO - implement change email
+            }
+        });
+
+        btChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO - implement change passowrd
+            }
+        });
+
 
 //    public void sendNotification(View view) {
 //        createNotificationChannel();
