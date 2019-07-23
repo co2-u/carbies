@@ -53,6 +53,8 @@ public class ChangeUsernameDialogFragment extends AppCompatDialogFragment {
                 String newUsername = etNewUsername.getText().toString();
                 if (newUsername.isEmpty()) {
                     Toast.makeText(getContext(), "Missing new username", Toast.LENGTH_SHORT).show();
+                } else if (newUsername.equals(ParseUser.getCurrentUser().getEmail())) {
+                    Toast.makeText(getContext(), "New username must not be current username", Toast.LENGTH_SHORT).show();
                 } else {
                     progressBar.setVisibility(ProgressBar.VISIBLE);
                     checkUsernameAvailability(newUsername);
