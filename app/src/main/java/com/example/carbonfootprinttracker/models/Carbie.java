@@ -50,13 +50,13 @@ public class Carbie extends ParseObject {
         int footprint = 0;
         switch (getString(KEY_TRANSPORTATION)) {
             case "SmallCar":
-                footprint = 400;
+                footprint = 390;
                 break;
             case "MediumCar":
-                footprint = 400;
+                footprint = 430;
                 break;
             case "LargeCar":
-                footprint = 400;
+                footprint = 600;
                 break;
             case "Hybrid":
                 footprint = 196;
@@ -84,6 +84,10 @@ public class Carbie extends ParseObject {
         put(KEY_SCORE, score);
     }
 
+    public void setScore(int score) {
+        put(KEY_SCORE, score);
+    }
+
     public void setDistance(double distance) { put(KEY_DISTANCE, distance); }
 
     public void setRiders(int riders) { put(KEY_RIDERS, riders); }
@@ -97,4 +101,17 @@ public class Carbie extends ParseObject {
     public void setEndLocation(String endLocation) { put(KEY_END_LOCATION, endLocation); }
 
     public void setCreatedAt(Date createdAt) { put(KEY_CREATED_AT, createdAt); }
+
+    public Carbie copy() {
+        Carbie copied = new Carbie();
+        copied.setTitle(this.getTitle());
+        copied.setUser();
+        copied.setDistance(this.getDistance());
+        copied.setRiders(this.getRiders());
+        copied.setTransportation(this.getTransportation());
+        copied.setStartLocation(this.getStartLocation());
+        copied.setEndLocation(this.getEndLocation());
+        copied.setScore(this.getScore());
+        return copied;
+    }
 }

@@ -1,6 +1,8 @@
-package com.example.carbonfootprinttracker.fragments;
+package com.example.carbonfootprinttracker.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
+import com.google.android.material.snackbar.Snackbar;
+import com.parse.DeleteCallback;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -30,11 +36,13 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
     private FragmentManager fragmentManager;
     private Carbie mRecentlyDeletedItem;
     private int mRecentlyDeletedItemPosition;
+    private Activity mActivity;
 
-    public CarbiesAdapter (Context context, FragmentManager fragmentManager, List<Carbie> carbies) {
+    public CarbiesAdapter (Context context, FragmentManager fragmentManager, List<Carbie> carbies, Activity activity) {
         this.context = context;
         this.fragmentManager = fragmentManager;
         this.carbies = carbies;
+        this.mActivity = activity;
     }
 
     @NonNull
@@ -85,7 +93,39 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
     public void deleteItem(int position) {
         mRecentlyDeletedItem = carbies.get(position);
         mRecentlyDeletedItemPosition = position;
-        carbies.remove(position);
-        notifyItemRemoved(position);
+        mRecentlyDeletedItem.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                carbies.remove(position);
+                notifyItemRemoved(position);
+                Log.d(TAG, "Successfully deleted item " + mRecentlyDeletedItem.getObjectId());
+                showUndoSnackbar();
+            }
+        });
+    }
+
+    private void showUndoSnackbar() {
+        View view = mActivity.findViewById(R.id.rvCarbies);
+        Snackbar snackbar = Snackbar.make(view, "Deleted 1 carbie", Snackbar.LENGTH_LONG);
+        snackbar.setAction("UNDO", v -> undoDelete());
+        snackbar.show();
+    }
+
+    private void undoDelete() {
+        //must make copy of recently deleted item before saving it back to Parse
+        Carbie copied = mRecentlyDeletedItem.copy();
+        copied.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    carbies.add(mRecentlyDeletedItemPosition, copied);
+                    notifyItemInserted(mRecentlyDeletedItemPosition);
+                    Log.d(TAG, "Successfully undid deleting of item " + mRecentlyDeletedItem.getObjectId());
+                } else {
+                    Log.d(TAG, "Failed to undo deleting of item " + mRecentlyDeletedItem.getObjectId());
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
