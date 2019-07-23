@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginBottom="20dp"
-        android:background="@color/mainButtons"
+        android:background="@drawable/main_button"
         android:text="Next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
