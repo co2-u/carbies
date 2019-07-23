@@ -71,7 +71,7 @@ public class SettingsFragment extends Fragment {
         btChangeEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO - implement change email
+                showChangeEmailDialogFragment();
             }
         });
 
@@ -107,6 +107,11 @@ public class SettingsFragment extends Fragment {
 //            NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
 //            notificationManager.createNotificationChannel(channel);
 //        }
+    }
+
+    private void showChangeEmailDialogFragment() {
+        ChangeUsernameDialogFragment usernameDialogFragment = new ChangeUsernameDialogFragment();
+        usernameDialogFragment.show(fragmentManager, "email_dialog");
     }
 
     private void showChangeUsernameDialog() {

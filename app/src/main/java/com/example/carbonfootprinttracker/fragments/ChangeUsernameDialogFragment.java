@@ -30,10 +30,10 @@ import butterknife.ButterKnife;
 public class ChangeUsernameDialogFragment extends AppCompatDialogFragment {
     private static final String TAG = "ChangeUsernameDialog";
 
-    @BindView(R.id.etNewUsername) EditText etNewUsername;
+    @BindView(R.id.etNewEmail) EditText etNewUsername;
     @BindView(R.id.btAccept) Button btAccept;
     @BindView(R.id.btCancel) Button btCancel;
-    @BindView(R.id.tvCurrentUsername) TextView tvCurrentUsername;
+    @BindView(R.id.tvCurrentEmail) TextView tvCurrentUsername;
     @BindView(R.id.progressBar) ProgressBar progressBar;
 
     @Nullable
