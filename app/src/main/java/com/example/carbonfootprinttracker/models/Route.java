@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.Distance;
 import com.google.maps.model.Duration;
+import com.google.maps.model.LatLng;
 
 public class Route {
     private Polyline polyline;
@@ -33,4 +34,6 @@ public class Route {
     public String getStartAddress() { return leg.startAddress; }
 
     public String getEndAddress() { return leg.endAddress; }
+
+
 }
