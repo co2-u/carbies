@@ -78,7 +78,7 @@ public class SettingsFragment extends Fragment {
         btChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO - implement change passowrd
+                showChangePasswordDialogFragment();
             }
         });
 
@@ -119,4 +119,8 @@ public class SettingsFragment extends Fragment {
         usernameDialogFragment.show(fragmentManager, "username_dialog");
     }
 
+    private void showChangePasswordDialogFragment() {
+        ChangePasswordDialogFragment changePasswordDialogFragment = new ChangePasswordDialogFragment();
+        changePasswordDialogFragment.show(fragmentManager, "password_dialog");
+    }
 }

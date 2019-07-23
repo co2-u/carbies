@@ -50,10 +50,12 @@ public class ChangeEmailDialogFragment extends AppCompatDialogFragment {
         btAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newEmail = etNewEmail.getText().toString();
+                final String newEmail = etNewEmail.getText().toString();
                 if (newEmail.isEmpty()) {
+                    etNewEmail.setText("");
                     Toast.makeText(getContext(), "Missing new email", Toast.LENGTH_SHORT).show();
-                } else if (newEmail.equals(tvCurrentEmail.getText().toString())) {
+                } else if (newEmail.equals(ParseUser.getCurrentUser().getEmail())) {
+                    etNewEmail.setText("");
                     Toast.makeText(getContext(), "New email must not be current email", Toast.LENGTH_SHORT).show();
                 } else {
                     progressBar.setVisibility(ProgressBar.VISIBLE);
@@ -102,6 +104,7 @@ public class ChangeEmailDialogFragment extends AppCompatDialogFragment {
                     progressBar.setVisibility(ProgressBar.GONE);
                     dismiss();
                     getFragmentManager().beginTransaction().replace(R.id.fragmentPlaceholder, new SettingsFragment()).commit();
+                    Log.d(TAG, "Successfully saved new email.");
                 } else {
                     Log.d(TAG, "Error while saving new email.");
                     e.printStackTrace();
