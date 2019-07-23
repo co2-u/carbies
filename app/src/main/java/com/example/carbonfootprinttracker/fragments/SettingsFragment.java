@@ -110,8 +110,8 @@ public class SettingsFragment extends Fragment {
     }
 
     private void showChangeEmailDialogFragment() {
-        ChangeUsernameDialogFragment usernameDialogFragment = new ChangeUsernameDialogFragment();
-        usernameDialogFragment.show(fragmentManager, "email_dialog");
+        ChangeEmailDialogFragment emailDialogFragment = new ChangeEmailDialogFragment();
+        emailDialogFragment.show(fragmentManager, "email_dialog");
     }
 
     private void showChangeUsernameDialog() {
