@@ -27,19 +27,19 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ChangeUsernameDialogFragment extends AppCompatDialogFragment {
-    private static final String TAG = "ChangeUsernameDialog";
+public class ChangeEmailDialogFragment extends AppCompatDialogFragment {
+    private static final String TAG = "ChangeEmailDialog";
 
-    @BindView(R.id.etNewProperty) EditText etNewUsername;
+    @BindView(R.id.etNewProperty) EditText etNewEmail;
     @BindView(R.id.btAccept) Button btAccept;
     @BindView(R.id.btCancel) Button btCancel;
-    @BindView(R.id.tvCurrentProperty) TextView tvCurrentUsername;
+    @BindView(R.id.tvCurrentProperty) TextView tvCurrentEmail;
     @BindView(R.id.progressBar) ProgressBar progressBar;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_username_dialog, container, false);
+        return inflater.inflate(R.layout.fragment_email_dialog, container, false);
     }
 
     @Override
@@ -50,12 +50,14 @@ public class ChangeUsernameDialogFragment extends AppCompatDialogFragment {
         btAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newUsername = etNewUsername.getText().toString();
-                if (newUsername.isEmpty()) {
-                    Toast.makeText(getContext(), "Missing new username", Toast.LENGTH_SHORT).show();
+                String newEmail = etNewEmail.getText().toString();
+                if (newEmail.isEmpty()) {
+                    Toast.makeText(getContext(), "Missing new email", Toast.LENGTH_SHORT).show();
+                } else if (newEmail.equals(tvCurrentEmail.getText().toString())) {
+                    Toast.makeText(getContext(), "New email must not be current email", Toast.LENGTH_SHORT).show();
                 } else {
                     progressBar.setVisibility(ProgressBar.VISIBLE);
-                    checkUsernameAvailability(newUsername);
+                    checkEmailAvailability(newEmail);
                 }
             }
         });
@@ -67,32 +69,32 @@ public class ChangeUsernameDialogFragment extends AppCompatDialogFragment {
             }
         });
 
-        tvCurrentUsername.setText("Current Username: " + ParseUser.getCurrentUser().getUsername());
+        tvCurrentEmail.setText("Email: " + ParseUser.getCurrentUser().getEmail());
     }
 
-    private void checkUsernameAvailability(String newUsername) {
+    private void checkEmailAvailability(String newEmail) {
         ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
-        query.whereEqualTo("username", newUsername);
+        query.whereEqualTo("email", newEmail);
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
                     if (objects.size() > 0) {
                         progressBar.setVisibility(ProgressBar.GONE);
-                        Toast.makeText(getContext(), "Username already exists", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Email already exists", Toast.LENGTH_SHORT).show();
                     } else {
-                        changeUsername(newUsername);
+                        changeEmail(newEmail);
                     }
                 } else {
-                    Log.d(TAG, "Error while querying usernames.");
+                    Log.d(TAG, "Error while querying emails.");
                 }
             }
         });
     }
 
-    private void changeUsername(String newUsername) {
+    private void changeEmail(String newEmail) {
         ParseUser user = ParseUser.getCurrentUser();
-        user.setUsername(newUsername);
+        user.setEmail(newEmail);
         user.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -101,7 +103,7 @@ public class ChangeUsernameDialogFragment extends AppCompatDialogFragment {
                     dismiss();
                     getFragmentManager().beginTransaction().replace(R.id.fragmentPlaceholder, new SettingsFragment()).commit();
                 } else {
-                    Log.d(TAG, "Error while saving new username.");
+                    Log.d(TAG, "Error while saving new email.");
                     e.printStackTrace();
                 }
             }

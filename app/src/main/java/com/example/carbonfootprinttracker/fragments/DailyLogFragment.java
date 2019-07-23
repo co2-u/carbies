@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +41,7 @@ public class DailyLogFragment extends Fragment {
 
     @BindView(R.id.rvCarbies) RecyclerView rvCarbies;
     @BindView(R.id.pbLoading) ProgressBar pbLoading;
+    @BindView(R.id.tvMessage) TextView tvMessage;
 
     private CarbiesAdapter carbiesAdapter;
     private List<Carbie> mCarbies;
@@ -115,8 +117,17 @@ public class DailyLogFragment extends Fragment {
                     mCarbies.addAll(objects);
                     carbiesAdapter.notifyDataSetChanged();
                     pbLoading.setVisibility(ProgressBar.INVISIBLE);
+                    setMessageVisibility();
                 }
             }
         });
+    }
+
+    public void setMessageVisibility() {
+        if (mCarbies.size() > 0) {
+            tvMessage.setVisibility(TextView.GONE);
+        } else {
+            tvMessage.setVisibility(TextView.VISIBLE);
+        }
     }
 }
