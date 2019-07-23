@@ -30,7 +30,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="32dp"
         android:text=" Small "
-        android:background="@color/mainButtons"
+        android:background="@drawable/main_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvInfo" />
@@ -46,7 +46,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="32dp"
         android:text="Medium"
-        android:background="@color/mainButtons"
+        android:background="@drawable/main_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnLargeGas"
         app:layout_constraintHorizontal_bias="0.413"
@@ -62,7 +62,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
         android:text="Large"
-        android:background="@color/mainButtons"
+        android:background="@drawable/main_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvInfo" />
