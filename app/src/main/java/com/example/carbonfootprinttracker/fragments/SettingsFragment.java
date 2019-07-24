@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.carbonfootprinttracker.ChangeProfilePictureActivity;
 import com.example.carbonfootprinttracker.LoginActivity;
 import com.example.carbonfootprinttracker.R;
 import com.parse.ParseUser;
@@ -82,6 +83,13 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showChangeProfilePictureActivity();
+            }
+        });
+
 
 //    public void sendNotification(View view) {
 //        createNotificationChannel();
@@ -122,5 +130,10 @@ public class SettingsFragment extends Fragment {
     private void showChangePasswordDialogFragment() {
         ChangePasswordDialogFragment changePasswordDialogFragment = new ChangePasswordDialogFragment();
         changePasswordDialogFragment.show(fragmentManager, "password_dialog");
+    }
+
+    private void showChangeProfilePictureActivity() {
+        Intent intent = new Intent(getContext(), ChangeProfilePictureActivity.class);
+        startActivity(intent);
     }
 }
