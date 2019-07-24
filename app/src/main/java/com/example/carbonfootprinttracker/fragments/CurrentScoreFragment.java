@@ -119,9 +119,7 @@ public class CurrentScoreFragment extends Fragment {
                 } else {
                     Log.d(TAG, "CurrentScoreFragment is not visible");
                 }
-//                setScore(currentScore);
             }
         });
     }
-
 }
