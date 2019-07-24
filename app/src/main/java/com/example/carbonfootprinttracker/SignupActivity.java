@@ -47,13 +47,11 @@ public class SignupActivity extends AppCompatActivity {
         final String email = etEmail.getText().toString();
         final String confirmPassword = etConfirmPassword.getText().toString();
 
-        //check if username is empty, check if email is empty, check if username/email already exists (copy from alex's code)
-
+        //check if username is empty, check if email is empty
         if (username.isEmpty()){
             return;}
         if (email.isEmpty()){
             return;}
-
 
         if (password.contentEquals(confirmPassword)) {
             ParseUser user = new ParseUser();
@@ -79,6 +77,23 @@ public class SignupActivity extends AppCompatActivity {
             Toast.makeText(this, "Passwords don't match. Please try again", Toast.LENGTH_LONG).show();
         }
     }
+
+//    private void checkEmailAvailability(String newEmail) {
+//        ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
+//        query.whereEqualTo("email", newEmail);
+//        query.findInBackground(new FindCallback<ParseUser>() {
+//            @Override
+//            public void done(List<ParseUser> objects, ParseException e) {
+//                if (e == null) {
+//                    if (objects.size() > 0) {
+//                        Toast.makeText(getContext(), "Email already exists", Toast.LENGTH_SHORT).show();
+//                    }
+//                } else {
+//                    Log.d(TAG, "Error while querying emails.");
+//                }
+//            }
+//        });
+//    }
 }
 
 

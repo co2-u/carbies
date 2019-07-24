@@ -1,6 +1,8 @@
 package com.example.carbonfootprinttracker.fragments;
 
 import androidx.fragment.app.Fragment;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +42,8 @@ public class DetailsFragment extends Fragment {
     @BindView(R.id.tvSuggestion)
     TextView tvSuggestion;
     Carbie carbie;
+    private static final Integer MAX_CARBON = 8000;
+
 
     @Nullable
     @Override
@@ -60,6 +64,7 @@ public class DetailsFragment extends Fragment {
         tvDistance2.setText(carbie.getDistance().toString());
         tvScore2.setText(Integer.toString(carbie.getScore()));
         setMessage(carbie.getTransportation());
+        setScoreColor(carbie.getScore());
     }
 
     private void setMessage(String transportation) {
@@ -102,6 +107,16 @@ public class DetailsFragment extends Fragment {
                     tvSuggestion.setText(getString(R.string.walkSuggestion));
                     break;
             }
+        }
+    }
+
+    private void setScoreColor(int score){
+        if (carbie.getScore() > MAX_CARBON && score <= MAX_CARBON * 1.1){
+            tvScore2.setTextColor(Color.parseColor("#FFE401")); //yellow
+        } else if (carbie.getScore() > MAX_CARBON * 1.1){
+            tvScore2.setTextColor(Color.parseColor("#EC0000")); //red
+        } else{
+            tvScore2.setTextColor(Color.parseColor("#55C21B")); //green
         }
     }
 }

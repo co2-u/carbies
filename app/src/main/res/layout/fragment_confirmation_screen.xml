@@ -1,203 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_width="match_parent" >
 
-    <EditText
-        android:id="@+id/etCarbieName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:hint="What would you like to name your Carbie?"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvStartPointConfirm"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Start Point:"
-        android:textColor="#00680A"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvConfirmMiniTitle" />
+        <ImageView
+            android:id="@+id/ivOrangePin2"
+            android:layout_width="25dp"
+            android:layout_height="35dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvEndPoint2"
+            app:layout_constraintStart_toStartOf="@+id/tvEndPointConfirm"
+            app:layout_constraintTop_toTopOf="@+id/tvEndPoint2"
+            app:srcCompat="@drawable/orange_marker" />
 
-    <TextView
-        android:id="@+id/tvEndPointConfirm"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="End Point:"
-        android:textColor="#00680A"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvStartPoint2" />
+        <ImageView
+            android:id="@+id/ivRedPin2"
+            android:layout_width="25dp"
+            android:layout_height="35dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvStartPoint2"
+            app:layout_constraintStart_toStartOf="@+id/tvStartPointConfirm"
+            app:layout_constraintTop_toTopOf="@+id/tvStartPoint2"
+            app:srcCompat="@drawable/red_pin" />
 
-    <TextView
-        android:id="@+id/tvModeConfirm"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Mode of Transportation:"
-        android:textColor="#00680A"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvEndPoint2" />
+        <EditText
+            android:id="@+id/etCarbieName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:ems="10"
+            android:hint="What would you like to name your Carbie?"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvStartPoint2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="123 home way"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvStartPointConfirm" />
+        <TextView
+            android:id="@+id/tvStartPointConfirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Start Point:"
+            android:textColor="#00680A"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivMapSnapshot" />
 
-    <TextView
-        android:id="@+id/tvEndPoint2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="456 Work Ave."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvEndPointConfirm" />
+        <TextView
+            android:id="@+id/tvEndPointConfirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="End Point:"
+            android:textColor="#00680A"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvStartPoint2" />
 
-    <TextView
-        android:id="@+id/tvMode2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="dinosaur"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvModeConfirm" />
+        <TextView
+            android:id="@+id/tvModeConfirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Mode of Transportation:"
+            android:textColor="#00680A"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvEndPoint2" />
 
-    <TextView
-        android:id="@+id/tvConfirmMiniTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Please Confirm the following details about your Carbie:"
-        android:textColor="#00680A"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etCarbieName" />
+        <TextView
+            android:id="@+id/tvStartPoint2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="123 home way"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivRedPin2"
+            app:layout_constraintTop_toBottomOf="@+id/tvStartPointConfirm" />
 
-    <Button
-        android:id="@+id/btnConfirmNo"
-        android:layout_width="115dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginLeft="60dp"
-        android:background="#80BB0000"
-        android:gravity="center|bottom"
-        android:text="No"
-        app:layout_constraintBottom_toBottomOf="@+id/btnConfirmYes"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnConfirmYes"
-        app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/tvEndPoint2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="456 Work Ave."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivOrangePin2"
+            app:layout_constraintTop_toBottomOf="@+id/tvEndPointConfirm" />
 
-    <Button
-        android:id="@+id/btnConfirmYes"
-        android:layout_width="120dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginLeft="56dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginRight="60dp"
-        android:background="#80016109"
-        android:gravity="bottom|center"
-        android:text="yes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.329"
-        app:layout_constraintStart_toEndOf="@+id/btnConfirmNo"
-        app:layout_constraintTop_toBottomOf="@+id/tvMode2" />
+        <TextView
+            android:id="@+id/tvMode2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="dinosaur"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvModeConfirm" />
 
-    <ImageView
-        android:id="@+id/ivX"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/btnConfirmNo"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="@+id/btnConfirmNo"
-        app:layout_constraintTop_toTopOf="@+id/btnConfirmNo"
-        app:srcCompat="@drawable/x" />
+        <TextView
+            android:id="@+id/tvConfirmMiniTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Please Confirm the following details about your Carbie:"
+            android:textColor="#00680A"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etCarbieName" />
 
-    <ImageView
-        android:id="@+id/ivCheck"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/btnConfirmYes"
-        app:layout_constraintHorizontal_bias="0.475"
-        app:layout_constraintStart_toStartOf="@+id/btnConfirmYes"
-        app:layout_constraintTop_toTopOf="@+id/btnConfirmYes"
-        app:srcCompat="@drawable/check_bold" />
+        <Button
+            android:id="@+id/btnConfirmNo"
+            android:layout_width="115dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp"
+            android:background="#80BB0000"
+            android:gravity="center|bottom"
+            android:text="No"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMode2" />
 
-    <Button
-        android:id="@+id/btnYesAndGo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="32dp"
-        android:text="yes, go to destination"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnConfirmNo" />
+        <Button
+            android:id="@+id/btnConfirmYes"
+            android:layout_width="120dp"
+            android:layout_height="75dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:background="#80016109"
+            android:gravity="bottom|center"
+            android:text="yes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnConfirmNo" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/ivX"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/btnConfirmNo"
+            app:layout_constraintHorizontal_bias="0.487"
+            app:layout_constraintStart_toStartOf="@+id/btnConfirmNo"
+            app:layout_constraintTop_toTopOf="@+id/btnConfirmNo"
+            app:srcCompat="@drawable/x" />
+
+        <ImageView
+            android:id="@+id/ivCheck"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/btnConfirmYes"
+            app:layout_constraintHorizontal_bias="0.475"
+            app:layout_constraintStart_toStartOf="@+id/btnConfirmYes"
+            app:layout_constraintTop_toTopOf="@+id/btnConfirmYes"
+            app:srcCompat="@drawable/check_bold" />
+
+        <Button
+            android:id="@+id/btnYesAndGo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="yes, go to destination"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnConfirmNo" />
+
+        <ImageView
+            android:id="@+id/ivMapSnapshot"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvConfirmMiniTitle"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -3,6 +3,7 @@ package com.example.carbonfootprinttracker;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,6 +19,10 @@ import com.example.carbonfootprinttracker.fragments.DailyLogFragment;
 import com.example.carbonfootprinttracker.fragments.InfoFragment;
 import com.example.carbonfootprinttracker.fragments.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseSession;
+import com.parse.ParseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        isValidUserLoggedIn();
 
         //onBoarding stuff
         SharedPreferences preferences =
@@ -110,5 +117,30 @@ public class MainActivity extends AppCompatActivity {
                 fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, settingsFragment).commit();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Checks for changes in user's credentials from another device, ie changed password
+    private void isValidUserLoggedIn() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null) {
+            return;
+        } else {
+            ParseSession.getCurrentSessionInBackground(new GetCallback<ParseSession>() {
+                @Override
+                public void done(ParseSession object, ParseException e) {
+                    boolean isValid = object != null && object.getSessionToken() != null && !object.getSessionToken().isEmpty();
+                    if (!isValid) {
+                        Log.d(TAG, "Invalid user");
+                        ParseUser.logOut();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Log.d(TAG, "Valid user");
+                        return;
+                    }
+                }
+            });
+        }
     }
 }
