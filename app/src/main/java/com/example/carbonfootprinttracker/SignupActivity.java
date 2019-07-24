@@ -87,8 +87,6 @@ public class SignupActivity extends AppCompatActivity {
 //                if (e == null) {
 //                    if (objects.size() > 0) {
 //                        Toast.makeText(getContext(), "Email already exists", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        changeEmail(newEmail);
 //                    }
 //                } else {
 //                    Log.d(TAG, "Error while querying emails.");
