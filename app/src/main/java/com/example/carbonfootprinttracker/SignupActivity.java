@@ -5,14 +5,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +46,14 @@ public class SignupActivity extends AppCompatActivity {
         final String password = etPassword.getText().toString();
         final String email = etEmail.getText().toString();
         final String confirmPassword = etConfirmPassword.getText().toString();
+
+        //check if username is empty, check if email is empty, check if username/email already exists (copy from alex's code)
+
+        if (username.isEmpty()){
+            return;}
+        if (email.isEmpty()){
+            return;}
+
 
         if (password.contentEquals(confirmPassword)) {
             ParseUser user = new ParseUser();

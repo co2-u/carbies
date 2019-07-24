@@ -16,7 +16,7 @@
     <item
         android:id="@+id/dailyLogTab"
         android:enabled="true"
-        android:icon="@drawable/calendar_month"
+        android:icon="@drawable/format_list_bulleted"
         android:title="daily log"
         app:showAsAction="ifRoom" />
     <item
