@@ -33,9 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            goHomeAndFinish();
         }
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +64,6 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG, "Login successful");
                     goHomeAndFinish();
                 } else {
-
                     Log.e(TAG, "Login failed");
                     e.printStackTrace();
                 }
