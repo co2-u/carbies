@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,6 @@ import androidx.fragment.app.FragmentManager;
 import com.example.carbonfootprinttracker.fragments.ComposeFragment;
 import com.example.carbonfootprinttracker.fragments.CurrentScoreFragment;
 import com.example.carbonfootprinttracker.fragments.DailyLogFragment;
-import com.example.carbonfootprinttracker.fragments.InfoFragment;
 import com.example.carbonfootprinttracker.fragments.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.GetCallback;
@@ -57,14 +55,14 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return; }
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         fragmentManager = getSupportFragmentManager();
         final Fragment currentScoreFragment = new CurrentScoreFragment();
         final Fragment composeFragment = new ComposeFragment();
         final Fragment dailyLogFragment = new DailyLogFragment();
-        final Fragment infoFragment = new InfoFragment();
+        final Fragment settingsFragment = new SettingsFragment();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -85,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
                                 fragment = dailyLogFragment;
                                 fragTag = "DailyLogFragment";
                                 break;
-                            case R.id.infoTab:
-                                fragment = infoFragment;
-                                fragTag = "InfoFragment";
+                            case R.id.moreTab:
+                                fragment = settingsFragment;
+                                fragTag = "SettingsFragment";
                                 break;
                             default:
                                 fragment = currentScoreFragment;
@@ -103,11 +101,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Inflate toolbar with
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

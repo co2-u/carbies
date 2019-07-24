@@ -20,9 +20,9 @@
         android:title="daily log"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/infoTab"
+        android:id="@+id/moreTab"
         android:enabled="true"
-        android:icon="@drawable/information_outline"
-        android:title="info"
+        android:icon="@drawable/ic_more"
+        android:title="more"
         app:showAsAction="ifRoom" />
 </menu>
