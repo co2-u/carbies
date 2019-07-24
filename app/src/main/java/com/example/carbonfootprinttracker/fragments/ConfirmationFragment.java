@@ -67,6 +67,7 @@ public class ConfirmationFragment extends Fragment {
                 goToMainFragment();
             }
         });
+
         btnConfirmYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,33 +91,73 @@ public class ConfirmationFragment extends Fragment {
             }
         });
 
-
-
         btnYesAndGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                carbie.setTitle(etCarbieName.getText().toString());
-                carbie.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.d(TAG, "Error while saving");
-                            e.printStackTrace();
-                            return;
+                if (etCarbieName.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
+                } else {
+                    carbie.setTitle(etCarbieName.getText().toString());
+                    carbie.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Log.d(TAG, "Error while saving");
+                                e.printStackTrace();
+                                return;
+                            }
+                            Log.d(TAG, "Success!");
                         }
-                        Log.d(TAG, "Success!");
-                    }
-                });
-                //TODO wire to google maps
-                // Map point based on address
-                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + carbie.getEndLocation().replaceAll(" ", "+"));
+                    });
+                    //TODO wire to google maps
+                    // Map point based on address
+                    Uri gmmIntentUri = Uri.parse("google.navigation:q=" + carbie.getEndLocation().replaceAll(" ", "+")
+                                                  + "&mode=" + typeOfTransport());
 
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                startActivity(mapIntent);
-                goToMainFragment();
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+                    goToMainFragment();
+                }
             }
         });
+    }
+
+    private String typeOfTransport() {
+        String transport = "";
+        switch (carbie.getTransportation()) {
+            case "SmallCar":
+                transport = "d";
+                break;
+            case "MediumCar":
+                transport = "d";
+                break;
+            case "LargeCar":
+                transport = "d";
+                break;
+            case "Hybrid":
+                transport = "d";
+                break;
+            case "Electric":
+                transport = "d";
+                break;
+            case "Bus":
+                transport = "d";
+                break;
+            case "Rail":
+                transport = "d";
+                break;
+            case "Bike":
+                transport = "b";
+                break;
+            case "Walk":
+                transport = "w";
+                break;
+            case "Rideshare":
+                transport = "d";
+                break;
+        }
+        return transport;
     }
 
     private void goToMainFragment() {
