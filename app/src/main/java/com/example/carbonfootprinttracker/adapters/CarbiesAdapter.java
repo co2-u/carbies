@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 
 public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHolder> {
     private static final String TAG = "CarbiesAdapter";
-    private static final Integer MAX_CARBON = 8000;
+    private static final Integer MAX_CARBON = 2000;
 
     private List<Carbie> carbies;
     private Context context;
