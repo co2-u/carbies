@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.etPassword) EditText etPassword;
     @BindView(R.id.btnLogin) Button btnLogin;
     @BindView(R.id.btnSignup) Button btnSignup;
+    @BindView(R.id.progressBar) ProgressBar pbLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login (String username, String password) {
+        pbLoading.setVisibility(ProgressBar.VISIBLE);
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
@@ -66,7 +70,10 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Log.e(TAG, "Login failed");
                     e.printStackTrace();
+                    etPassword.setText("");
+                    Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
                 }
+                pbLoading.setVisibility(ProgressBar.GONE);
             }
         });
     }
