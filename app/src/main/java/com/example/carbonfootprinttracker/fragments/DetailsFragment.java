@@ -118,6 +118,5 @@ public class DetailsFragment extends Fragment {
         } else{
             tvScore2.setTextColor(Color.parseColor("#55C21B")); //green
         }
-
     }
 }
