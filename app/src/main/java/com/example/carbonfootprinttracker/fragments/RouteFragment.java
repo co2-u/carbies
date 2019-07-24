@@ -1,5 +1,6 @@
 package com.example.carbonfootprinttracker.fragments;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,6 +42,7 @@ import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.Distance;
 import com.google.maps.model.TravelMode;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +63,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
     private FragmentManager fragmentManager;
     private Carbie carbie;
     private TravelMode travelMode;
+    private LatLngBounds routeBounds;
 
     @BindView(R.id.mapView) MapView mMapView;
     @BindView(R.id.btSeeRoutes) Button btSeeRoutes;
@@ -122,7 +125,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         }
 
         mMapView.onCreate(savedInstanceState);
-        pbLoading.setVisibility(ProgressBar.VISIBLE);
+        showProgressBar();
         mMapView.getMapAsync(this);
         if (mGeoApiContext == null) {
             mGeoApiContext = new GeoApiContext.Builder()
@@ -155,17 +158,38 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                 if (selectedRoute == null) {
                     Toast.makeText(getContext(), "Need to select a route!", Toast.LENGTH_SHORT).show();
                 } else {
+                    showProgressBar();
+                    // Add information about selectedRoute to carbie
                     carbie.setDistance(toMiles(selectedRoute.getDistance().inMeters));
                     carbie.setStartLocation(selectedRoute.getStartAddress());
                     carbie.setEndLocation(selectedRoute.getEndAddress());
-                    Fragment confirmationFragment = new ConfirmationFragment();
-
-                    Bundle args = new Bundle();
+                    // Create confirmationFragment and arguments bundle
+                    final Fragment confirmationFragment = new ConfirmationFragment();
+                    final Bundle args = new Bundle();
                     args.putParcelable("carbie", carbie);
-                    confirmationFragment.setArguments(args);
 
-                    fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, confirmationFragment).commit();
-                    Log.d(TAG, "calculateDirections: routes: " + selectedRoute.toString());
+                    prepMapForSnapshot();
+                    // Called after map has loaded the camera update
+                    mGoogleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                        @Override
+                        public void onMapLoaded() {
+                            mGoogleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                                @Override
+                                public void onSnapshotReady(Bitmap bitmap) {
+                                    Log.d(TAG, "Snapshot taken");
+                                    // Convert bitmap to byte[] to put into args bundle
+                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                    byte[] byteArray = stream.toByteArray();
+
+                                    args.putByteArray("snapshot", byteArray);
+                                    confirmationFragment.setArguments(args);
+                                    fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, confirmationFragment).commit();
+                                }
+                            });
+
+                        }
+                    });
                 }
             }
         });
@@ -173,19 +197,20 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        pbLoading.setVisibility(ProgressBar.INVISIBLE);
+        hideProgressBar();
         mGoogleMap = googleMap;
         mGoogleMap.setOnPolylineClickListener(this);
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
 
         // Add a marker in Sydney, Australia, and move the camera.
+        // TODO - change to current location.
         LatLng sydney = new LatLng(-34, 151);
         mGoogleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     private void calculateDirections(String startLocation, String endLocation){
-        pbLoading.setVisibility(ProgressBar.VISIBLE);
+        showProgressBar();
         Log.d(TAG, "calculateDirections: calculating directions.");
 
         DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
@@ -216,13 +241,13 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                           final com.google.maps.model.LatLng preSW = result.routes[0].bounds.southwest;
                           final LatLng northeast = new LatLng(preNE.lat, preNE.lng);
                           final LatLng southwest = new LatLng(preSW.lat, preSW.lng);
-                          final LatLngBounds route = new LatLngBounds(southwest, northeast);
+                          routeBounds = new LatLngBounds(southwest, northeast);
 
-                          pbLoading.setVisibility(ProgressBar.INVISIBLE);
+                          hideProgressBar();
                           addMarker(startLatLng.lat, startLatLng.lng, startAddress, BitmapDescriptorFactory.HUE_RED, true);
                           addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_ORANGE, false);
                           addPolylinesToMap(result);
-                          centerCameraOn(route);
+                          centerCameraOn(routeBounds);
                       }
 
             @Override
@@ -233,7 +258,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                         Toast.makeText(getContext(), "Failed to get directions!", Toast.LENGTH_SHORT).show();
                     }
                 });
-                pbLoading.setVisibility(ProgressBar.INVISIBLE);
+                hideProgressBar();
                 Log.e(TAG, "calculateDirections: Failed to get directions: " + e.getMessage() );
             }
         });
@@ -335,7 +360,26 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         }
     }
 
+    private void prepMapForSnapshot() {
+        centerCameraOn(routeBounds);
+        endMarker.hideInfoWindow();
+        Polyline polyline = selectedRoute.getPolyline();
+        for (Route route: mRoutes) {
+            if (!route.getPolyline().getId().equals(polyline.getId())) {
+                route.getPolyline().setVisible(false);
+            }
+        }
+    }
+
     private double toMiles(long meters) {
         return (meters * 0.00062137);
+    }
+
+    private void showProgressBar() {
+        pbLoading.setVisibility(ProgressBar.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        pbLoading.setVisibility(ProgressBar.INVISIBLE);
     }
 }

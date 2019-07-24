@@ -1,6 +1,8 @@
 package com.example.carbonfootprinttracker.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,8 @@ public class ConfirmationFragment extends Fragment {
     Button btnConfirmYes;
     @BindView(R.id.btnYesAndGo)
     Button btnYesAndGo;
+    @BindView(R.id.ivMapSnapshot)
+    ImageView ivMapSnapshot;
     private final String TAG = "ConfirmationFragment";
     private Carbie carbie;
     private FragmentManager fragmentManager;
@@ -67,6 +72,10 @@ public class ConfirmationFragment extends Fragment {
                 goToMainFragment();
             }
         });
+
+        byte[] byteArray = getArguments().getByteArray("snapshot");
+        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        ivMapSnapshot.setImageBitmap(bitmap);
 
         btnConfirmYes.setOnClickListener(new View.OnClickListener() {
             @Override
