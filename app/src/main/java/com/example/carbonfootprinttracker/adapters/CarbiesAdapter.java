@@ -2,6 +2,7 @@ package com.example.carbonfootprinttracker.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.google.android.material.snackbar.Snackbar;
@@ -57,11 +59,18 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
         final Carbie carbie = carbies.get(position);
         final ParseUser author = ParseUser.getCurrentUser();
         final Integer score = carbie.getScore();
+        Boolean fav = carbie.getIsFavorited();
 
         holder.tvTitle.setText(carbie.getTitle());
         holder.tvStartAddress.setText(carbie.getStartLocation());
         holder.tvEndAddress.setText(carbie.getEndLocation());
         holder.tvScore.setText(score.toString());
+
+        if (fav) {
+            holder.ivLike.setImageResource(R.drawable.filled_heart);
+        } else {
+            holder.ivLike.setImageResource(R.drawable.heart_outline);
+        }
 
         if (score > MAX_CARBON * 1.1) {
             holder.ivCircle.setBackground(context.getResources().getDrawable(R.drawable.red_circle));
@@ -77,16 +86,41 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
         return carbies.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.ivCircle) ImageView ivCircle;
         @BindView(R.id.tvTitle) TextView tvTitle;
         @BindView(R.id.tvStartAddress) TextView tvStartAddress;
         @BindView(R.id.tvEndAddress) TextView tvEndAddress;
         @BindView(R.id.tvScore) TextView tvScore;
+        @BindView(R.id.ivLike) ImageView ivLike;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            ivLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Carbie carbie = carbies.get(position);
+                        carbie.setIsFavorited(!(carbie.getIsFavorited()));
+                        carbie.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e != null) {
+                                    Log.d(TAG, "Error while saving");
+                                    e.printStackTrace();
+                                    return;
+                                }
+                                Log.d(TAG, "Success!");
+                            }
+                        });
+                        notifyItemChanged(getAdapterPosition());
+                    }
+                }
+            });
+
         }
     }
 
@@ -102,6 +136,7 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                 showUndoSnackbar();
             }
         });
+
     }
 
     private void showUndoSnackbar() {

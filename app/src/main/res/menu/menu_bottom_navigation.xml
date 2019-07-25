@@ -8,18 +8,28 @@
         android:icon="@drawable/home_outline"
         android:title="home"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/composeTab"
-        android:enabled="true"
-        android:icon="@drawable/plus_box_outline"
-        android:title="add"
-        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/dailyLogTab"
         android:enabled="true"
         android:icon="@drawable/format_list_bulleted"
         android:title="daily log"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/composeTab"
+        android:enabled="true"
+        android:icon="@drawable/plus_box_outline"
+        android:title="add"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/favoritesTab"
+        android:enabled="true"
+        android:icon="@drawable/heart_outline"
+        android:title="add"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/moreTab"
         android:enabled="true"

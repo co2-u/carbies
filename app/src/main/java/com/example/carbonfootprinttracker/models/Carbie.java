@@ -4,10 +4,10 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import java.util.Date;
-
 @ParseClassName("Carbie")
 public class Carbie extends ParseObject {
+    private static final String TAG = "Carbie";
+
     public static final String KEY_USER = "user";
     public static final String KEY_SCORE = "score";
     public static final String KEY_DISTANCE = "distance";
@@ -17,6 +17,7 @@ public class Carbie extends ParseObject {
     public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_START_LOCATION = "startLocation";
     public static final String KEY_END_LOCATION = "endLocation";
+    public static final String KEY_IS_FAVORITED = "isFavorited";
 
     public ParseUser getUser() { return getParseUser(KEY_USER); }
 
@@ -44,7 +45,9 @@ public class Carbie extends ParseObject {
 
     public String getEndLocation() { return getString(KEY_END_LOCATION); }
 
-    public String getKeyCreatedAt() { return getString(KEY_CREATED_AT); }
+    public Boolean getIsFavorited() { return getBoolean(KEY_IS_FAVORITED); }
+
+    public void setIsFavorited(Boolean status) { put(KEY_IS_FAVORITED, status); }
 
     public void setScore() {
         int footprint = 0;
@@ -100,8 +103,6 @@ public class Carbie extends ParseObject {
 
     public void setEndLocation(String endLocation) { put(KEY_END_LOCATION, endLocation); }
 
-    public void setCreatedAt(Date createdAt) { put(KEY_CREATED_AT, createdAt); }
-
     public Carbie copy() {
         Carbie copied = new Carbie();
         copied.setTitle(this.getTitle());
@@ -112,6 +113,7 @@ public class Carbie extends ParseObject {
         copied.setStartLocation(this.getStartLocation());
         copied.setEndLocation(this.getEndLocation());
         copied.setScore(this.getScore());
+        copied.setIsFavorited(this.getIsFavorited());
         return copied;
     }
 }

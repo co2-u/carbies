@@ -71,41 +71,38 @@ public class ChangeProfilePictureActivity extends AppCompatActivity {
 
             if(file != null) {
                 ParseFile parseFile = new ParseFile(file);
-                parseFile.saveInBackground(new SaveCallback() {
+                parseFile.saveInBackground();
+                ParseUser user = ParseUser.getCurrentUser();
+                user.put("profileImage", parseFile);
+                user.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        if (e == null) {
-                            ParseUser user = ParseUser.getCurrentUser();
-                            user.put("profileImage", parseFile);
-                            user.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if(e != null){
-                                        e.printStackTrace();
-                                    }
-                                    else{
-                                        int i = 0;
-                                    }
-                                }
-                            });
-                        } else {
+                        if(e != null){
                             e.printStackTrace();
                         }
-
+                        else{
+                            int i = 0;
+                        }
+                        Intent intent = new Intent(ChangeProfilePictureActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
                 });
             }
         }
-        Intent intent = new Intent(ChangeProfilePictureActivity.this, MainActivity.class);
-        startActivity(intent);
+
     }
 
     public String getRealPathFromURI(Uri contentUri) {
-        String[] proj = { MediaStore.Audio.Media.DATA };
-        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
+        String res = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if(cursor.moveToFirst()){;
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
     }
+
 
 }
