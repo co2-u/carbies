@@ -28,7 +28,6 @@
         android:layout_width="46dp"
         android:layout_height="35dp"
         android:layout_marginTop="20dp"
-        android:elevation="2dp"
         android:src="@drawable/bike"
         app:layout_constraintEnd_toEndOf="@+id/btnBike"
         app:layout_constraintStart_toStartOf="@+id/btnBike"
@@ -36,21 +35,22 @@
 
     <Button
         android:id="@+id/btnBike"
-        android:layout_width="160dp"
-        android:layout_height="80dp"
+        android:layout_width="170dp"
+        android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="52dp"
         android:background="@drawable/main_button"
         android:gravity="bottom|center"
         android:text="bike"
+        android:paddingBottom="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvModeOfTransportationTitle" />
 
     <Button
         android:id="@+id/btnWalk"
-        android:layout_width="160dp"
-        android:layout_height="80dp"
+        android:layout_width="170dp"
+        android:layout_height="100dp"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="52dp"
@@ -59,6 +59,7 @@
         android:background="@drawable/main_button"
         android:gravity="bottom|center"
         android:text="walk"
+        android:paddingBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toEndOf="@+id/btnBike"
@@ -66,27 +67,30 @@
 
     <Button
         android:id="@+id/btnGasCar"
-        android:layout_width="160dp"
-        android:layout_height="80dp"
+        android:layout_width="170dp"
+        android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="100dp"
-        android:background="@drawable/main_button"
+        android:background="@drawable/main_button_dark"
         android:gravity="bottom|center"
+        android:paddingBottom="20dp"
         android:text="gasoline car"
+        android:elevation="@dimen/cardview_default_elevation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnBike" />
 
     <Button
         android:id="@+id/btnElectricCar"
-        android:layout_width="160dp"
-        android:layout_height="80dp"
+        android:layout_width="170dp"
+        android:layout_height="100dp"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="Electric Car"
+        android:paddingBottom="20dp"
         android:background="@drawable/main_button"
         android:gravity="bottom|center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,27 +100,29 @@
 
     <Button
         android:id="@+id/btnPublicTransportation"
-        android:layout_width="160dp"
-        android:layout_height="80dp"
+        android:layout_width="170dp"
+        android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="92dp"
         android:background="@drawable/main_button"
         android:gravity="bottom|center"
         android:text="Public Transportation"
+        android:paddingBottom="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnGasCar" />
 
     <Button
         android:id="@+id/btnCarpool"
-        android:layout_width="160dp"
-        android:layout_height="80dp"
+        android:layout_width="170dp"
+        android:layout_height="100dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="92dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:text="Ride Share/Carpool"
+        android:paddingBottom="20dp"
         android:background="@drawable/main_button"
         android:gravity="bottom|center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -137,8 +143,8 @@
 
     <ImageView
         android:id="@+id/ivcar"
-        android:layout_width="46dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="45dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="@+id/btnGasCar"
         app:layout_constraintHorizontal_bias="0.491"
@@ -148,7 +154,7 @@
 
     <ImageView
         android:id="@+id/icEcar"
-        android:layout_width="46dp"
+        android:layout_width="50dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="@+id/btnElectricCar"
@@ -159,8 +165,8 @@
 
     <ImageView
         android:id="@+id/ivPublicTransport"
-        android:layout_width="46dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@+id/btnPublicTransportation"
         app:layout_constraintHorizontal_bias="0.508"
@@ -172,9 +178,8 @@
         android:id="@+id/imageView6"
         android:layout_width="46dp"
         android:layout_height="30dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="@+id/btnCarpool"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="@+id/btnCarpool"
         app:layout_constraintTop_toTopOf="@+id/btnCarpool"
         app:srcCompat="@drawable/carpool" />

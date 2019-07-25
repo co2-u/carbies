@@ -13,7 +13,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_bottom_navigation"
-        android:background="#E0EADB"/>
+        android:background="#ffffff"/>
 
     <FrameLayout
         android:id="@+id/fragmentPlaceholder"
@@ -29,12 +29,12 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#E0EADB"
         android:elevation="@dimen/cardview_default_elevation"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/white"/>
+        app:titleTextColor="@android:color/white"
+        android:background="#ffffff"/>
 
     <ImageView
         android:id="@+id/ivGreentfoot"
@@ -54,11 +54,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:elevation="@dimen/cardview_default_elevation"
-        android:fontFamily="casual"
         android:text="CO2 &amp; U"
-        android:textColor="@android:color/holo_green_dark"
+        android:textColor="#00581B"
         android:textSize="40sp"
         android:textStyle="bold"
+        android:fontFamily="@font/ubuntu_light"
         app:layout_constraintBottom_toBottomOf="@+id/ivGreentfoot"
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
