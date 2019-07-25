@@ -1,7 +1,8 @@
 package com.example.carbonfootprinttracker.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +13,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.Manifest;
 import com.example.carbonfootprinttracker.R;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,15 +26,24 @@ import com.google.maps.GeoApiContext;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "LiveRouteFragment";
-    private static final int REQUEST_FINE_LOCATION = 0;
+    private final static String KEY_LOCATION = "location";
+    private static final long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
+    private static final long FASTEST_INTERVAL = 2000; /* 2 sec */
 
     private GoogleMap mGoogleMap;
     private GeoApiContext mGeoApiContext = null;
     private FragmentManager fragmentManager;
     private Context context;
+    private Location mCurrentLocation;
+    private LocationRequest mLocationRequest;
 
     @BindView(R.id.btStart)
     Button btStart;
@@ -57,6 +67,12 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         fragmentManager = getFragmentManager();
         context = getContext();
 
+        if (savedInstanceState != null && savedInstanceState.keySet().contains(KEY_LOCATION)) {
+            // Since KEY_LOCATION was found in the Bundle, we can be sure that mCurrentLocation
+            // is not null.
+            mCurrentLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+        }
+
         mapView.onCreate(savedInstanceState);
         showProgressBar();
         mapView.getMapAsync(this);
@@ -65,6 +81,20 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                     .apiKey(getString(R.string.google_maps_api_key))
                     .build();
         }
+
+        btStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -73,10 +103,20 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap = googleMap;
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
 
-        getPermissionToAccessLocation();
+        LiveRouteFragmentPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
     }
 
+    @SuppressLint("MissingPermission")
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    void getMyLocation() {
+        mGoogleMap.setMyLocationEnabled(true);
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        LiveRouteFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
 
     @Override
     public void onResume() {
@@ -96,54 +136,24 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         mapView.onDestroy();
     }
 
+    // Annotate a method which is invoked if the user doesn't grant the permissions
+    @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)
+    void showDeniedForLocation() {
+        Toast.makeText(context, "Location access was denied.", Toast.LENGTH_SHORT).show();
+    }
+
+    // Annotates a method which is invoked if the user
+    // chose to have the device "never ask again" about a permission
+    @OnNeverAskAgain(Manifest.permission.ACCESS_FINE_LOCATION)
+    void showNeverAskForLocation() {
+        Toast.makeText(context, "Location access was denied and can't ask.", Toast.LENGTH_SHORT).show();
+    }
+
     private void showProgressBar() {
         pbLoading.setVisibility(ProgressBar.VISIBLE);
     }
 
     private void hideProgressBar() {
         pbLoading.setVisibility(ProgressBar.INVISIBLE);
-    }
-
-    private void getPermissionToAccessLocation() {
-        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // The permission is NOT already granted.
-
-            // Check if the user has been asked about this permission already and denied
-            // it. If so, we want to give more explanation about why the permission is needed.
-            if (shouldShowRequestPermissionRationale(
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // Show our own UI to explain to the user why we need to read the contacts
-                // before actually requesting the permission and showing the default UI
-            }
-
-            // Fire off an async request to actually get the permission
-            // This will show the standard permission request dialog UI
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_FINE_LOCATION);
-        } else {
-            mGoogleMap.setMyLocationEnabled(true);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        // Make sure it's our original READ_CONTACTS request
-        if (requestCode == REQUEST_FINE_LOCATION) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(context, "Access fine location permission granted", Toast.LENGTH_SHORT).show();
-            } else {
-                // showRationale = false if user clicks Never Ask Again, otherwise true
-                boolean showRationale = shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION);
-
-                if (showRationale) {
-                    // do something here to handle degraded mode
-                    Toast.makeText(context, "do something here to handle degraded mode", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "Access fine location permission denied", Toast.LENGTH_SHORT).show();
-                }
-            }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
     }
 }

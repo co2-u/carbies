@@ -73,4 +73,7 @@ dependencies {
     // Runtime permissions
     implementation 'com.github.hotchemi:permissionsdispatcher:4.1.0'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:4.1.0'
+
+    //LocationServices
+    implementation 'com.google.android.gms:play-services-location:11.8.0'
 }
