@@ -51,23 +51,26 @@ dependencies {
     implementation 'org.slf4j:slf4j-simple:1.7.25'
     implementation 'androidx.fragment:fragment:1.0.0'
 
+    // Circle Image View
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.mikhaellopez:circularimageview:3.2.0'
 
     //for onBoarding
     implementation 'com.github.navasmdc:MaterialDesign:1.5@aar'
     implementation 'com.ogaclejapan.smarttablayout:library:1.2.1@aar'
-
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-//Add Firebase Core//
-
+    //Add Firebase Core//
     implementation 'com.google.firebase:firebase-core:16.0.1'
 
-//Add FCM//
-
+    //Add FCM//
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
 
+    // Glide imaging
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     implementation 'jp.wasabeef:glide-transformations:2.0.2'
+
+    // Runtime permissions
+    implementation 'com.github.hotchemi:permissionsdispatcher:4.1.0'
+    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:4.1.0'
 }
