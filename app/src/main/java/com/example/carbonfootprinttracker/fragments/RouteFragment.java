@@ -41,6 +41,8 @@ import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.Distance;
 import com.google.maps.model.TravelMode;
+import com.parse.ParseException;
+import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -65,6 +67,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
     private TravelMode travelMode;
     private LatLngBounds routeBounds;
 
+
     @BindView(R.id.mapView) MapView mMapView;
     @BindView(R.id.btSeeRoutes) Button btSeeRoutes;
     @BindView(R.id.btAcceptRoute) Button btAcceptRoute;
@@ -72,6 +75,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
     @BindView(R.id.etEnd) EditText etEnd;
     @BindView(R.id.progressBar) ProgressBar pbLoading;
     @BindView(R.id.btLive) Button btLive;
+    @BindView(R.id.etCarbieName) EditText etCarbieName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -169,6 +173,22 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                 } else {
                     showProgressBar();
                     // Add information about selectedRoute to carbie
+                    if (etCarbieName.getText().toString().equals("")) {
+                        Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
+                    } else {
+                        carbie.setTitle(etCarbieName.getText().toString());
+                        carbie.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e != null) {
+                                    Log.d(TAG, "Error while saving");
+                                    e.printStackTrace();
+                                    return;
+                                }
+                                Log.d(TAG, "Success!");
+                            }
+                        });
+                    }
                     carbie.setDistance(toMiles(selectedRoute.getDistance().inMeters));
                     carbie.setStartLocation(selectedRoute.getStartAddress());
                     carbie.setEndLocation(selectedRoute.getEndAddress());
@@ -176,6 +196,8 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                     final Fragment confirmationFragment = new ConfirmationFragment();
                     final Bundle args = new Bundle();
                     args.putParcelable("carbie", carbie);
+
+
 
                     prepMapForSnapshot();
                     // Called after map has loaded the camera update
@@ -201,6 +223,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                     });
                 }
             }
+
         });
     }
 
@@ -231,46 +254,46 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
 
         Log.d(TAG, "calculateDirections: destination: " + endLocation);
         directions.destination(endLocation)
-                  .mode(travelMode)
-                  .setCallback(new PendingResult.Callback<DirectionsResult>() {
-                      @Override
-                      public void onResult(DirectionsResult result) {
-                          Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString());
-                          Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
-                          Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
-
-                          // Start and End LatLng coordinates and user-friendly addresses
-                          final com.google.maps.model.LatLng startLatLng = result.routes[0].legs[0].startLocation;
-                          final com.google.maps.model.LatLng endLatLng = result.routes[0].legs[0].endLocation;
-                          final String startAddress = result.routes[0].legs[0].startAddress;
-                          final String endAddress= result.routes[0].legs[0].endAddress;
-
-                          // Get northeast and southwest LatLngBounds to use for centering camera
-                          final com.google.maps.model.LatLng preNE = result.routes[0].bounds.northeast;
-                          final com.google.maps.model.LatLng preSW = result.routes[0].bounds.southwest;
-                          final LatLng northeast = new LatLng(preNE.lat, preNE.lng);
-                          final LatLng southwest = new LatLng(preSW.lat, preSW.lng);
-                          routeBounds = new LatLngBounds(southwest, northeast);
-
-                          hideProgressBar();
-                          addMarker(startLatLng.lat, startLatLng.lng, startAddress, BitmapDescriptorFactory.HUE_RED, true);
-                          addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_ORANGE, false);
-                          addPolylinesToMap(result);
-                          centerCameraOn(routeBounds);
-                      }
-
-            @Override
-            public void onFailure(Throwable e) {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                .mode(travelMode)
+                .setCallback(new PendingResult.Callback<DirectionsResult>() {
                     @Override
-                    public void run() {
-                        Toast.makeText(getContext(), "Failed to get directions!", Toast.LENGTH_SHORT).show();
+                    public void onResult(DirectionsResult result) {
+                        Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString());
+                        Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
+                        Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
+
+                        // Start and End LatLng coordinates and user-friendly addresses
+                        final com.google.maps.model.LatLng startLatLng = result.routes[0].legs[0].startLocation;
+                        final com.google.maps.model.LatLng endLatLng = result.routes[0].legs[0].endLocation;
+                        final String startAddress = result.routes[0].legs[0].startAddress;
+                        final String endAddress= result.routes[0].legs[0].endAddress;
+
+                        // Get northeast and southwest LatLngBounds to use for centering camera
+                        final com.google.maps.model.LatLng preNE = result.routes[0].bounds.northeast;
+                        final com.google.maps.model.LatLng preSW = result.routes[0].bounds.southwest;
+                        final LatLng northeast = new LatLng(preNE.lat, preNE.lng);
+                        final LatLng southwest = new LatLng(preSW.lat, preSW.lng);
+                        routeBounds = new LatLngBounds(southwest, northeast);
+
+                        hideProgressBar();
+                        addMarker(startLatLng.lat, startLatLng.lng, startAddress, BitmapDescriptorFactory.HUE_RED, true);
+                        addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_ORANGE, false);
+                        addPolylinesToMap(result);
+                        centerCameraOn(routeBounds);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e) {
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getContext(), "Failed to get directions!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        hideProgressBar();
+                        Log.e(TAG, "calculateDirections: Failed to get directions: " + e.getMessage() );
                     }
                 });
-                hideProgressBar();
-                Log.e(TAG, "calculateDirections: Failed to get directions: " + e.getMessage() );
-            }
-        });
     }
 
     private void addPolylinesToMap(final DirectionsResult result){
@@ -322,8 +345,8 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                     final LatLng markerLocation = new LatLng(lat,lng);
                     startMarker = mGoogleMap.addMarker(
                             new MarkerOptions().position(markerLocation)
-                                                .title(name)
-                                                .icon(BitmapDescriptorFactory.defaultMarker(color)));
+                                    .title(name)
+                                    .icon(BitmapDescriptorFactory.defaultMarker(color)));
                 } else {
                     final LatLng markerLocation = new LatLng(lat,lng);
                     endMarker = mGoogleMap.addMarker(
@@ -390,5 +413,8 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
 
     private void hideProgressBar() {
         pbLoading.setVisibility(ProgressBar.INVISIBLE);
+    }
+
+    private void goToConfirmFragment() {getActivity().findViewById(R.id.currentScoreTab).performClick();
     }
 }

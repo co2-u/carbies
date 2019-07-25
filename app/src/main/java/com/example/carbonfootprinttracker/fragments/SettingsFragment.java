@@ -53,7 +53,7 @@ public class SettingsFragment extends Fragment {
         user = ParseUser.getCurrentUser();
         tvUsername.setText(user.getUsername());
         if (ParseUser.getCurrentUser().getParseFile("profileImage") != null) {
-            Glide.with(getContext()).load(ParseUser.getCurrentUser().getParseFile("profileImage").getUrl()).into(ivProfileImage);
+            Glide.with(getActivity()).load(ParseUser.getCurrentUser().getParseFile("profileImage").getUrl()).into(ivProfileImage);
         }
         btLogout.setOnClickListener(new View.OnClickListener() {
             @Override

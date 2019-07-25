@@ -43,10 +43,11 @@ public class DailyLogFragment extends Fragment {
     @BindView(R.id.pbLoading) ProgressBar pbLoading;
     @BindView(R.id.tvMessage) TextView tvMessage;
 
-    private CarbiesAdapter carbiesAdapter;
-    private List<Carbie> mCarbies;
-    private FragmentManager fragmentManager;
-    private Context context;
+    protected CarbiesAdapter carbiesAdapter;
+    protected List<Carbie> mCarbies;
+    protected FragmentManager fragmentManager;
+    protected Context context;
+
 
     @Nullable
     @Override

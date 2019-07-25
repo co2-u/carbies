@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/ivOrangePin2"
-            android:layout_width="25dp"
-            android:layout_height="35dp"
+            android:layout_width="12dp"
+            android:layout_height="20dp"
             app:layout_constraintBottom_toBottomOf="@+id/tvEndPoint2"
             app:layout_constraintStart_toStartOf="@+id/tvEndPointConfirm"
             app:layout_constraintTop_toTopOf="@+id/tvEndPoint2"
@@ -21,29 +21,13 @@
 
         <ImageView
             android:id="@+id/ivRedPin2"
-            android:layout_width="25dp"
-            android:layout_height="35dp"
+            android:layout_width="12dp"
+            android:layout_height="20dp"
             app:layout_constraintBottom_toBottomOf="@+id/tvStartPoint2"
             app:layout_constraintStart_toStartOf="@+id/tvStartPointConfirm"
             app:layout_constraintTop_toTopOf="@+id/tvStartPoint2"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/red_pin" />
-
-        <EditText
-            android:id="@+id/etCarbieName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:ems="10"
-            android:hint="What would you like to name your Carbie?"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvStartPointConfirm"
@@ -56,10 +40,11 @@
             android:layout_marginRight="10dp"
             android:text="Start Point:"
             android:textColor="#00680A"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivMapSnapshot" />
+            app:layout_constraintTop_toBottomOf="@+id/tvName2" />
 
         <TextView
             android:id="@+id/tvEndPointConfirm"
@@ -71,6 +56,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:text="End Point:"
+            android:textStyle="bold"
             android:textColor="#00680A"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -87,6 +73,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:text="Mode of Transportation:"
+            android:textStyle="bold"
             android:textColor="#00680A"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +85,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:text="123 home way"
@@ -112,7 +98,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:text="456 Work Ave."
@@ -126,7 +111,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:text="dinosaur"
@@ -140,48 +124,50 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:text="Please Confirm the following details about your Carbie:"
-            android:textColor="#00680A"
+            android:textColor="#000000"
             android:textSize="15dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etCarbieName" />
+            tools:layout_editor_absoluteY="7dp" />
 
         <Button
             android:id="@+id/btnConfirmNo"
             android:layout_width="115dp"
             android:layout_height="75dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginLeft="48dp"
             android:layout_marginTop="20dp"
             android:background="#80BB0000"
             android:gravity="center|bottom"
+            android:paddingBottom="5dp"
             android:text="No"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvMode2" />
+            app:layout_constraintTop_toBottomOf="@+id/ivMapSnapshot" />
 
         <Button
             android:id="@+id/btnConfirmYes"
             android:layout_width="120dp"
             android:layout_height="75dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginRight="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginRight="48dp"
             android:background="#80016109"
             android:gravity="bottom|center"
+            android:paddingBottom="5dp"
             android:text="yes"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnConfirmNo" />
+            app:layout_constraintTop_toBottomOf="@+id/ivMapSnapshot" />
 
         <ImageView
             android:id="@+id/ivX"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             app:layout_constraintEnd_toEndOf="@+id/btnConfirmNo"
             app:layout_constraintHorizontal_bias="0.487"
             app:layout_constraintStart_toStartOf="@+id/btnConfirmNo"
@@ -192,9 +178,8 @@
             android:id="@+id/ivCheck"
             android:layout_width="80dp"
             android:layout_height="50dp"
-            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="@+id/btnConfirmYes"
-            app:layout_constraintHorizontal_bias="0.475"
+            app:layout_constraintHorizontal_bias="0.45"
             app:layout_constraintStart_toStartOf="@+id/btnConfirmYes"
             app:layout_constraintTop_toTopOf="@+id/btnConfirmYes"
             app:srcCompat="@drawable/check_bold" />
@@ -214,11 +199,59 @@
             android:id="@+id/ivMapSnapshot"
             android:layout_width="250dp"
             android:layout_height="250dp"
-            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvConfirmMiniTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvRouteConfirm"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <TextView
+            android:id="@+id/tvNameConfirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Name:"
+            android:textColor="#00680A"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvConfirmMiniTitle" />
+
+        <TextView
+            android:id="@+id/tvName2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Bubbles"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvNameConfirm" />
+
+        <TextView
+            android:id="@+id/tvRouteConfirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Route Chosen:"
+            android:textStyle="bold"
+            android:textColor="#00680A"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMode2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

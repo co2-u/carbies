@@ -25,6 +25,8 @@ import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
 
+import org.w3c.dom.Text;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -35,8 +37,6 @@ public class ConfirmationFragment extends Fragment {
     TextView tvEndPoint2;
     @BindView(R.id.tvMode2)
     TextView tvMode2;
-    @BindView(R.id.etCarbieName)
-    EditText etCarbieName;
     @BindView(R.id.btnConfirmNo)
     Button btnConfirmNo;
     @BindView(R.id.btnConfirmYes)
@@ -45,6 +45,9 @@ public class ConfirmationFragment extends Fragment {
     Button btnYesAndGo;
     @BindView(R.id.ivMapSnapshot)
     ImageView ivMapSnapshot;
+    @BindView (R.id.tvName2)
+    TextView tvName2;
+
     private final String TAG = "ConfirmationFragment";
     private Carbie carbie;
     private FragmentManager fragmentManager;
@@ -66,6 +69,7 @@ public class ConfirmationFragment extends Fragment {
         tvStartPoint2.setText(carbie.getStartLocation());
         tvEndPoint2.setText(carbie.getEndLocation());
         tvMode2.setText(carbie.getTransportation());
+        tvName2.setText(carbie.getTitle());
         btnConfirmNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,54 +84,44 @@ public class ConfirmationFragment extends Fragment {
         btnConfirmYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (etCarbieName.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
-                } else {
-                    carbie.setTitle(etCarbieName.getText().toString());
-                    carbie.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e != null) {
-                                Log.d(TAG, "Error while saving");
-                                e.printStackTrace();
-                                return;
-                            }
-                            Log.d(TAG, "Success!");
+                carbie.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            Log.d(TAG, "Error while saving");
+                            e.printStackTrace();
+                            return;
                         }
-                    });
-                    goToMainFragment();
-                }
+                        Log.d(TAG, "Success!");
+                    }
+                });
+                goToMainFragment();
             }
         });
 
         btnYesAndGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (etCarbieName.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
-                } else {
-                    carbie.setTitle(etCarbieName.getText().toString());
-                    carbie.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e != null) {
-                                Log.d(TAG, "Error while saving");
-                                e.printStackTrace();
-                                return;
-                            }
-                            Log.d(TAG, "Success!");
+                carbie.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            Log.d(TAG, "Error while saving");
+                            e.printStackTrace();
+                            return;
                         }
-                    });
-                    //TODO wire to google maps
-                    // Map point based on address
-                    Uri gmmIntentUri = Uri.parse("google.navigation:q=" + carbie.getEndLocation().replaceAll(" ", "+")
-                                                  + "&mode=" + typeOfTransport());
+                        Log.d(TAG, "Success!");
+                    }
+                });
+                //TODO wire to google maps
+                // Map point based on address
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + carbie.getEndLocation().replaceAll(" ", "+")
+                        + "&mode=" + typeOfTransport());
 
-                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                    mapIntent.setPackage("com.google.android.apps.maps");
-                    startActivity(mapIntent);
-                    goToMainFragment();
-                }
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+                goToMainFragment();
             }
         });
     }

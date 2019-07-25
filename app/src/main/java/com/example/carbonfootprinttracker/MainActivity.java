@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.carbonfootprinttracker.fragments.ComposeFragment;
 import com.example.carbonfootprinttracker.fragments.CurrentScoreFragment;
 import com.example.carbonfootprinttracker.fragments.DailyLogFragment;
+import com.example.carbonfootprinttracker.fragments.FavoritesFragment;
 import com.example.carbonfootprinttracker.fragments.InfoFragment;
 import com.example.carbonfootprinttracker.fragments.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         final Fragment composeFragment = new ComposeFragment();
         final Fragment dailyLogFragment = new DailyLogFragment();
         final Fragment infoFragment = new InfoFragment();
+        final Fragment favoritesFragment = new FavoritesFragment();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -84,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.dailyLogTab:
                                 fragment = dailyLogFragment;
                                 fragTag = "DailyLogFragment";
+                                break;
+                            case R.id.favoritesTab:
+                                fragment = favoritesFragment;
+                                fragTag = "FavoritesFragment";
                                 break;
                             case R.id.moreTab:
                                 fragment = infoFragment;
