@@ -50,6 +50,9 @@
     <string name="bikeSuggestion">
         Great job cutting down your carbon footprint by biking!
     </string>
+    <string name="permission_location_rationale">Needs access to location.</string>
+    <string name="button_allow">Allow</string>
+    <string name="button_deny">Deny</string>
 
 
 </resources>
