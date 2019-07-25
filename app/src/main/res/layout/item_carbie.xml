@@ -39,9 +39,11 @@
         android:id="@+id/tvStartAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:text="TextView"
         android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="@+id/tvTitle"
+        app:layout_constraintEnd_toStartOf="@+id/ivLike"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
@@ -49,6 +51,7 @@
         android:id="@+id/tvEndAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="10dp"
         android:text="TextView"
         android:textColor="@android:color/black"
@@ -88,4 +91,16 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/tvStartAddress" />
+
+    <ImageView
+        android:id="@+id/ivLike"
+        android:layout_width="51dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvEndAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvStartAddress"
+        app:srcCompat="@color/common_google_signin_btn_text_dark_focused" />
 </androidx.constraintlayout.widget.ConstraintLayout>
