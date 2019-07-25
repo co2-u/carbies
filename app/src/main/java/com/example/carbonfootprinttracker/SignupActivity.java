@@ -5,19 +5,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,7 +73,14 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
-//    private void checkEmailAvailability(String newEmail) {
+    @Override
+    public void onBackPressed() { // Return to LoginActivity when back button pressed
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    //    private void checkEmailAvailability(String newEmail) {
 //        ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
 //        query.whereEqualTo("email", newEmail);
 //        query.findInBackground(new FindCallback<ParseUser>() {
