@@ -22,16 +22,18 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:ems="10"
         android:hint="Start"
         android:inputType="textPersonName"
         android:textColor="@android:color/black"
+        android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ivRedPin"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/etCarbieName" />
 
     <EditText
         android:id="@+id/etEnd"
@@ -44,6 +46,7 @@
         android:layout_marginRight="10dp"
         android:ems="10"
         android:hint="End"
+        android:textSize="16dp"
         android:inputType="textPersonName"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,22 +98,22 @@
 
     <ImageView
         android:id="@+id/ivRedPin"
-        android:layout_width="25dp"
-        android:layout_height="35dp"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etCarbieName"
         app:srcCompat="@drawable/red_pin" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="25dp"
-        android:layout_height="35dp"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivRedPin"
         app:srcCompat="@drawable/orange_marker" />
@@ -123,4 +126,22 @@
         app:layout_constraintEnd_toStartOf="@+id/btAcceptRoute"
         app:layout_constraintStart_toEndOf="@+id/btSeeRoutes"
         app:layout_constraintTop_toTopOf="@+id/btSeeRoutes" />
+
+    <EditText
+        android:id="@+id/etCarbieName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="Please make a title for your Carbie"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
