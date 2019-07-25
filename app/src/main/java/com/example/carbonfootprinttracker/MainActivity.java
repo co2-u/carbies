@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                                 fragment = dailyLogFragment;
                                 fragTag = "DailyLogFragment";
                                 break;
-                            case R.id.infoTab:
+                            case R.id.moreTab:
                                 fragment = infoFragment;
                                 fragTag = "InfoFragment";
                                 break;

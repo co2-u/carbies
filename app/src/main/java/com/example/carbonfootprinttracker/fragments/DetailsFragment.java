@@ -1,26 +1,18 @@
 package com.example.carbonfootprinttracker.fragments;
 
-import androidx.fragment.app.Fragment;
-
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
-import com.parse.ParseException;
-import com.parse.SaveCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +34,7 @@ public class DetailsFragment extends Fragment {
     @BindView(R.id.tvSuggestion)
     TextView tvSuggestion;
     Carbie carbie;
-    private static final Integer MAX_CARBON = 8000;
+    private static final Integer MAX_CARBON = 2000;
 
 
     @Nullable

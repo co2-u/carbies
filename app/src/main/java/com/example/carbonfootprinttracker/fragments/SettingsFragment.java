@@ -12,8 +12,11 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.bumptech.glide.Glide;
+import com.example.carbonfootprinttracker.ChangeProfilePictureActivity;
 import com.example.carbonfootprinttracker.LoginActivity;
 import com.example.carbonfootprinttracker.R;
 import com.parse.ParseUser;
@@ -29,6 +32,7 @@ public class SettingsFragment extends Fragment {
     @BindView(R.id.btChangeUsername) public Button btChangeUsername;
     @BindView(R.id.btChangeEmail) public Button btChangeEmail;
     @BindView(R.id.btChangePassword) public Button btChangePassword;
+    @BindView(R.id.btAbout) public Button btAbout;
     @BindView(R.id.tvUsername) public TextView tvUsername;
     @BindView(R.id.ivProfileImage) public ImageView ivProfileImage;
 
@@ -47,9 +51,10 @@ public class SettingsFragment extends Fragment {
         ButterKnife.bind(this, view);
         fragmentManager = getFragmentManager();
         user = ParseUser.getCurrentUser();
-
         tvUsername.setText(user.getUsername());
-
+        if (ParseUser.getCurrentUser().getParseFile("profileImage") != null) {
+            Glide.with(getContext()).load(ParseUser.getCurrentUser().getParseFile("profileImage").getUrl()).into(ivProfileImage);
+        }
         btLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,31 +87,19 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showChangeProfilePictureActivity();
+            }
+        });
 
-//    public void sendNotification(View view) {
-//        createNotificationChannel();
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "channel1")
-//                .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                .setContentTitle("title")
-//                .setContentText("content");
-//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
-//        notificationManager.notify(50, builder.build());
-//    }
-//
-//    private void createNotificationChannel() {
-//        // Create the NotificationChannel, but only on API 26+ because
-//        // the NotificationChannel class is new and not in the support library
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            //CharSequence name = getString(R.string.channel_name);
-//            //String description = getString(R.string.channel_description);
-//            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-//            NotificationChannel channel = new NotificationChannel("channel1","CO2nU", importance);
-//            channel.setDescription("carbiessss");
-//            // Register the channel with the system; you can't change the importance
-//            // or other notification behaviors after this
-//            NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
-//            notificationManager.createNotificationChannel(channel);
-//        }
+        btAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, new InfoFragment()).commit();
+            }
+        });
     }
 
     private void showChangeEmailDialogFragment() {
@@ -122,5 +115,10 @@ public class SettingsFragment extends Fragment {
     private void showChangePasswordDialogFragment() {
         ChangePasswordDialogFragment changePasswordDialogFragment = new ChangePasswordDialogFragment();
         changePasswordDialogFragment.show(fragmentManager, "password_dialog");
+    }
+
+    private void showChangeProfilePictureActivity() {
+        Intent intent = new Intent(getContext(), ChangeProfilePictureActivity.class);
+        startActivity(intent);
     }
 }
