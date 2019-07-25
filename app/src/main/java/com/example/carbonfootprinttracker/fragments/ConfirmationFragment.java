@@ -47,6 +47,7 @@ public class ConfirmationFragment extends Fragment {
     ImageView ivMapSnapshot;
     @BindView (R.id.tvName2)
     TextView tvName2;
+
     private final String TAG = "ConfirmationFragment";
     private Carbie carbie;
     private FragmentManager fragmentManager;
