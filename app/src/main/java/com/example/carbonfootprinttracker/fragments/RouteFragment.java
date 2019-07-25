@@ -71,6 +71,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
     @BindView(R.id.etStart) EditText etStart;
     @BindView(R.id.etEnd) EditText etEnd;
     @BindView(R.id.progressBar) ProgressBar pbLoading;
+    @BindView(R.id.btLive) Button btLive;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -132,6 +133,14 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                     .apiKey(getString(R.string.google_maps_api_key))
                     .build();
         }
+
+        btLive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment liveRouteFragment = new LiveRouteFragment();
+                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, liveRouteFragment).commit();
+            }
+        });
 
         btSeeRoutes.setOnClickListener(new View.OnClickListener() {
             @Override
