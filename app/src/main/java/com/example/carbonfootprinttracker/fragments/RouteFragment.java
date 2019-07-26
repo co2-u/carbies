@@ -170,12 +170,11 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
             public void onClick(View v) {
                 if (selectedRoute == null) {
                     Toast.makeText(getContext(), "Need to select a route!", Toast.LENGTH_SHORT).show();
+                } else if (etCarbieName.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
                 } else {
                     showProgressBar();
                     // Add information about selectedRoute to carbie
-                    if (etCarbieName.getText().toString().equals("")) {
-                        Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
-                    } else {
                         carbie.setTitle(etCarbieName.getText().toString());
                         carbie.saveInBackground(new SaveCallback() {
                             @Override
@@ -188,7 +187,6 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                                 Log.d(TAG, "Success!");
                             }
                         });
-                    }
                     carbie.setDistance(toMiles(selectedRoute.getDistance().inMeters));
                     carbie.setStartLocation(selectedRoute.getStartAddress());
                     carbie.setEndLocation(selectedRoute.getEndAddress());
@@ -218,12 +216,10 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                                     fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, confirmationFragment).commit();
                                 }
                             });
-
                         }
                     });
+                    }
                 }
-            }
-
         });
     }
 
