@@ -27,9 +27,13 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.maps.GeoApiContext;
@@ -50,8 +54,8 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "LiveRouteFragment";
     private final static String KEY_LOCATION = "location";
-    private static final long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
-    private static final long FASTEST_INTERVAL = 5000; /* 5 sec */
+    private static final long UPDATE_INTERVAL = 2 * 1000;  /* 2 secs */
+    private static final long FASTEST_INTERVAL = 1000; /* 1 sec */
 
     private GoogleMap mGoogleMap;
     private GeoApiContext mGeoApiContext = null;
@@ -61,7 +65,8 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest mLocationRequest;
     private LocationCallback locationCallback;
-    private List<Location> route;
+    private List<Location> mLocations;
+    private boolean isTracking = false;
 
     @BindView(R.id.btStart) Button btStart;
     @BindView(R.id.btStop) Button btStop;
@@ -81,18 +86,16 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
         fragmentManager = getFragmentManager();
         context = getContext();
-        route = new ArrayList<>();
+        mLocations = new ArrayList<>();
 
         fusedLocationProviderClient = getFusedLocationProviderClient(context);
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 onLocationChanged(locationResult.getLastLocation());
-                Log.d(TAG, route.toString());
             }
         };
-
-
+        
         mapView.onCreate(savedInstanceState);
         showProgressBar();
         mapView.getMapAsync(this);
@@ -105,14 +108,26 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (!isTracking) {
+                    isTracking = true;
+                    if (mCurrentLocation != null) {
+                        mLocations.add(mCurrentLocation);
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude())));
+                    } else {
+                        Log.d(TAG, "mCurrentLocation is null");
+                    }
+                } else {
+                    Toast.makeText(context, "Route in progress", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         btStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                isTracking = false;
+                float distanceInMeters = getTotalDistance();
+                Toast.makeText(context, "Total distance: " + distanceInMeters, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -137,7 +152,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
-                            onLocationChanged(location);
+                            updateCurrentLocation(location);
                         }
                     }
                 })
@@ -165,10 +180,12 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         SettingsClient settingsClient = LocationServices.getSettingsClient(context);
         settingsClient.checkLocationSettings(locationSettingsRequest);
 
+        Log.d(TAG, "start location updates");
         fusedLocationProviderClient.requestLocationUpdates(mLocationRequest, locationCallback, Looper.myLooper());
     }
 
     private void stopLocationUpdates() {
+        Log.d(TAG, "stop location updates");
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
 
@@ -177,25 +194,61 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         if (location == null) {
             return;
         }
-        float[] results = new float[1];
-        if (route.size() == 0) {
-            route.add(location);
-        } else {
-            Location start = route.get(route.size() - 1);
-            float distanceInMeters = start.distanceTo(location);
-            if (distanceInMeters >= 1) {
-                route.add(location);
-            }
+
+        // only add to mLocations if isTracking is true
+        // but should I always updateCurrentLocation
+
+//        if (mLocations.size() == 0) {
+//            mLocations.add(location);
+//            updateCurrentLocation(location);
+//            Log.d(TAG, mLocations.toString());
+//        } else {
+//            final float distanceInMeters = mCurrentLocation.distanceTo(location);
+//            if (distanceInMeters >= 1) {
+//                mLocations.add(location);
+//                updateCurrentLocation(location);
+//                Log.d(TAG, mLocations.toString());
+//                Log.d(TAG, "Distance: " + distanceInMeters);
+//            }
+//        }
+
+        final float distanceInMeters = mCurrentLocation.distanceTo(location);
+        if (distanceInMeters > 1) {
             Log.d(TAG, "Distance: " + distanceInMeters);
+            if (isTracking) {
+                mLocations.add(location);
+                drawPolyline(mCurrentLocation, location);
+                Log.d(TAG, mLocations.toString());
+            }
+            updateCurrentLocation(location);
         }
+    }
 
-
-
+    private void updateCurrentLocation (Location location) {
         mCurrentLocation = location;
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void drawPolyline(Location from, Location to) {
+        mGoogleMap.addPolyline(
+                new PolylineOptions()
+                        .add(new LatLng(from.getLatitude(), from.getLongitude()))
+                        .add(new LatLng(to.getLatitude(), to.getLongitude()))
+        );
+    }
+
+    private float getTotalDistance() {
+        float distance = 0;
+        for (int i = 0; i < mLocations.size() - 1; i++) {
+            Location from = mLocations.get(i);
+            Location to = mLocations.get(i+1);
+            distance += from.distanceTo(to);
+        }
+        return distance;
     }
 
     @Override
