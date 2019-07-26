@@ -7,11 +7,17 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.carbonfootprinttracker.CarbonApp;
+import com.example.carbonfootprinttracker.ItemClickSupport;
 import com.example.carbonfootprinttracker.R;
+import com.example.carbonfootprinttracker.SwipeToDeleteCallback;
 import com.example.carbonfootprinttracker.adapters.CarbiesAdapter;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.FindCallback;
@@ -24,21 +30,28 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 public class FavoritesFragment extends DailyLogFragment {
     private final String TAG = "FavoritesFragment";
-    //boolean isDailyLogFragment = false;
-//
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceStat) {
-//        rvCarbies = view.findViewById(R.id.rvCarbies);
-//        mCarbies = new ArrayList<>();
-//        context = getContext();
-//        rvCarbies.setAdapter(carbiesAdapter);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-//        rvCarbies.setLayoutManager(linearLayoutManager);
-//
-//        queryCarbies();
-//    }
+    boolean isDailyLogFragment = false;
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
+        fragmentManager = getFragmentManager();
+        context = getContext();
+
+        rvCarbies.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+        mCarbies = new ArrayList<>();
+        carbiesAdapter = new CarbiesAdapter(context, fragmentManager, mCarbies, getActivity(), isDailyLogFragment);
+        rvCarbies.setAdapter(carbiesAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        rvCarbies.setLayoutManager(linearLayoutManager);
+
+        queryCarbies();
+    }
 
     @Override
     protected void queryCarbies() {

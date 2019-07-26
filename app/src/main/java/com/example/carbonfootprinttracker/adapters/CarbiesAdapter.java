@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -39,12 +40,15 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
     private Carbie mRecentlyDeletedItem;
     private int mRecentlyDeletedItemPosition;
     private Activity mActivity;
+    private boolean isDailyLog;
 
-    public CarbiesAdapter (Context context, FragmentManager fragmentManager, List<Carbie> carbies, Activity activity) {
+    public CarbiesAdapter (Context context, FragmentManager fragmentManager, List<Carbie> carbies, Activity activity,
+                           Boolean isDailyLog) {
         this.context = context;
         this.fragmentManager = fragmentManager;
         this.carbies = carbies;
         this.mActivity = activity;
+        this.isDailyLog = isDailyLog;
     }
 
     @NonNull
@@ -104,23 +108,52 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Carbie carbie = carbies.get(position);
-                        carbie.setIsFavorited(!(carbie.getIsFavorited()));
-                        carbie.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if (e != null) {
-                                    Log.d(TAG, "Error while saving");
-                                    e.printStackTrace();
-                                    return;
+                        if (isDailyLog) {
+//                            TODO make toast
+//                            String message = "";
+//                            if (carbie.getIsFavorited()) {
+//                                message = "Carbie added to favorites!";
+//                            } else {
+//                                message = "Carbie removed from favorites";
+//                            }
+//                            Toast.makeText(context, message, Toast.LENGTH_LONG);
+                            carbie.setIsFavorited(!(carbie.getIsFavorited()));
+                            notifyItemChanged(getAdapterPosition());
+
+                            carbie.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e != null) {
+                                        Log.d(TAG, "Error while saving");
+                                        e.printStackTrace();
+                                        return;
+                                    }
+                                    Log.d(TAG, "Success!");
                                 }
-                                Log.d(TAG, "Success!");
+                            });
+                        } else {
+                            //TODO HERE IS THE BUG!!
+                            if (carbie.getIsFavorited()) {
+                                carbie.setIsFavorited(!(carbie.getIsFavorited()));
+                                unfavoriteItem(position);
+                                notifyItemChanged(getAdapterPosition());
+
+                                carbie.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e != null) {
+                                            Log.d(TAG, "Error while saving");
+                                            e.printStackTrace();
+                                            return;
+                                        }
+                                        Log.d(TAG, "Success!");
+                                    }
+                                });
                             }
-                        });
-                        notifyItemChanged(getAdapterPosition());
+                        }
                     }
                 }
             });
-
         }
     }
 
@@ -133,17 +166,45 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                 carbies.remove(position);
                 notifyItemRemoved(position);
                 Log.d(TAG, "Successfully deleted item " + mRecentlyDeletedItem.getObjectId());
-                showUndoSnackbar();
+                showUndoSnackbar(true, 1);
             }
         });
 
     }
 
-    private void showUndoSnackbar() {
+    public void unfavoriteItem(int position) {
+        showUndoSnackbar(false, position);
+        Log.d(TAG, "Successfully unfavorited item");
+    }
+
+    private void showUndoSnackbar(boolean isDeleting, int position) {
         View view = mActivity.findViewById(R.id.rvCarbies);
-        Snackbar snackbar = Snackbar.make(view, "Deleted 1 carbie", Snackbar.LENGTH_LONG);
-        snackbar.setAction("UNDO", v -> undoDelete());
-        snackbar.show();
+        if (isDeleting) {
+            Snackbar snackbar = Snackbar.make(view, "Deleted 1 carbie", Snackbar.LENGTH_LONG);
+            snackbar.setAction("UNDO", v -> undoDelete());
+            snackbar.show();
+        } else {
+            Snackbar snackbar = Snackbar.make(view, "Unfavorited one carbie", Snackbar.LENGTH_LONG);
+            snackbar.setAction("UNDO", v -> undoUnfavorite(position));
+            snackbar.show();
+        }
+    }
+
+    private void undoUnfavorite(int position) {
+        carbies.get(position).setIsFavorited(true);
+
+        carbies.get(position).saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.d(TAG, "Error while saving");
+                    e.printStackTrace();
+                    carbies.get(position).setIsFavorited(true);
+                    return;
+                }
+                Log.d(TAG, "Success!");
+            }
+        });
     }
 
     private void undoDelete() {
