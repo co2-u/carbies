@@ -34,6 +34,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.maps.GeoApiContext;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import permissions.dispatcher.NeedsPermission;
@@ -47,8 +50,8 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "LiveRouteFragment";
     private final static String KEY_LOCATION = "location";
-    private static final long UPDATE_INTERVAL = 2 * 1000;  /* 10 secs */
-    private static final long FASTEST_INTERVAL = 1000; /* 2 sec */
+    private static final long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
+    private static final long FASTEST_INTERVAL = 5000; /* 5 sec */
 
     private GoogleMap mGoogleMap;
     private GeoApiContext mGeoApiContext = null;
@@ -58,15 +61,12 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest mLocationRequest;
     private LocationCallback locationCallback;
+    private List<Location> route;
 
-    @BindView(R.id.btStart)
-    Button btStart;
-    @BindView(R.id.btStop)
-    Button btStop;
-    @BindView(R.id.mapView2)
-    MapView mapView;
-    @BindView(R.id.progressBar2)
-    ProgressBar pbLoading;
+    @BindView(R.id.btStart) Button btStart;
+    @BindView(R.id.btStop) Button btStop;
+    @BindView(R.id.mapView2) MapView mapView;
+    @BindView(R.id.progressBar2) ProgressBar pbLoading;
 
     @Nullable
     @Override
@@ -81,12 +81,14 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
         fragmentManager = getFragmentManager();
         context = getContext();
+        route = new ArrayList<>();
 
         fusedLocationProviderClient = getFusedLocationProviderClient(context);
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 onLocationChanged(locationResult.getLastLocation());
+                Log.d(TAG, route.toString());
             }
         };
 
@@ -175,6 +177,19 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         if (location == null) {
             return;
         }
+        float[] results = new float[1];
+        if (route.size() == 0) {
+            route.add(location);
+        } else {
+            Location start = route.get(route.size() - 1);
+            float distanceInMeters = start.distanceTo(location);
+            if (distanceInMeters >= 1) {
+                route.add(location);
+            }
+            Log.d(TAG, "Distance: " + distanceInMeters);
+        }
+
+
 
         mCurrentLocation = location;
         String msg = "Updated Location: " +
