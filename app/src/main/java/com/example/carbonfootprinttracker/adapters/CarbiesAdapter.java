@@ -109,14 +109,15 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                     if (position != RecyclerView.NO_POSITION) {
                         Carbie carbie = carbies.get(position);
                         if (isDailyLog) {
-//                            TODO make toast
-//                            String message = "";
-//                            if (carbie.getIsFavorited()) {
-//                                message = "Carbie added to favorites!";
-//                            } else {
-//                                message = "Carbie removed from favorites";
-//                            }
-//                            Toast.makeText(context, message, Toast.LENGTH_LONG);
+                            Log.e(TAG, "isDailyLog");
+                            String message = "";
+                            String title = carbie.getTitle();
+                            if (carbie.getIsFavorited()) {
+                                message = " removed from favorites";
+                            } else {
+                                message = " added to favorites!";
+                            }
+                            Toast.makeText(mActivity, title + message, Toast.LENGTH_SHORT).show();
                             carbie.setIsFavorited(!(carbie.getIsFavorited()));
                             notifyItemChanged(getAdapterPosition());
 
@@ -132,12 +133,9 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                                 }
                             });
                         } else {
-                            //TODO HERE IS THE BUG!!
+                            Log.e(TAG, "isFavorites");
                             if (carbie.getIsFavorited()) {
-                                carbie.setIsFavorited(!(carbie.getIsFavorited()));
                                 unfavoriteItem(position);
-                                notifyItemChanged(getAdapterPosition());
-
                                 carbie.saveInBackground(new SaveCallback() {
                                     @Override
                                     public void done(ParseException e) {
@@ -166,18 +164,23 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                 carbies.remove(position);
                 notifyItemRemoved(position);
                 Log.d(TAG, "Successfully deleted item " + mRecentlyDeletedItem.getObjectId());
-                showUndoSnackbar(true, 1);
+                Carbie carbie = new Carbie();
+                showUndoSnackbar(true, carbie);
             }
         });
 
     }
 
     public void unfavoriteItem(int position) {
-        showUndoSnackbar(false, position);
+        Carbie carbie = carbies.get(position);
+        carbie.setIsFavorited(false);
+        carbies.remove(position);
+        notifyItemRemoved(position);
+        showUndoSnackbar(false, carbie);
         Log.d(TAG, "Successfully unfavorited item");
     }
 
-    private void showUndoSnackbar(boolean isDeleting, int position) {
+    private void showUndoSnackbar(boolean isDeleting, Carbie carbie) {
         View view = mActivity.findViewById(R.id.rvCarbies);
         if (isDeleting) {
             Snackbar snackbar = Snackbar.make(view, "Deleted 1 carbie", Snackbar.LENGTH_LONG);
@@ -185,21 +188,21 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
             snackbar.show();
         } else {
             Snackbar snackbar = Snackbar.make(view, "Unfavorited one carbie", Snackbar.LENGTH_LONG);
-            snackbar.setAction("UNDO", v -> undoUnfavorite(position));
+            snackbar.setAction("UNDO", v -> undoUnfavorite(carbie));
             snackbar.show();
         }
     }
 
-    private void undoUnfavorite(int position) {
-        carbies.get(position).setIsFavorited(true);
-
-        carbies.get(position).saveInBackground(new SaveCallback() {
+    private void undoUnfavorite(Carbie carbie) {
+        carbie.setIsFavorited(true);
+        carbies.add(carbie);
+        notifyItemInserted(carbies.indexOf(carbie));
+        carbie.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
                     Log.d(TAG, "Error while saving");
                     e.printStackTrace();
-                    carbies.get(position).setIsFavorited(true);
                     return;
                 }
                 Log.d(TAG, "Success!");

@@ -1,13 +1,18 @@
 package com.example.carbonfootprinttracker.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,16 +35,35 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FavoritesFragment extends DailyLogFragment {
+public class FavoritesFragment extends  Fragment{
     private final String TAG = "FavoritesFragment";
     boolean isDailyLogFragment = false;
+
+
+    @BindView(R.id.rvCarbies) RecyclerView rvCarbies;
+    @BindView(R.id.pbLoading) ProgressBar pbLoading;
+    @BindView(R.id.tvMessage)
+    TextView tvMessage;
+
+    protected CarbiesAdapter carbiesAdapter;
+    protected List<Carbie> mCarbies;
+    protected FragmentManager fragmentManager;
+    protected Context context;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_daily_log, container, false);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        tvMessage.setText("You haven't added any Carbies to your favorites yet!");
         fragmentManager = getFragmentManager();
         context = getContext();
 
@@ -53,8 +77,8 @@ public class FavoritesFragment extends DailyLogFragment {
         queryCarbies();
     }
 
-    @Override
     protected void queryCarbies() {
+        Log.e(TAG, "queried");
         pbLoading.setVisibility(ProgressBar.VISIBLE);
 
         Date date = new Date();
@@ -82,6 +106,7 @@ public class FavoritesFragment extends DailyLogFragment {
                     e.printStackTrace();
                     return;
                 } else {
+                    Log.e(TAG, "" + objects.size());
                     mCarbies.addAll(objects);
                     carbiesAdapter.notifyDataSetChanged();
                     pbLoading.setVisibility(ProgressBar.INVISIBLE);
@@ -89,5 +114,13 @@ public class FavoritesFragment extends DailyLogFragment {
                 }
             }
         });
+    }
+
+    public void setMessageVisibility() {
+        if (mCarbies.size() > 0) {
+            tvMessage.setVisibility(TextView.GONE);
+        } else {
+            tvMessage.setVisibility(TextView.VISIBLE);
+        }
     }
 }
