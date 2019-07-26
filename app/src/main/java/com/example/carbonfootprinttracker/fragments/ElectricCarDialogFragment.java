@@ -5,7 +5,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,8 +27,7 @@ public class ElectricCarDialogFragment extends AppCompatDialogFragment {
 
     private Carbie carbie;
     @BindView(R.id.btnHybrid) Button btnHybrid;
-    @BindView(R.id.btnFullE) Button btnFullE;
-
+    @BindView(R.id.btnElectric) Button btnElectric;
 
     @Nullable
     @Override
@@ -58,7 +59,7 @@ public class ElectricCarDialogFragment extends AppCompatDialogFragment {
             }
         });
 
-        btnFullE.setOnClickListener(new View.OnClickListener(){
+        btnElectric.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 carbie.setTransportation("Electric");
@@ -67,6 +68,7 @@ public class ElectricCarDialogFragment extends AppCompatDialogFragment {
                 dismiss();
             }
         });
+
     }
 
     private void goRoute() {
