@@ -206,6 +206,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                     public void onSuccess(Location location) {
                         if (location != null) {
                             updateCurrentLocation(location);
+                            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
                         }
                     }
                 })
@@ -262,7 +263,6 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
     private void updateCurrentLocation (Location location) {
         mCurrentLocation = location;
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
