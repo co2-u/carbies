@@ -323,13 +323,13 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     public void onPause() {
         super.onPause();
         mapView.onPause();
-        stopLocationUpdates();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+        stopLocationUpdates();
     }
 
     private void showProgressBar() {
