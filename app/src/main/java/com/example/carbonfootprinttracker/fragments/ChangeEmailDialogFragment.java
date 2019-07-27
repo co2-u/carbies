@@ -32,7 +32,6 @@ public class ChangeEmailDialogFragment extends AppCompatDialogFragment {
 
     @BindView(R.id.etNewProperty) EditText etNewEmail;
     @BindView(R.id.btAccept) Button btAccept;
-    @BindView(R.id.btCancel) Button btCancel;
     @BindView(R.id.tvCurrentProperty) TextView tvCurrentEmail;
     @BindView(R.id.progressBar) ProgressBar progressBar;
 
@@ -64,14 +63,7 @@ public class ChangeEmailDialogFragment extends AppCompatDialogFragment {
             }
         });
 
-        btCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
-        tvCurrentEmail.setText("Email: " + ParseUser.getCurrentUser().getEmail());
+        tvCurrentEmail.setText("Current email: " + ParseUser.getCurrentUser().getEmail());
     }
 
     private void checkEmailAvailability(String newEmail) {
