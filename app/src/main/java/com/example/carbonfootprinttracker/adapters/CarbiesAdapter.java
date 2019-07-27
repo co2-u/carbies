@@ -3,20 +3,28 @@ package com.example.carbonfootprinttracker.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.carbonfootprinttracker.R;
+import com.example.carbonfootprinttracker.fragments.AddFavoriteFragment;
+import com.example.carbonfootprinttracker.fragments.DetailsFragment;
+import com.example.carbonfootprinttracker.fragments.PublicTransDialogFragment;
+import com.example.carbonfootprinttracker.fragments.RouteFragment;
 import com.example.carbonfootprinttracker.models.Carbie;
+import com.example.carbonfootprinttracker.models.TransportationMode;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.DeleteCallback;
 import com.parse.ParseException;
@@ -39,12 +47,15 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
     private Carbie mRecentlyDeletedItem;
     private int mRecentlyDeletedItemPosition;
     private Activity mActivity;
+    private boolean isDailyLog;
 
-    public CarbiesAdapter (Context context, FragmentManager fragmentManager, List<Carbie> carbies, Activity activity) {
+    public CarbiesAdapter (Context context, FragmentManager fragmentManager, List<Carbie> carbies, Activity activity,
+                           Boolean isDailyLog) {
         this.context = context;
         this.fragmentManager = fragmentManager;
         this.carbies = carbies;
         this.mActivity = activity;
+        this.isDailyLog = isDailyLog;
     }
 
     @NonNull
@@ -104,23 +115,50 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Carbie carbie = carbies.get(position);
-                        carbie.setIsFavorited(!(carbie.getIsFavorited()));
-                        carbie.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if (e != null) {
-                                    Log.d(TAG, "Error while saving");
-                                    e.printStackTrace();
-                                    return;
-                                }
-                                Log.d(TAG, "Success!");
+                        if (isDailyLog) {
+                            Log.e(TAG, "isDailyLog");
+                            String message = "";
+                            String title = carbie.getTitle();
+                            if (carbie.getIsFavorited()) {
+                                message = " removed from favorites";
+                            } else {
+                                message = " added to favorites!";
                             }
-                        });
-                        notifyItemChanged(getAdapterPosition());
+                            Toast.makeText(mActivity, title + message, Toast.LENGTH_SHORT).show();
+                            carbie.setIsFavorited(!(carbie.getIsFavorited()));
+                            notifyItemChanged(getAdapterPosition());
+
+                            carbie.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e != null) {
+                                        Log.d(TAG, "Error while saving");
+                                        e.printStackTrace();
+                                        return;
+                                    }
+                                    Log.d(TAG, "Success!");
+                                }
+                            });
+                        } else {
+                            Log.e(TAG, "isFavorites");
+                            if (carbie.getIsFavorited()) {
+                                unfavoriteItem(position);
+                                carbie.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e != null) {
+                                            Log.d(TAG, "Error while saving");
+                                            e.printStackTrace();
+                                            return;
+                                        }
+                                        Log.d(TAG, "Success!");
+                                    }
+                                });
+                            }
+                        }
                     }
                 }
             });
-
         }
     }
 
@@ -133,17 +171,50 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                 carbies.remove(position);
                 notifyItemRemoved(position);
                 Log.d(TAG, "Successfully deleted item " + mRecentlyDeletedItem.getObjectId());
-                showUndoSnackbar();
+                Carbie carbie = new Carbie();
+                showUndoSnackbar(true, carbie);
             }
         });
 
     }
 
-    private void showUndoSnackbar() {
+    public void unfavoriteItem(int position) {
+        Carbie carbie = carbies.get(position);
+        carbie.setIsFavorited(false);
+        carbies.remove(position);
+        notifyItemRemoved(position);
+        showUndoSnackbar(false, carbie);
+        Log.d(TAG, "Successfully unfavorited item");
+    }
+
+    private void showUndoSnackbar(boolean isDeleting, Carbie carbie) {
         View view = mActivity.findViewById(R.id.rvCarbies);
-        Snackbar snackbar = Snackbar.make(view, "Deleted 1 carbie", Snackbar.LENGTH_LONG);
-        snackbar.setAction("UNDO", v -> undoDelete());
-        snackbar.show();
+        if (isDeleting) {
+            Snackbar snackbar = Snackbar.make(view, "Deleted 1 carbie", Snackbar.LENGTH_LONG);
+            snackbar.setAction("UNDO", v -> undoDelete());
+            snackbar.show();
+        } else {
+            Snackbar snackbar = Snackbar.make(view, "Unfavorited one carbie", Snackbar.LENGTH_LONG);
+            snackbar.setAction("UNDO", v -> undoUnfavorite(carbie));
+            snackbar.show();
+        }
+    }
+
+    private void undoUnfavorite(Carbie carbie) {
+        carbie.setIsFavorited(true);
+        carbies.add(carbie);
+        notifyItemInserted(carbies.indexOf(carbie));
+        carbie.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.d(TAG, "Error while saving");
+                    e.printStackTrace();
+                    return;
+                }
+                Log.d(TAG, "Success!");
+            }
+        });
     }
 
     private void undoDelete() {

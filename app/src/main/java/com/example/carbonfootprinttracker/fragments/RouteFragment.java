@@ -211,7 +211,6 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                                     fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, confirmationFragment).commit();
                                 }
                             });
-
                         }
                     });
                 }

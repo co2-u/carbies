@@ -28,7 +28,6 @@ public class ChangePasswordDialogFragment extends AppCompatDialogFragment {
     @BindView(R.id.etNewProperty) EditText etNewPassword;
     @BindView(R.id.etReenterNewProperty) EditText etReenterNewPassword;
     @BindView(R.id.btAccept) Button btAccept;
-    @BindView(R.id.btCancel) Button btCancel;
     @BindView(R.id.progressBar) ProgressBar progressBar;
 
     @Nullable
@@ -61,12 +60,6 @@ public class ChangePasswordDialogFragment extends AppCompatDialogFragment {
             }
         });
 
-        btCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
     }
 
     private void clearPasswords() {

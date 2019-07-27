@@ -6,34 +6,34 @@
         android:id="@+id/currentScoreTab"
         android:enabled="true"
         android:icon="@drawable/home_outline"
-        android:title="home"
+        android:title="Home"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/dailyLogTab"
         android:enabled="true"
         android:icon="@drawable/format_list_bulleted"
-        android:title="daily log"
+        android:title="Daily Log"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/composeTab"
         android:enabled="true"
         android:icon="@drawable/plus_box_outline"
-        android:title="add"
+        android:title="Add"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/favoritesTab"
         android:enabled="true"
         android:icon="@drawable/heart_outline"
-        android:title="add"
+        android:title="Favorites"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/moreTab"
         android:enabled="true"
         android:icon="@drawable/ic_more"
-        android:title="more"
+        android:title="More"
         app:showAsAction="ifRoom" />
 </menu>

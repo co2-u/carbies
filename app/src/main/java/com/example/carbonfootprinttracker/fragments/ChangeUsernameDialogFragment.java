@@ -32,7 +32,6 @@ public class ChangeUsernameDialogFragment extends AppCompatDialogFragment {
 
     @BindView(R.id.etNewProperty) EditText etNewUsername;
     @BindView(R.id.btAccept) Button btAccept;
-    @BindView(R.id.btCancel) Button btCancel;
     @BindView(R.id.tvCurrentProperty) TextView tvCurrentUsername;
     @BindView(R.id.progressBar) ProgressBar progressBar;
 
@@ -62,14 +61,7 @@ public class ChangeUsernameDialogFragment extends AppCompatDialogFragment {
             }
         });
 
-        btCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
-        tvCurrentUsername.setText("Current Username: " + ParseUser.getCurrentUser().getUsername());
+        tvCurrentUsername.setText("Current username: " + ParseUser.getCurrentUser().getUsername());
     }
 
     private void checkUsernameAvailability(String newUsername) {

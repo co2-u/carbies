@@ -64,27 +64,28 @@ public class DailyLogFragment extends Fragment {
 
         rvCarbies.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         mCarbies = new ArrayList<>();
-        carbiesAdapter = new CarbiesAdapter(context, fragmentManager, mCarbies, getActivity());
+        carbiesAdapter = new CarbiesAdapter(context, fragmentManager, mCarbies, getActivity(), true);
         rvCarbies.setAdapter(carbiesAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvCarbies.setLayoutManager(linearLayoutManager);
 
-        // item click listener to launch a detail fragment of the carbie
-        ItemClickSupport.addTo(rvCarbies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                Bundle args = new Bundle();
-                args.putParcelable("carbie", mCarbies.get(position));
-                Fragment detailFragment = new DetailsFragment();
-                detailFragment.setArguments(args);
-                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, detailFragment).commit();
-            }
-        });
 
         // item touch helper that listens for swipe to delete
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(carbiesAdapter, context));
         itemTouchHelper.attachToRecyclerView(rvCarbies);
 
+        ItemClickSupport.addTo(rvCarbies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Fragment fragment = new DetailsFragment();
+                Bundle args = new Bundle();
+                args.putParcelable("carbie", mCarbies.get(position));
+                fragment.setArguments(args);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentPlaceholder, fragment)
+                        .commit();
+            }
+        });
         queryCarbies();
     }
 

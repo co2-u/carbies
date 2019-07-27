@@ -10,10 +10,11 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#ffffff"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_bottom_navigation"
-        android:background="#ffffff"/>
+        app:menu="@menu/menu_bottom_navigation" />
 
     <FrameLayout
         android:id="@+id/fragmentPlaceholder"

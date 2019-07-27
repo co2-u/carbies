@@ -121,8 +121,6 @@ public class ConfirmationFragment extends Fragment {
                         Log.d(TAG, "Success!");
                     }
                 });
-                //TODO wire to google maps
-                // Map point based on address
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" + carbie.getEndLocation().replaceAll(" ", "+")
                         + "&mode=" + typeOfTransport());
 
