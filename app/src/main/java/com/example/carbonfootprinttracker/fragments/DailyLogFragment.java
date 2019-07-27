@@ -74,6 +74,18 @@ public class DailyLogFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(carbiesAdapter, context));
         itemTouchHelper.attachToRecyclerView(rvCarbies);
 
+        ItemClickSupport.addTo(rvCarbies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Fragment fragment = new DetailsFragment();
+                Bundle args = new Bundle();
+                args.putParcelable("carbie", mCarbies.get(position));
+                fragment.setArguments(args);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentPlaceholder, fragment)
+                        .commit();
+            }
+        });
         queryCarbies();
     }
 

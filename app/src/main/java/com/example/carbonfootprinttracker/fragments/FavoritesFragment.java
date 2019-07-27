@@ -74,6 +74,16 @@ public class FavoritesFragment extends  Fragment{
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvCarbies.setLayoutManager(linearLayoutManager);
 
+        ItemClickSupport.addTo(rvCarbies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                AddFavoriteFragment addFavoriteFragment = new AddFavoriteFragment();
+                Bundle args = new Bundle();
+                args.putParcelable("carbie", mCarbies.get(position));
+                addFavoriteFragment.setArguments(args);
+                addFavoriteFragment.show(fragmentManager, "favorites_fragment");
+            }
+        });
         queryCarbies();
     }
 
@@ -81,22 +91,11 @@ public class FavoritesFragment extends  Fragment{
         Log.e(TAG, "queried");
         pbLoading.setVisibility(ProgressBar.VISIBLE);
 
-        Date date = new Date();
-        Calendar calendarA = Calendar.getInstance();
-        calendarA.setTime(date);
-        calendarA.set(Calendar.HOUR_OF_DAY, 0);
-        Calendar calendarB = Calendar.getInstance();
-        calendarB.setTime(date);
-        calendarB.set(Calendar.HOUR_OF_DAY, 23);
-        calendarB.set(Calendar.MINUTE, 59);
-
         ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
         query.include(Carbie.KEY_USER);
         query.whereEqualTo(Carbie.KEY_IS_FAVORITED, true);
 
         query.whereEqualTo(Carbie.KEY_USER, ParseUser.getCurrentUser());
-        query.whereGreaterThanOrEqualTo(Carbie.KEY_CREATED_AT, calendarA.getTime());
-        query.whereLessThan(Carbie.KEY_CREATED_AT, calendarB.getTime());
         query.addDescendingOrder(Carbie.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Carbie>() {
             @Override
