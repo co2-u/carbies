@@ -10,10 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,8 +22,6 @@ import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
-
-import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,23 +59,35 @@ public class ConfirmationFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         fragmentManager = getFragmentManager();
-        carbie = getArguments().getParcelable("carbie");
-        carbie.setScore();
-        carbie.setUser();
-        tvStartPoint2.setText(carbie.getStartLocation());
-        tvEndPoint2.setText(carbie.getEndLocation());
-        tvMode2.setText(carbie.getTransportation());
-        tvName2.setText(carbie.getTitle());
+
+        try {
+            carbie = getArguments().getParcelable("carbie");
+            carbie.setScore();
+            carbie.setUser();
+            tvStartPoint2.setText(carbie.getStartLocation());
+            tvEndPoint2.setText(carbie.getEndLocation());
+            tvMode2.setText(carbie.getTransportation());
+            tvName2.setText(carbie.getTitle());
+        } catch (NullPointerException e) {
+            Log.d(TAG, "Carbie not passed into ConfirmationFragment");
+            e.printStackTrace();
+        }
+
+        try {
+            byte[] byteArray = getArguments().getByteArray("snapshot");
+            Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            ivMapSnapshot.setImageBitmap(bitmap);
+        } catch (NullPointerException e) {
+            Log.d(TAG, "Missing snapshot");
+            e.printStackTrace();
+        }
+
         btnConfirmNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToMainFragment();
             }
         });
-
-        byte[] byteArray = getArguments().getByteArray("snapshot");
-        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-        ivMapSnapshot.setImageBitmap(bitmap);
 
         btnConfirmYes.setOnClickListener(new View.OnClickListener() {
             @Override

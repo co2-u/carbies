@@ -2,6 +2,7 @@ package com.example.carbonfootprinttracker.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -20,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.Manifest;
 import com.example.carbonfootprinttracker.R;
+import com.example.carbonfootprinttracker.models.Carbie;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -31,13 +33,16 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.maps.GeoApiContext;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +58,6 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 @RuntimePermissions
 public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "LiveRouteFragment";
-    private final static String KEY_LOCATION = "location";
     private static final long UPDATE_INTERVAL = 2 * 1000;  /* 2 secs */
     private static final long FASTEST_INTERVAL = 1000; /* 1 sec */
 
@@ -67,6 +71,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     private LocationCallback locationCallback;
     private List<Location> mLocations;
     private boolean isTracking = false;
+    private Carbie carbie;
 
     @BindView(R.id.btStart) Button btStart;
     @BindView(R.id.btStop) Button btStop;
@@ -88,6 +93,13 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         context = getContext();
         mLocations = new ArrayList<>();
 
+        try {
+            carbie = getArguments().getParcelable("carbie");
+        } catch (NullPointerException e) {
+            Log.e(TAG, "Carbie was not passed into LiveRouteFragment");
+            e.printStackTrace();
+        }
+
         fusedLocationProviderClient = getFusedLocationProviderClient(context);
         locationCallback = new LocationCallback() {
             @Override
@@ -95,7 +107,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                 onLocationChanged(locationResult.getLastLocation());
             }
         };
-        
+
         mapView.onCreate(savedInstanceState);
         showProgressBar();
         mapView.getMapAsync(this);
@@ -117,7 +129,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                         Log.d(TAG, "mCurrentLocation is null");
                     }
                 } else {
-                    Toast.makeText(context, "Route in progress", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Tracking Route in Progress", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -125,9 +137,50 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         btStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mLocations.size() == 0) {
+                    Toast.makeText(context, "You haven't started a route!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                showProgressBar();
+                mLocations.add(mCurrentLocation);
+                mGoogleMap.addMarker(
+                        new MarkerOptions()
+                                .position(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()))
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
+                        ));
                 isTracking = false;
-                float distanceInMeters = getTotalDistance();
-                Toast.makeText(context, "Total distance: " + distanceInMeters, Toast.LENGTH_LONG).show();
+
+                carbie.setDistance(toMiles(getTotalDistance()));
+                carbie.setStartLocation("Live Start");
+                carbie.setEndLocation("Live End");
+
+                final Fragment confirmationFragment = new ConfirmationFragment();
+                final Bundle args = new Bundle();
+                args.putParcelable("carbie", carbie);
+
+                prepMapForSnapshot();
+                // Called after map has loaded the camera update
+                mGoogleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                    @Override
+                    public void onMapLoaded() {
+                        mGoogleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                            @Override
+                            public void onSnapshotReady(Bitmap bitmap) {
+                                hideProgressBar();
+                                Log.d(TAG, "Snapshot taken");
+                                // Convert bitmap to byte[] to put into args bundle
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                byte[] byteArray = stream.toByteArray();
+
+                                args.putByteArray("snapshot", byteArray);
+                                confirmationFragment.setArguments(args);
+                                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, confirmationFragment).commit();
+                            }
+                        });
+
+                    }
+                });
             }
         });
     }
@@ -194,24 +247,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         if (location == null) {
             return;
         }
-
-        // only add to mLocations if isTracking is true
-        // but should I always updateCurrentLocation
-
-//        if (mLocations.size() == 0) {
-//            mLocations.add(location);
-//            updateCurrentLocation(location);
-//            Log.d(TAG, mLocations.toString());
-//        } else {
-//            final float distanceInMeters = mCurrentLocation.distanceTo(location);
-//            if (distanceInMeters >= 1) {
-//                mLocations.add(location);
-//                updateCurrentLocation(location);
-//                Log.d(TAG, mLocations.toString());
-//                Log.d(TAG, "Distance: " + distanceInMeters);
-//            }
-//        }
-
+        // Only add locations that are at least 1 meter away from mCurrentLocation
         final float distanceInMeters = mCurrentLocation.distanceTo(location);
         if (distanceInMeters > 1) {
             Log.d(TAG, "Distance: " + distanceInMeters);
@@ -241,12 +277,19 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         );
     }
 
+    private void prepMapForSnapshot() {
+        final LatLngBounds routeBounds = findBounds();
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(routeBounds, 120), 600, null);
+    }
+
     private float getTotalDistance() {
         float distance = 0;
-        for (int i = 0; i < mLocations.size() - 1; i++) {
-            Location from = mLocations.get(i);
-            Location to = mLocations.get(i+1);
-            distance += from.distanceTo(to);
+        if (mLocations.size() > 1) {
+            for (int i = 0; i < mLocations.size() - 1; i++) {
+                Location from = mLocations.get(i);
+                Location to = mLocations.get(i + 1);
+                distance += from.distanceTo(to);
+            }
         }
         return distance;
     }
@@ -295,5 +338,25 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
     private void hideProgressBar() {
         pbLoading.setVisibility(ProgressBar.INVISIBLE);
+    }
+
+    private double toMiles(float meters) {
+        return (meters * 0.00062137);
+    }
+
+    private LatLngBounds findBounds() {
+        Location preNE = mLocations.get(0);
+        Location preSW = mLocations.get(0);
+        for (Location location: mLocations) {
+            if (location.getLatitude() > preNE.getLatitude()) {
+                preNE = location;
+            } else if (location.getLatitude() < preSW.getLatitude()) {
+                preSW = location;
+            }
+
+        }
+        LatLng northeast = new LatLng(preNE.getLatitude(), preNE.getLongitude());
+        LatLng southwest = new LatLng(preSW.getLatitude(), preSW.getLongitude());
+        return new LatLngBounds(southwest, northeast);
     }
 }

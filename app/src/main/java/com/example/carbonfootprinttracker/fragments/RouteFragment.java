@@ -41,8 +41,6 @@ import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.Distance;
 import com.google.maps.model.TravelMode;
-import com.parse.ParseException;
-import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -141,8 +139,17 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         btLive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment liveRouteFragment = new LiveRouteFragment();
-                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, liveRouteFragment).commit();
+                if (etCarbieName.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
+                } else {
+                    carbie.setTitle(etCarbieName.getText().toString());
+
+                    Fragment liveRouteFragment = new LiveRouteFragment();
+                    Bundle args = new Bundle();
+                    args.putParcelable("carbie", carbie);
+                    liveRouteFragment.setArguments(args);
+                    fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, liveRouteFragment).commit();
+                }
             }
         });
 
@@ -170,25 +177,12 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
             public void onClick(View v) {
                 if (selectedRoute == null) {
                     Toast.makeText(getContext(), "Need to select a route!", Toast.LENGTH_SHORT).show();
+                } else if(etCarbieName.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
                 } else {
                     showProgressBar();
-                    // Add information about selectedRoute to carbie
-                    if (etCarbieName.getText().toString().equals("")) {
-                        Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
-                    } else {
-                        carbie.setTitle(etCarbieName.getText().toString());
-                        carbie.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if (e != null) {
-                                    Log.d(TAG, "Error while saving");
-                                    e.printStackTrace();
-                                    return;
-                                }
-                                Log.d(TAG, "Success!");
-                            }
-                        });
-                    }
+                    // Add information about selectedRoute and title to carbie
+                    carbie.setTitle(etCarbieName.getText().toString());
                     carbie.setDistance(toMiles(selectedRoute.getDistance().inMeters));
                     carbie.setStartLocation(selectedRoute.getStartAddress());
                     carbie.setEndLocation(selectedRoute.getEndAddress());
@@ -196,8 +190,6 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                     final Fragment confirmationFragment = new ConfirmationFragment();
                     final Bundle args = new Bundle();
                     args.putParcelable("carbie", carbie);
-
-
 
                     prepMapForSnapshot();
                     // Called after map has loaded the camera update
@@ -207,6 +199,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                             mGoogleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
                                 @Override
                                 public void onSnapshotReady(Bitmap bitmap) {
+                                    hideProgressBar();
                                     Log.d(TAG, "Snapshot taken");
                                     // Convert bitmap to byte[] to put into args bundle
                                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -413,8 +406,5 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
 
     private void hideProgressBar() {
         pbLoading.setVisibility(ProgressBar.INVISIBLE);
-    }
-
-    private void goToConfirmFragment() {getActivity().findViewById(R.id.currentScoreTab).performClick();
     }
 }
