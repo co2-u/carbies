@@ -121,7 +121,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.settingsTab:
                 Fragment settingsFragment = new SettingsFragment();
                 fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, settingsFragment).commit();
-        }
+            case android.R.id.home:
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    Log.i(TAG, "popping backstack");
+                    fragmentManager.popBackStack();
+                } else {
+                    Log.i(TAG, "nothing on backstack, calling super");
+                }
+            }
         return super.onOptionsItemSelected(item);
     }
 

@@ -83,6 +83,7 @@ public class DailyLogFragment extends Fragment {
                 fragment.setArguments(args);
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragmentPlaceholder, fragment)
+                        .addToBackStack("DailyLogFragment")
                         .commit();
             }
         });

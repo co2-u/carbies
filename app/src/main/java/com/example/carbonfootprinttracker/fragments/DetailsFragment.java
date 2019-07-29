@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
@@ -20,6 +21,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DetailsFragment extends Fragment {
+    private static final String TAG = "DetailsFragment";
+    private static final Integer MAX_CARBON = 2000;
+
+    private FragmentManager fragmentManager;
 
     @BindView(R.id.tvTitle)
     TextView tvTitle;
@@ -36,7 +41,6 @@ public class DetailsFragment extends Fragment {
     @BindView(R.id.tvSuggestion)
     TextView tvSuggestion;
     Carbie carbie;
-    private static final Integer MAX_CARBON = 2000;
 
 
     @Nullable
@@ -50,6 +54,7 @@ public class DetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        fragmentManager = getFragmentManager();
         carbie = getArguments().getParcelable("carbie");
         tvTitle.setText(carbie.getTitle());
         tvStartPoint2.setText(carbie.getStartLocation());
