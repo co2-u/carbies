@@ -25,7 +25,6 @@ public class DetailsFragment extends Fragment {
     private static final Integer MAX_CARBON = 2000;
 
     private FragmentManager fragmentManager;
-    private Integer itemPosition;
 
     @BindView(R.id.tvTitle)
     TextView tvTitle;
@@ -56,7 +55,6 @@ public class DetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         fragmentManager = getFragmentManager();
         carbie = getArguments().getParcelable("carbie");
-        itemPosition = getArguments().getInt("itemPosition");
         tvTitle.setText(carbie.getTitle());
         tvStartPoint2.setText(carbie.getStartLocation());
         tvEndPoint2.setText(carbie.getEndLocation());
