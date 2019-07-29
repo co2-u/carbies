@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.carbonfootprinttracker.R;
@@ -110,5 +112,22 @@ public class DetailsFragment extends Fragment {
         } else{
             tvScore2.setTextColor(Color.parseColor("#55C21B")); //green
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity.getSupportActionBar().hide();
+        mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.ivGreentfoot).setVisibility(ImageView.GONE);
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity.getSupportActionBar().show();
+        mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
+        mainActivity.findViewById(R.id.ivGreentfoot).setVisibility(ImageView.VISIBLE);
     }
 }
