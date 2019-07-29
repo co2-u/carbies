@@ -23,6 +23,7 @@ import com.example.carbonfootprinttracker.CarbonApp;
 import com.example.carbonfootprinttracker.ItemClickSupport;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.SwipeToDeleteCallback;
+import com.example.carbonfootprinttracker.SwipeToUnfavoriteCallback;
 import com.example.carbonfootprinttracker.adapters.CarbiesAdapter;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.FindCallback;
@@ -74,6 +75,10 @@ public class FavoritesFragment extends  Fragment{
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvCarbies.setLayoutManager(linearLayoutManager);
 
+        // item touch helper that listens for swipe to delete
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToUnfavoriteCallback(carbiesAdapter, context));
+        itemTouchHelper.attachToRecyclerView(rvCarbies);
+
         ItemClickSupport.addTo(rvCarbies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
@@ -94,7 +99,6 @@ public class FavoritesFragment extends  Fragment{
         ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
         query.include(Carbie.KEY_USER);
         query.whereEqualTo(Carbie.KEY_IS_FAVORITED, true);
-
         query.whereEqualTo(Carbie.KEY_USER, ParseUser.getCurrentUser());
         query.addDescendingOrder(Carbie.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Carbie>() {

@@ -2,6 +2,7 @@ package com.example.carbonfootprinttracker.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,11 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
+import com.parse.ParseException;
+import com.parse.SaveCallback;
+
+import android.widget.Button;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +46,8 @@ public class DetailsFragment extends Fragment {
     TextView tvScore2;
     @BindView(R.id.tvSuggestion)
     TextView tvSuggestion;
+    @BindView(R.id.btnAddToFavorites)
+    Button btnAddToFav;
     Carbie carbie;
 
     @Nullable
@@ -63,6 +71,24 @@ public class DetailsFragment extends Fragment {
         tvScore2.setText(Integer.toString(carbie.getScore()));
         setMessage(carbie.getTransportation());
         setScoreColor(carbie.getScore());
+
+        btnAddToFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                carbie.setIsFavorited(true);
+                carbie.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            Log.d(TAG, "Error while saving");
+                            e.printStackTrace();
+                            return;
+                        }
+                        Log.d(TAG, "Success!");
+                    }
+                });
+            }
+        });
     }
 
     private void setMessage(String transportation) {
