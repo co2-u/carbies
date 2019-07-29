@@ -103,6 +103,7 @@ public class Carbie extends ParseObject {
 
     public void setEndLocation(String endLocation) { put(KEY_END_LOCATION, endLocation); }
 
+
     public Carbie copy() {
         Carbie copied = new Carbie();
         copied.setTitle(this.getTitle());
