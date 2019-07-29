@@ -122,54 +122,13 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
 
     }
 
-    public void unfavoriteItem(int position) {
-        Carbie carbie = carbies.get(position);
-        carbie.setIsFavorited(false);
-        carbie.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.d(TAG, "Error while saving");
-                    e.printStackTrace();
-                    return;
-                }
-                Log.d(TAG, "Success!");
-            }
-        });
-        carbies.remove(position);
-        notifyItemRemoved(position);
-        showUndoSnackbar(false, carbie);
-        Log.d(TAG, "Successfully unfavorited item");
-    }
-
     private void showUndoSnackbar(boolean isDeleting, Carbie carbie) {
         View view = mActivity.findViewById(R.id.rvCarbies);
         if (isDeleting) {
             Snackbar snackbar = Snackbar.make(view, "Deleted 1 carbie", Snackbar.LENGTH_LONG);
             snackbar.setAction("UNDO", v -> undoDelete());
             snackbar.show();
-        } else {
-            Snackbar snackbar = Snackbar.make(view, "Unfavorited one carbie", Snackbar.LENGTH_LONG);
-            snackbar.setAction("UNDO", v -> undoUnfavorite(carbie));
-            snackbar.show();
         }
-    }
-
-    private void undoUnfavorite(Carbie carbie) {
-        carbie.setIsFavorited(true);
-        carbies.add(carbie);
-        notifyItemInserted(carbies.indexOf(carbie));
-        carbie.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.d(TAG, "Error while saving");
-                    e.printStackTrace();
-                    return;
-                }
-                Log.d(TAG, "Success!");
-            }
-        });
     }
 
     private void undoDelete() {

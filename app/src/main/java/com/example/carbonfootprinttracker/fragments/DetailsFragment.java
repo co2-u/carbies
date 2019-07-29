@@ -75,8 +75,9 @@ public class DetailsFragment extends Fragment {
         btnAddToFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                carbie.setIsFavorited(true);
-                carbie.saveInBackground(new SaveCallback() {
+                Carbie newCarbie = carbie.copy();
+                newCarbie.setIsFavorited(true);
+                newCarbie.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         if (e != null) {

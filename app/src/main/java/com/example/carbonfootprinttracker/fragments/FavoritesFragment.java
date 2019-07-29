@@ -17,13 +17,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.carbonfootprinttracker.CarbonApp;
 import com.example.carbonfootprinttracker.ItemClickSupport;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.SwipeToDeleteCallback;
-import com.example.carbonfootprinttracker.SwipeToUnfavoriteCallback;
 import com.example.carbonfootprinttracker.adapters.CarbiesAdapter;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.FindCallback;
@@ -32,8 +29,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,7 +37,6 @@ import butterknife.ButterKnife;
 public class FavoritesFragment extends  Fragment{
     private final String TAG = "FavoritesFragment";
     boolean isDailyLogFragment = false;
-
 
     @BindView(R.id.rvCarbies) RecyclerView rvCarbies;
     @BindView(R.id.pbLoading) ProgressBar pbLoading;
@@ -76,7 +70,7 @@ public class FavoritesFragment extends  Fragment{
         rvCarbies.setLayoutManager(linearLayoutManager);
 
         // item touch helper that listens for swipe to delete
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToUnfavoriteCallback(carbiesAdapter, context));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(carbiesAdapter, context));
         itemTouchHelper.attachToRecyclerView(rvCarbies);
 
         ItemClickSupport.addTo(rvCarbies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {

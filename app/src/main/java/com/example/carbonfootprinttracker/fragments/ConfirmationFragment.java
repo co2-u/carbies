@@ -93,6 +93,7 @@ public class ConfirmationFragment extends Fragment {
         btnConfirmYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                carbie.setIsFavorited(false);
                 carbie.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
