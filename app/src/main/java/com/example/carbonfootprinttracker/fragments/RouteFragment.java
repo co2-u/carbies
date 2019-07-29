@@ -10,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -354,6 +357,11 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.ivGreentfoot).setVisibility(ImageView.GONE);
+        mainActivity.findViewById(R.id.settingsTab).setVisibility(View.GONE);
+        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -366,6 +374,11 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
+        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
+        mainActivity.findViewById(R.id.ivGreentfoot).setVisibility(ImageView.VISIBLE);
+        mainActivity.findViewById(R.id.settingsTab).setVisibility(View.VISIBLE);
+        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
