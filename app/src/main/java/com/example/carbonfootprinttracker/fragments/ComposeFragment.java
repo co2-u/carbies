@@ -8,7 +8,6 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -89,13 +88,6 @@ public class ComposeFragment extends Fragment {
                 goRoute(TransportationMode.Walk);
             }
         });
-
-//        btnBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(ComposeFragment.this, CurrentScoreFragment.this));
-//            }
-//        });
     }
 
     //this is a helper method -- it tells the buttons to go to the RouteFragment
@@ -112,6 +104,7 @@ public class ComposeFragment extends Fragment {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragmentPlaceholder, fragment)
+                .addToBackStack("ComposeFragment")
                 .commit();
     }
 

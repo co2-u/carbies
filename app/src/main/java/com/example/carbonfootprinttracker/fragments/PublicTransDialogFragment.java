@@ -75,6 +75,7 @@ public class PublicTransDialogFragment extends AppCompatDialogFragment {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragmentPlaceholder, fragment)
+                .addToBackStack("ComposeFragment")
                 .commit();
     }
 }

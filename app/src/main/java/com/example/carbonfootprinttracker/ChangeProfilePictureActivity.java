@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -38,7 +39,6 @@ public class ChangeProfilePictureActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onPickPhoto(v);
-
             }
         });
     }
@@ -72,7 +72,6 @@ public class ChangeProfilePictureActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             if(file != null) {
                 ParseFile parseFile = new ParseFile(file);
                 parseFile.saveInBackground();
@@ -93,7 +92,6 @@ public class ChangeProfilePictureActivity extends AppCompatActivity {
                 });
             }
         }
-
     }
 
     public String getRealPathFromURI(Uri contentUri) {
@@ -107,6 +105,4 @@ public class ChangeProfilePictureActivity extends AppCompatActivity {
         cursor.close();
         return res;
     }
-
-
 }
