@@ -32,7 +32,7 @@ public class SettingsFragment extends Fragment {
     @BindView(R.id.btChangeUsername) public Button btChangeUsername;
     @BindView(R.id.btChangeEmail) public Button btChangeEmail;
     @BindView(R.id.btChangePassword) public Button btChangePassword;
-//    @BindView(R.id.btAbout) public Button btAbout;
+    @BindView(R.id.btnMoreInfo) public Button btnMoreInfo;
     @BindView(R.id.tvUsername) public TextView tvUsername;
     @BindView(R.id.ivProfileImage) public ImageView ivProfileImage;
 
@@ -94,12 +94,12 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-//        btAbout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, new InfoFragment()).commit();
-//            }
-//        });
+        btnMoreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, new InfoFragment()).commit();
+            }
+        });
     }
 
     private void showChangeEmailDialogFragment() {
