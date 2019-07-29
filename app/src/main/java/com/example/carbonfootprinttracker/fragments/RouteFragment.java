@@ -211,14 +211,16 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
 
                                     args.putByteArray("snapshot", byteArray);
                                     confirmationFragment.setArguments(args);
-                                    fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, confirmationFragment).commit();
+                                    fragmentManager.beginTransaction()
+                                            .replace(R.id.fragmentPlaceholder, confirmationFragment)
+                                            .addToBackStack("RouteFragment")
+                                            .commit();
                                 }
                             });
                         }
                     });
                 }
             }
-
         });
     }
 
@@ -229,11 +231,8 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         mGoogleMap.setOnPolylineClickListener(this);
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
 
-        // Add a marker in Sydney, Australia, and move the camera.
-        // TODO - change to current location.
-        LatLng sydney = new LatLng(-34, 151);
-        mGoogleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng googleplex = new LatLng(37.422133, -122.084042);
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(googleplex));
     }
 
     private void calculateDirections(String startLocation, String endLocation){
@@ -362,6 +361,9 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         mainActivity.findViewById(R.id.ivGreentfoot).setVisibility(ImageView.GONE);
         mainActivity.findViewById(R.id.settingsTab).setVisibility(View.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (!etStart.getText().toString().isEmpty() && !etEnd.getText().toString().isEmpty()) {
+            btSeeRoutes.performClick();
+        }
     }
 
     @Override
