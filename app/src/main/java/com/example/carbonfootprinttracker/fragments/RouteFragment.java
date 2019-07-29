@@ -151,7 +151,10 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                     Bundle args = new Bundle();
                     args.putParcelable("carbie", carbie);
                     liveRouteFragment.setArguments(args);
-                    fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, liveRouteFragment).commit();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragmentPlaceholder, liveRouteFragment)
+                            .addToBackStack("RouteFragment")
+                            .commit();
                 }
             }
         });

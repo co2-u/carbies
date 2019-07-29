@@ -11,11 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -175,7 +178,10 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
                                 args.putByteArray("snapshot", byteArray);
                                 confirmationFragment.setArguments(args);
-                                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, confirmationFragment).commit();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.fragmentPlaceholder, confirmationFragment)
+                                        .addToBackStack("LiveRouteFragment")
+                                        .commit();
                             }
                         });
 
@@ -313,10 +319,27 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         Toast.makeText(context, "Location access was denied and can't ask.", Toast.LENGTH_SHORT).show();
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        mapView.onResume();
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        mapView.onPause();
+//    }
+
     @Override
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.ivGreentfoot).setVisibility(ImageView.GONE);
+        mainActivity.findViewById(R.id.settingsTab).setVisibility(View.GONE);
+        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -327,6 +350,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "onDestroy");
         super.onDestroy();
         mapView.onDestroy();
         stopLocationUpdates();
