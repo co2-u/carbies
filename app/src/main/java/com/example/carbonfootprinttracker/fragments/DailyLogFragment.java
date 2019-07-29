@@ -47,6 +47,7 @@ public class DailyLogFragment extends Fragment {
     protected List<Carbie> mCarbies;
     protected FragmentManager fragmentManager;
     protected Context context;
+    private Integer scrollPosition;
 
 
     @Nullable
@@ -69,7 +70,6 @@ public class DailyLogFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvCarbies.setLayoutManager(linearLayoutManager);
 
-
         // item touch helper that listens for swipe to delete
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(carbiesAdapter, context));
         itemTouchHelper.attachToRecyclerView(rvCarbies);
@@ -77,9 +77,11 @@ public class DailyLogFragment extends Fragment {
         ItemClickSupport.addTo(rvCarbies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                scrollPosition = position;
                 Fragment fragment = new DetailsFragment();
                 Bundle args = new Bundle();
                 args.putParcelable("carbie", mCarbies.get(position));
+                args.putInt("itemPosition", position);
                 fragment.setArguments(args);
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragmentPlaceholder, fragment)
@@ -87,6 +89,7 @@ public class DailyLogFragment extends Fragment {
                         .commit();
             }
         });
+
         queryCarbies();
     }
 
@@ -121,6 +124,11 @@ public class DailyLogFragment extends Fragment {
                     carbiesAdapter.notifyDataSetChanged();
                     pbLoading.setVisibility(ProgressBar.INVISIBLE);
                     setMessageVisibility();
+                    //ScrollPosition will not be null if fragment was popped from backstack
+                    if (scrollPosition != null) {
+                        rvCarbies.scrollToPosition(scrollPosition);
+                        scrollPosition = 0;
+                    }
                 }
             }
         });
