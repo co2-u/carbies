@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
