@@ -56,6 +56,10 @@ public class ChangeProfilePictureActivity extends AppCompatActivity {
     }
 
     @Override
+    //Starting another activity doesn't have to be one-way. You can also start another activity and receive a result back. To receive a result, call startActivityForResult()
+    //For example, your app can start a camera app and receive the captured photo as a result
+    //Of course, the activity that responds must be designed to return a result. When it does, it sends the result as another Intent object.
+    // Your activity receives it in the onActivityResult() callback.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
             File file = null;

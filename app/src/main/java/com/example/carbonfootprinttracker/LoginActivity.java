@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.progressBar) ProgressBar pbLoading;
 
     @Override
+    //onCreate is where you intialize your activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);

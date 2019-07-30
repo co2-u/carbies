@@ -33,6 +33,19 @@ public class DailySummaryFragment extends Fragment {
 
     @BindView(R.id.ivShare)
     ImageView ivShareScore;
+    @BindView(R.id.tvWalked)
+    TextView tvWalked;
+    @BindView(R.id.tvBiked)
+    TextView tvBiked;
+    @BindView(R.id.tvGas)
+    TextView tvGas;
+    @BindView(R.id.tvElectric)
+    TextView tvElectric;
+    @BindView(R.id.tvCarpooled)
+    TextView tvCarpooled;
+    @BindView(R.id.tvPTransport)
+    TextView tvPTransport;
+
     Context context;
 
     @Nullable
@@ -65,7 +78,7 @@ public class DailySummaryFragment extends Fragment {
         super.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
-        mainActivity.findViewById(R.id.settingsTab).setVisibility(View.GONE);
+//        mainActivity.findViewById(R.id.settingsTab).setVisibility(View.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     @Override
@@ -73,7 +86,7 @@ public class DailySummaryFragment extends Fragment {
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
-        mainActivity.findViewById(R.id.settingsTab).setVisibility(View.VISIBLE);
+//        mainActivity.findViewById(R.id.settingsTab).setVisibility(View.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 }

@@ -8,10 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ShareActionProvider;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ShareActionProvider;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private ShareActionProvider shareActionProvider;
     private FragmentManager fragmentManager;
     public static int score;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +117,17 @@ public class MainActivity extends AppCompatActivity {
     // Inflate toolbar with
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void setSettingsTabVisibility(boolean status) {
+        if (menu == null) {
+            return;
+        } else {
+            menu.findItem(R.id.settingsTab).setVisible(status);
+        }
     }
 
     @Override

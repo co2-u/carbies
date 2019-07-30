@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -128,7 +130,7 @@ public class DetailsFragment extends Fragment {
                     tvSuggestion.setText(getString(R.string.walkSuggestion));
                     break;
                 case "Rideshare":
-                    tvSuggestion.setText(getString(R.string.rideShareSuggestion));
+                    tvSuggestion.setText(getString(R.string.walkSuggestion));
                     break;
             }
         }
