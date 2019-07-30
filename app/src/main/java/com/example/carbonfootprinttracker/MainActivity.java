@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ShareActionProvider;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.bottomNavigation) BottomNavigationView bottomNavigationView;
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.ivShare)
+    ImageView ivShare;
 
+    private ShareActionProvider shareActionProvider;
     private FragmentManager fragmentManager;
 
     @Override
@@ -67,6 +73,17 @@ public class MainActivity extends AppCompatActivity {
         final Fragment dailyLogFragment = new DailyLogFragment();
         final Fragment infoFragment = new InfoFragment();
         final Fragment favoritesFragment = new FavoritesFragment();
+
+        ivShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, String.valueOf("score!!"));
+                startActivity(Intent.createChooser(intent, "Share your Daily Score!"));
+            }
+        });
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {

@@ -42,6 +42,7 @@ public class CurrentScoreFragment extends Fragment {
     private final String RED_SCORE = "oof";
     private int maxCarbon = 8000;
     private List<Carbie> mCarbies;
+    public static int currScore;
 
     @Nullable
     @Override
@@ -56,6 +57,7 @@ public class CurrentScoreFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mCarbies = new ArrayList<>();
         queryCarbies();
+        currScore = 0;
     }
 
     private void setScore(int currentScore) {
