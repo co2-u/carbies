@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,9 +20,6 @@ import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
-
-import android.widget.Button;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -150,7 +148,6 @@ public class DetailsFragment extends Fragment {
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.findViewById(R.id.ivGreentfoot).setVisibility(ImageView.GONE);
-        mainActivity.findViewById(R.id.settingsTab).setVisibility(View.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     @Override
@@ -159,7 +156,6 @@ public class DetailsFragment extends Fragment {
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
         mainActivity.findViewById(R.id.ivGreentfoot).setVisibility(ImageView.VISIBLE);
-        mainActivity.findViewById(R.id.settingsTab).setVisibility(View.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 }

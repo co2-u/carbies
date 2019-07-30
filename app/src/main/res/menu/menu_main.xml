@@ -6,6 +6,7 @@
         android:enabled="true"
         android:icon="@drawable/settings_outline"
         android:title="settings"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 
 </menu>

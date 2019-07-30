@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
 
     private FragmentManager fragmentManager;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,8 +112,17 @@ public class MainActivity extends AppCompatActivity {
     // Inflate toolbar with
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void setSettingsTabVisibility(boolean status) {
+        if (menu == null) {
+            return;
+        } else {
+            menu.findItem(R.id.settingsTab).setVisible(status);
+        }
     }
 
     @Override

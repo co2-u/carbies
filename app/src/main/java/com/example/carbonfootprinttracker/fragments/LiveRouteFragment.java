@@ -338,7 +338,6 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.findViewById(R.id.ivGreentfoot).setVisibility(ImageView.GONE);
-        mainActivity.findViewById(R.id.settingsTab).setVisibility(View.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
