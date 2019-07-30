@@ -36,6 +36,8 @@ public class SettingsFragment extends Fragment {
     @BindView(R.id.tvUsername) public TextView tvUsername;
     @BindView(R.id.ivProfileImage) public ImageView ivProfileImage;
 
+    @BindView(R.id.btnCalendar) Button btnCalendar;
+
     private FragmentManager fragmentManager;
     private ParseUser user;
 
@@ -98,6 +100,13 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, new InfoFragment()).commit();
+            }
+        });
+
+        btnCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, new CalendarFragment()).commit();
             }
         });
     }
