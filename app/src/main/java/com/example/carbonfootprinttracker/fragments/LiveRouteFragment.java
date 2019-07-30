@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -107,6 +106,9 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
+                if(locationResult == null) {
+                    return;
+                }
                 onLocationChanged(locationResult.getLastLocation());
             }
         };
@@ -170,6 +172,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                             @Override
                             public void onSnapshotReady(Bitmap bitmap) {
                                 hideProgressBar();
+
                                 Log.d(TAG, "Snapshot taken");
                                 // Convert bitmap to byte[] to put into args bundle
                                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -319,20 +322,9 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         Toast.makeText(context, "Location access was denied and can't ask.", Toast.LENGTH_SHORT).show();
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mapView.onResume();
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        mapView.onPause();
-//    }
-
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume");
         super.onResume();
         mapView.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
@@ -343,15 +335,25 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onPause() {
+        Log.d(TAG, "onPause");
         super.onPause();
         mapView.onPause();
     }
 
     @Override
-    public void onDestroy() {
-        Log.d(TAG, "onDestroy");
-        super.onDestroy();
-        mapView.onDestroy();
+    public void onStop() {
+        Log.d(TAG, "onStop");
+        super.onStop();
+        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
+        mainActivity.findViewById(R.id.ivShare).setVisibility(TextView.VISIBLE);
+        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.d(TAG, "onDestryView");
+        super.onDestroyView();
         stopLocationUpdates();
     }
 
