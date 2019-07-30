@@ -42,13 +42,14 @@ public class MainActivity extends AppCompatActivity {
 
     private ShareActionProvider shareActionProvider;
     private FragmentManager fragmentManager;
+    public static int score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        score = 0;
         isValidUserLoggedIn();
 
         //onBoarding stuff
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, String.valueOf("score!!"));
+                intent.putExtra(Intent.EXTRA_TEXT, "My CO2&U score is " + score);
                 startActivity(Intent.createChooser(intent, "Share your Daily Score!"));
             }
         });
