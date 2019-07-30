@@ -6,6 +6,7 @@
         android:enabled="true"
         android:icon="@drawable/calendar_month"
         android:title="settings"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 
 </menu>
