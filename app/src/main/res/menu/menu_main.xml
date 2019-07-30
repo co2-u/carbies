@@ -4,7 +4,7 @@
     <item
         android:id="@+id/settingsTab"
         android:enabled="true"
-        android:icon="@drawable/settings_outline"
+        android:icon="@drawable/calendar_month"
         android:title="settings"
         android:visible="false"
         app:showAsAction="ifRoom" />

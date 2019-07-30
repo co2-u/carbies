@@ -7,6 +7,23 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/tvBorder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/green_border_dark"
+        app:layout_constraintBottom_toBottomOf="@+id/tvScore"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
         android:id="@+id/tvStartPoint"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -28,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:enabled="true"
@@ -45,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:gravity="center"
@@ -153,11 +170,9 @@
         android:layout_marginStart="130dp"
         android:layout_marginLeft="130dp"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
         android:gravity="right"
         android:text="Score:"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="@+id/tvBorder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDistance2" />
 
@@ -168,11 +183,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
         android:text="###"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/tvBorder"
         app:layout_constraintStart_toEndOf="@+id/tvScore"
         app:layout_constraintTop_toBottomOf="@+id/tvDistance2" />
 
@@ -182,7 +195,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
         android:gravity="center"
@@ -191,29 +204,11 @@
         app:layout_constraintEnd_toEndOf="@+id/tvBorder"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="@+id/tvBorder"
-        app:layout_constraintTop_toBottomOf="@+id/tvBorder" />
-
-    <TextView
-        android:id="@+id/tvBorder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="180dp"
-        android:background="@drawable/green_border_dark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/tvScore" />
 
     <Button
         android:id="@+id/btnAddToFavorites"
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -221,7 +216,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Add to Favoites"
+        android:background="@drawable/main_button_white"
+        android:text="Add to Favorites"
+        android:textColor="#00581B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
