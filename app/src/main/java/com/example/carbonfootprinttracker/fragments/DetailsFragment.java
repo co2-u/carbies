@@ -73,8 +73,9 @@ public class DetailsFragment extends Fragment {
         btnAddToFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                carbie.setIsFavorited(true);
-                carbie.saveInBackground(new SaveCallback() {
+                Carbie newCarbie = carbie.copy();
+                newCarbie.setIsFavorited(true);
+                newCarbie.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         if (e != null) {
@@ -147,7 +148,7 @@ public class DetailsFragment extends Fragment {
         super.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
-        mainActivity.findViewById(R.id.ivGreentfoot).setVisibility(ImageView.GONE);
+        mainActivity.findViewById(R.id.ivShare).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     @Override
@@ -155,7 +156,7 @@ public class DetailsFragment extends Fragment {
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
-        mainActivity.findViewById(R.id.ivGreentfoot).setVisibility(ImageView.VISIBLE);
+        mainActivity.findViewById(R.id.ivShare).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 }

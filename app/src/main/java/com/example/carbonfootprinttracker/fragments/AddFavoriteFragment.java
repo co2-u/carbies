@@ -49,6 +49,7 @@ public class AddFavoriteFragment extends AppCompatDialogFragment {
                     e.printStackTrace();
                 }
                 Carbie newCarbie = carbie.copy();
+                newCarbie.setIsFavorited(false);
                 newCarbie.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {

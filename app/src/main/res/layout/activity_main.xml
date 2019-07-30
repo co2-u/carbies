@@ -14,7 +14,9 @@
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_bottom_navigation" />
+        app:menu="@menu/menu_bottom_navigation" >
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <FrameLayout
         android:id="@+id/fragmentPlaceholder"
@@ -26,43 +28,48 @@
 
     </FrameLayout>
 
+    <ImageView
+        android:id="@+id/ivShare"
+        android:layout_width="46dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:actionProviderClass="android.widget.ShareActionProvider"
+        android:elevation="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvName"
+        app:layout_constraintEnd_toStartOf="@+id/tvName"
+        app:layout_constraintStart_toStartOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/tvName"
+        app:srcCompat="?attr/actionModeShareDrawable" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="4dp"
+        android:background="#ffffff"
         android:elevation="@dimen/cardview_default_elevation"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/white"
-        android:background="#ffffff"/>
-
-    <ImageView
-        android:id="@+id/ivGreentfoot"
-        android:layout_width="30dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:background="@drawable/ic_48274_394f1e"
-        android:elevation="@dimen/cardview_default_elevation"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintStart_toStartOf="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+        app:titleTextColor="@android:color/white" />
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="1dp"
         android:elevation="@dimen/cardview_default_elevation"
+        android:fontFamily="@font/ubuntu_light"
         android:text="CO2 &amp; U"
         android:textColor="#00581B"
         android:textSize="40sp"
         android:textStyle="bold"
-        android:fontFamily="@font/ubuntu_light"
-        app:layout_constraintBottom_toBottomOf="@+id/ivGreentfoot"
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ivGreentfoot" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

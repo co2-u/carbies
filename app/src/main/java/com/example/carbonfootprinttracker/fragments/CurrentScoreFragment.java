@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.FindCallback;
@@ -43,6 +45,7 @@ public class CurrentScoreFragment extends Fragment {
     private int maxCarbon = 8000;
     private List<Carbie> mCarbies;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -56,10 +59,23 @@ public class CurrentScoreFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mCarbies = new ArrayList<>();
         queryCarbies();
+
+        ivQualScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new DailySummaryFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentPlaceholder, fragment)
+                        .addToBackStack("ComposeFragment")
+                        .commit();
+            }
+        });
     }
 
     private void setScore(int currentScore) {
         Date date = new Date();
+        MainActivity.score = currentScore;
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         if (calendar.get(Calendar.HOUR_OF_DAY) < 12) {
@@ -91,6 +107,7 @@ public class CurrentScoreFragment extends Fragment {
         ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
         query.include(Carbie.KEY_USER);
         query.whereEqualTo(Carbie.KEY_USER, ParseUser.getCurrentUser());
+        query.whereEqualTo(Carbie.KEY_IS_FAVORITED, false);
         query.whereGreaterThanOrEqualTo(Carbie.KEY_CREATED_AT, calendarA.getTime());
         query.whereLessThan(Carbie.KEY_CREATED_AT, calendarB.getTime());
         query.addDescendingOrder(Carbie.KEY_CREATED_AT);
