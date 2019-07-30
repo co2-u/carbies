@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -129,7 +128,7 @@ public class DetailsFragment extends Fragment {
                     tvSuggestion.setText(getString(R.string.walkSuggestion));
                     break;
                 case "Rideshare":
-                    tvSuggestion.setText(getString(R.string.walkSuggestion));
+                    tvSuggestion.setText(getString(R.string.rideShareSuggestion));
                     break;
             }
         }
@@ -150,7 +149,6 @@ public class DetailsFragment extends Fragment {
         super.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
-        mainActivity.findViewById(R.id.ivShare).setVisibility(TextView.GONE);
         mainActivity.findViewById(R.id.settingsTab).setVisibility(View.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -159,7 +157,6 @@ public class DetailsFragment extends Fragment {
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
-        mainActivity.findViewById(R.id.ivShare).setVisibility(TextView.VISIBLE);
         mainActivity.findViewById(R.id.settingsTab).setVisibility(View.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -361,7 +360,6 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         mMapView.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
-        mainActivity.findViewById(R.id.ivShare).setVisibility(TextView.GONE);
         mainActivity.findViewById(R.id.settingsTab).setVisibility(View.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (!etStart.getText().toString().isEmpty() && !etEnd.getText().toString().isEmpty()) {
@@ -380,7 +378,6 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
-        mainActivity.findViewById(R.id.ivShare).setVisibility(TextView.VISIBLE);
         mainActivity.findViewById(R.id.settingsTab).setVisibility(View.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
