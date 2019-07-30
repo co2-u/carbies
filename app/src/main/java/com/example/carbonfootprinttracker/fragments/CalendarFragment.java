@@ -30,12 +30,16 @@ public class CalendarFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-
-
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//
+//        cvCalendar.setOnDateChangeListener(new cvCalendar.OnDateChangeListener(){
+//            @Override
+//            public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2){
+//
+//            }
+//
+//        });
+//    }
 }
