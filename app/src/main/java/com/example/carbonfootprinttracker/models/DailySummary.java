@@ -22,36 +22,36 @@ public class DailySummary extends ParseObject {
 
     public void setUser() { put(KEY_USER, ParseUser.getCurrentUser()); }
 
-    public Integer getScore() { return getInt(KEY_SCORE); }
+    public Double getScore() { return getDouble(KEY_SCORE); }
 
-    public void setScore(Integer score) { put(KEY_SCORE, score); }
+    public void setScore(Double score) { put(KEY_SCORE, score); }
 
     public String getRecommendation() { return getString(KEY_RECOMMENDATION); }
 
     public void setRecommendation(String recommendation) { put(KEY_RECOMMENDATION, recommendation); }
 
-    public Integer getMilesWalked() { return getInt(KEY_MILES_WALKED); }
+    public Double getMilesWalked() { return getDouble(KEY_MILES_WALKED); }
 
-    public void setMilesWalked(Integer miles) { put(KEY_MILES_WALKED, miles); }
+    public void setMilesWalked(Double miles) { put(KEY_MILES_WALKED, miles); }
 
-    public Integer getMilesBiked() { return getInt(KEY_MILES_BIKED); }
+    public Double getMilesBiked() { return getDouble(KEY_MILES_BIKED); }
 
-    public void setMilesBiked(Integer miles) { put(KEY_MILES_BIKED, miles); }
+    public void setMilesBiked(Double miles) { put(KEY_MILES_BIKED, miles); }
 
-    public Integer getMilesGasDriven() { return getInt(KEY_MILES_GAS_DRIVEN); }
+    public Double getMilesGasDriven() { return getDouble(KEY_MILES_GAS_DRIVEN); }
 
-    public void setMilesGasDriven(Integer miles) { put(KEY_MILES_GAS_DRIVEN, miles); }
+    public void setMilesGasDriven(Double miles) { put(KEY_MILES_GAS_DRIVEN, miles); }
 
-    public Integer getMilesEDriven() { return getInt(KEY_MILES_E_DRIVEN); }
+    public Double getMilesEDriven() { return getDouble(KEY_MILES_E_DRIVEN); }
 
-    public void setMilesEDriven(Integer miles) { put(KEY_MILES_E_DRIVEN, miles); }
+    public void setMilesEDriven(Double miles) { put(KEY_MILES_E_DRIVEN, miles); }
 
-    public Integer getMilesCarpooled() { return getInt(KEY_MILES_CARPOOLED); }
+    public Double getMilesCarpooled() { return getDouble(KEY_MILES_CARPOOLED); }
 
-    public void setMilesCarpooled(Integer miles) { put(KEY_MILES_CARPOOLED, miles); }
+    public void setMilesCarpooled(Double miles) { put(KEY_MILES_CARPOOLED, miles); }
 
-    public Integer getMilesPublicTransport() { return getInt(KEY_MILES_PUBLIC_TRANSPORT); }
+    public Double getMilesPublicTransport() { return getDouble(KEY_MILES_PUBLIC_TRANSPORT); }
 
-    public void setMilesPublicTransport(Integer miles) { put(KEY_MILES_PUBLIC_TRANSPORT, miles); }
+    public void setMilesPublicTransport(Double miles) { put(KEY_MILES_PUBLIC_TRANSPORT, miles); }
 
 }
