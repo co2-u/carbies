@@ -82,23 +82,6 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-    //    private void checkEmailAvailability(String newEmail) {
-//        ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
-//        query.whereEqualTo("email", newEmail);
-//        query.findInBackground(new FindCallback<ParseUser>() {
-//            @Override
-//            public void done(List<ParseUser> objects, ParseException e) {
-//                if (e == null) {
-//                    if (objects.size() > 0) {
-//                        Toast.makeText(getContext(), "Email already exists", Toast.LENGTH_SHORT).show();
-//                    }
-//                } else {
-//                    Log.d(TAG, "Error while querying emails.");
-//                }
-//            }
-//        });
-//    }
 }
 
 
