@@ -1,12 +1,7 @@
-package com.example.carbonfootprinttracker.adapters;
+package com.example.carbonfootprinttracker.alarm;
 
-import android.accounts.Account;
-import android.content.AbstractThreadedSyncAdapter;
-import android.content.ContentProviderClient;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.SyncResult;
-import android.os.Bundle;
+import android.app.IntentService;
+import android.content.Intent;
 import android.util.Log;
 
 import com.example.carbonfootprinttracker.models.Carbie;
@@ -21,37 +16,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Handle the transfer of data between a server and an
- * app, using the Android sync adapter framework.
- */
-public class SyncAdapter extends AbstractThreadedSyncAdapter {
-    private static final String TAG = "SyncAdapter";
+public class MyTestService extends IntentService {
+    private static final String TAG = "MyTestService";
     private static final Integer MAX_CARBON_SCORE = 8000;
 
-    ContentResolver contentResolver;
-
-    public SyncAdapter(Context context, boolean autoInitialize) {
-        super(context, autoInitialize);
-        /*
-         * If your app uses a content resolver, get an instance of it
-         * from the incoming Context
-         */
-        contentResolver = context.getContentResolver();
+    public MyTestService() {
+        super("MyTestService");
     }
 
     @Override
-    public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-//        queryCarbies();
-//        Log.d(TAG, "called onPerformSync");
-//        Carbie testCarbie = new Carbie();
-//        testCarbie.setUser();
-//        testCarbie.saveInBackground(new SaveCallback() {
-//            @Override
-//            public void done(ParseException e) {
-//                Log.d(TAG, "saved carbie while sleep in background");
-//            }
-//        });
+    protected void onHandleIntent(Intent intent) {
+        Log.d("MyTestService", "Service running");
+        queryCarbies();
     }
 
     protected void queryCarbies() {
@@ -79,6 +55,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     e.printStackTrace();
                     return;
                 } else {
+                    Log.d(TAG, "queryed carbies in bg");
                     saveDailySummary(carbies);
                 }
             }
@@ -133,7 +110,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     milesCarpooled += carbie.getDistance();
                     break;
             }
-
+            dailySummary.setScore(currentScore);
             dailySummary.setMilesBiked(milesBiked);
             dailySummary.setMilesCarpooled(milesCarpooled);
             dailySummary.setMilesEDriven(milesEDriven);
@@ -156,6 +133,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         Log.d(TAG, "successfully saved daily sum in background");
                     } else {
                         Log.d(TAG, "failed to save daily sum in background");
+                        e.printStackTrace();
                     }
                 }
             });
