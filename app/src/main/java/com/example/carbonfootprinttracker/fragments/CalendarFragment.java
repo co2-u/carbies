@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.applandeo.materialcalendarview.EventDay;
-import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
+//import com.applandeo.materialcalendarview.EventDay;
+//import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.carbonfootprinttracker.R;
 
 import butterknife.BindView;

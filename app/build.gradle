@@ -60,6 +60,7 @@ dependencies {
     implementation 'com.ogaclejapan.smarttablayout:library:1.2.1@aar'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+
     //Add Firebase Core//
     implementation 'com.google.firebase:firebase-core:16.0.1'
 
