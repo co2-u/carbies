@@ -57,19 +57,6 @@ public class MainActivity extends AppCompatActivity {
         score = 0;
         isValidUserLoggedIn();
 
-        //onBoarding stuff
-        SharedPreferences preferences =
-                getSharedPreferences("my_preferences", MODE_PRIVATE);
-
-        if(!preferences.getBoolean("onboarding_complete",false)){
-
-            Intent onBoarding = new Intent(this, OnBoardingActivity.class);
-            startActivity(onBoarding);
-
-            // Close the OnboardingActivity
-            finish();
-            return; }
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
