@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -141,7 +142,12 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.settingsTab:
                 Fragment settingsFragment = new SettingsFragment();
-                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, settingsFragment).commit();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragmentPlaceholder, settingsFragment)
+                        .addToBackStack("InfoFragment")
+                        .commit();
+                break;
             case android.R.id.home:
                 if (fragmentManager.getBackStackEntryCount() > 0) {
                     Log.d(TAG, "popping backstack");
@@ -149,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "nothing on backstack, calling super");
                 }
+                break;
             }
         return super.onOptionsItemSelected(item);
     }
@@ -185,11 +192,17 @@ public class MainActivity extends AppCompatActivity {
         // Set the alarm to start at approximately end of day.
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 15);
-        calendar.set(Calendar.MINUTE, 5);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 50);
         // Repeat alarm every day
 //        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
-        alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        } else {
+            alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        }
     }
 
     public void cancelAlarm() {

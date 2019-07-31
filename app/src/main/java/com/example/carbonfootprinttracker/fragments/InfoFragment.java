@@ -14,10 +14,10 @@ import com.example.carbonfootprinttracker.R;
 
 public class InfoFragment extends Fragment {
     private static final String TAG = "InfoFragment";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Defines the xml file for the fragment
         return inflater.inflate(R.layout.fragment_information, container, false);
     }
 
