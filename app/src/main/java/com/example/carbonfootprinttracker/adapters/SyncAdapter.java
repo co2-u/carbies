@@ -42,7 +42,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        queryCarbies();
+//        queryCarbies();
+        Carbie testCarbie = new Carbie();
+        testCarbie.setUser();
+        testCarbie.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Log.d(TAG, "saved carbie while sleep in background");
+            }
+        });
     }
 
     protected void queryCarbies() {

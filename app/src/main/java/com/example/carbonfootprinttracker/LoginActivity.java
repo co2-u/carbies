@@ -2,6 +2,7 @@ package com.example.carbonfootprinttracker;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,6 +41,15 @@ public class LoginActivity extends AppCompatActivity {
     public static final String ACCOUNT = "dummyaccount";
     // Instance fields
     Account mAccount;
+    // Sync interval constants
+    public static final long SECONDS_PER_MINUTE = 60L;
+    public static final long SYNC_INTERVAL_IN_MINUTES = 1L;
+    public static final long SYNC_INTERVAL =
+            SYNC_INTERVAL_IN_MINUTES *
+                    SECONDS_PER_MINUTE;
+    // Global variables
+    // A content resolver for accessing the provider
+    ContentResolver mResolver;
 
     @Override
     //onCreate is where you intialize your activity
@@ -55,6 +65,17 @@ public class LoginActivity extends AppCompatActivity {
         if (currentUser != null) {
             goHomeAndFinish();
         }
+
+        // Get the content resolver for your app
+        mResolver = getContentResolver();
+        /*
+         * Turn on periodic syncing
+         */
+//        ContentResolver.addPeriodicSync(
+//                mAccount,
+//                AUTHORITY,
+//                Bundle.EMPTY,
+//                SYNC_INTERVAL);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

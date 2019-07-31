@@ -68,10 +68,10 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-        
+
         <provider
             android:name="com.example.carbonfootprinttracker.StubProvider"
-            android:authorities="com.example.android.datasync.provider"
+            android:authorities="com.example.carbonfootprinttracker.provider"
             android:exported="false"
             android:syncable="true"/>
 
