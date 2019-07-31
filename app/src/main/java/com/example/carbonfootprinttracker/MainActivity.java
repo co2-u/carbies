@@ -157,10 +157,10 @@ public class MainActivity extends AppCompatActivity {
                 fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, settingsFragment).commit();
             case android.R.id.home:
                 if (fragmentManager.getBackStackEntryCount() > 0) {
-                    Log.i(TAG, "popping backstack");
+                    Log.d(TAG, "popping backstack");
                     fragmentManager.popBackStack();
                 } else {
-                    Log.i(TAG, "nothing on backstack, calling super");
+                    Log.d(TAG, "nothing on backstack, calling super");
                 }
             }
         return super.onOptionsItemSelected(item);
@@ -192,17 +192,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void scheduleAlarm() {
-        Log.d(TAG, "scheduledAlarm");
         alarmMgr = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, MyAlarmReceiver.class);
         alarmIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // Set the alarm to start at approximately 2:00 p.m.
+        // Set the alarm to start at approximately end of day.
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 2);
-        calendar.set(Calendar.MINUTE, 4);
-
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 50);
+        // Repeat alarm every day
         alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
+    }
+
+    public void cancelAlarm() {
+        Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarm.cancel(pIntent);
     }
 }

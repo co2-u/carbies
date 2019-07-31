@@ -16,21 +16,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MyTestService extends IntentService {
-    private static final String TAG = "MyTestService";
+public class SyncService extends IntentService {
+    private static final String TAG = "SyncService";
     private static final Integer MAX_CARBON_SCORE = 8000;
 
-    public MyTestService() {
-        super("MyTestService");
+    public SyncService() {
+        super("SyncService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d("MyTestService", "Service running");
-        queryCarbies();
+        Log.d("SyncService", "Service running");
+        DailySummary dailySummary = new DailySummary();
+        dailySummary.setUser();
+        queryCarbies(dailySummary);
     }
 
-    protected void queryCarbies() {
+    protected void queryCarbies(DailySummary dailySummary) {
         Date date = new Date();
         Calendar calendarA = Calendar.getInstance();
         calendarA.setTime(date);
@@ -46,26 +48,22 @@ public class MyTestService extends IntentService {
         query.whereEqualTo(Carbie.KEY_IS_FAVORITED, false);
         query.whereGreaterThanOrEqualTo(Carbie.KEY_CREATED_AT, calendarA.getTime());
         query.whereLessThan(Carbie.KEY_CREATED_AT, calendarB.getTime());
-        query.addDescendingOrder(Carbie.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Carbie>() {
             @Override
             public void done(List<Carbie> carbies, ParseException e) {
                 if (e != null) {
-                    Log.d(TAG, "Failed to query carbies");
+                    Log.d(TAG, "Failed to query carbies in SyncService");
                     e.printStackTrace();
                     return;
                 } else {
-                    Log.d(TAG, "queryed carbies in bg");
-                    saveDailySummary(carbies);
+                    Log.d(TAG, "Queried carbies in SyncService");
+                    saveDailySummary(carbies, dailySummary);
                 }
             }
         });
     }
 
-    public void saveDailySummary(List<Carbie> carbies) {
-        DailySummary dailySummary = new DailySummary();
-        dailySummary.setUser();
-
+    public void saveDailySummary(List<Carbie> carbies, DailySummary dailySummary) {
         double currentScore = 0;
         double milesWalked = 0;
         double milesBiked = 0;
@@ -118,21 +116,21 @@ public class MyTestService extends IntentService {
             dailySummary.setMilesPublicTransport(milesPublicTransport);
             dailySummary.setMilesWalked(milesWalked);
 
-            String description = "";
+            String recommendation = "";
             if (currentScore < MAX_CARBON_SCORE) {
-                description = "Good job on keeping to your goals.";
+                recommendation = "Good job on keeping to your goals.";
             } else {
-                description = "Room for improvement";
+                recommendation = "Room for improvement.";
             }
-            dailySummary.setRecommendation(description);
+            dailySummary.setRecommendation(recommendation);
 
             dailySummary.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
-                        Log.d(TAG, "successfully saved daily sum in background");
+                        Log.d(TAG, "Successfully saved DailySummary in SyncService");
                     } else {
-                        Log.d(TAG, "failed to save daily sum in background");
+                        Log.d(TAG, "Failed to save DailySummary in SyncService");
                         e.printStackTrace();
                     }
                 }

@@ -63,7 +63,7 @@
         </receiver>
 
         <service
-            android:name=".alarm.MyTestService"
+            android:name=".alarm.SyncService"
             android:exported="false" />
 
     </application>
