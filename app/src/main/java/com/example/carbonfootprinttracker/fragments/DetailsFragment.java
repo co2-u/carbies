@@ -76,6 +76,7 @@ public class DetailsFragment extends Fragment {
         btnAddToFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO add an isDeleted field
                 Carbie newCarbie = carbie.copy();
                 newCarbie.setIsFavorited(true);
                 newCarbie.saveInBackground(new SaveCallback() {
