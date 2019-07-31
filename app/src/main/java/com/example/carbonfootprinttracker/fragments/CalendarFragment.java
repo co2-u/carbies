@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.applandeo.materialcalendarview.EventDay;
-import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
+//import com.applandeo.materialcalendarview.EventDay;
+//import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.carbonfootprinttracker.R;
 
 import butterknife.BindView;
@@ -29,16 +29,16 @@ public class CalendarFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        cvCalendar.setOnDateChangeListener(new cvCalendar.OnDateChangeListener(){
-            @Override
-            public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2){
-
-            }
-
-        });
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//
+//        cvCalendar.setOnDateChangeListener(new cvCalendar.OnDateChangeListener(){
+//            @Override
+//            public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2){
+//
+//            }
+//
+//        });
+//    }
 }
