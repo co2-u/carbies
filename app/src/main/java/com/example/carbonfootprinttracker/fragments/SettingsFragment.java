@@ -12,12 +12,12 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.carbonfootprinttracker.ChangeProfilePictureActivity;
 import com.example.carbonfootprinttracker.LoginActivity;
+import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.parse.ParseUser;
 
@@ -57,11 +57,13 @@ public class SettingsFragment extends Fragment {
         if (ParseUser.getCurrentUser().getParseFile("profileImage") != null) {
             Glide.with(getActivity()).load(ParseUser.getCurrentUser().getParseFile("profileImage").getUrl()).into(ivProfileImage);
         }
+
         btLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Logged out.");
                 ParseUser.logOut();
-                Log.d(TAG, "Logged out successfully");
+                ((MainActivity)getActivity()).cancelAlarm();
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();

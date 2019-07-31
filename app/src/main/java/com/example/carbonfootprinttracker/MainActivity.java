@@ -1,13 +1,14 @@
 package com.example.carbonfootprinttracker;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.carbonfootprinttracker.alarm.MyAlarmReceiver;
 import com.example.carbonfootprinttracker.fragments.ComposeFragment;
 import com.example.carbonfootprinttracker.fragments.CurrentScoreFragment;
 import com.example.carbonfootprinttracker.fragments.DailyLogFragment;
@@ -28,11 +30,12 @@ import com.parse.ParseException;
 import com.parse.ParseSession;
 import com.parse.ParseUser;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-
     private static final String TAG = "MainActivity";
 
     @BindView(R.id.bottomNavigation) BottomNavigationView bottomNavigationView;
@@ -42,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     public static int score;
     private Menu menu;
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, currentScoreFragment, "CurrentScoreFragment").commit();
+        scheduleAlarm();
     }
 
     // Inflate toolbar with
@@ -125,10 +131,10 @@ public class MainActivity extends AppCompatActivity {
                 fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, settingsFragment).commit();
             case android.R.id.home:
                 if (fragmentManager.getBackStackEntryCount() > 0) {
-                    Log.i(TAG, "popping backstack");
+                    Log.d(TAG, "popping backstack");
                     fragmentManager.popBackStack();
                 } else {
-                    Log.i(TAG, "nothing on backstack, calling super");
+                    Log.d(TAG, "nothing on backstack, calling super");
                 }
             }
         return super.onOptionsItemSelected(item);
@@ -157,5 +163,26 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void scheduleAlarm() {
+        alarmMgr = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, MyAlarmReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Set the alarm to start at approximately end of day.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 50);
+        // Repeat alarm every day
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
+    }
+
+    public void cancelAlarm() {
+        Intent intent = new Intent(getApplicationContext(), MyAlarmReceiver.class);
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarm.cancel(pIntent);
     }
 }
