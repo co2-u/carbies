@@ -19,7 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
-
     private static final String TAG = "MainActivty";
 
     @BindView(R.id.etUsername) EditText etUsername;
