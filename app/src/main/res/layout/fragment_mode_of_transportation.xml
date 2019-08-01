@@ -16,7 +16,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:fontFamily="sans-serif"
-        android:text="Choose Your Mode of Transportation:"
+        android:gravity="center_horizontal"
+        android:text="Choose Your Mode of Transportation"
         android:textColor="#085018"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,11 +30,11 @@
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="45dp"
         android:background="@drawable/main_button_dark"
         android:gravity="bottom|center"
-        android:text="bike"
         android:paddingBottom="20dp"
+        android:text="bike"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvModeOfTransportationTitle" />
 
@@ -41,9 +42,7 @@
         android:id="@+id/btnWalk"
         android:layout_width="170dp"
         android:layout_height="100dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="45dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/main_button_dark"
@@ -51,8 +50,6 @@
         android:paddingBottom="20dp"
         android:text="walk"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/btnBike"
         app:layout_constraintTop_toBottomOf="@+id/tvModeOfTransportationTitle" />
 
     <Button
@@ -74,8 +71,6 @@
         android:id="@+id/btnElectricCar"
         android:layout_width="170dp"
         android:layout_height="100dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
@@ -84,8 +79,6 @@
         android:paddingBottom="20dp"
         android:text="Electric Car"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/btnGasCar"
         app:layout_constraintTop_toBottomOf="@+id/btnWalk" />
 
     <Button
@@ -106,8 +99,6 @@
         android:id="@+id/btnCarpool"
         android:layout_width="170dp"
         android:layout_height="100dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
@@ -116,8 +107,6 @@
         android:paddingBottom="20dp"
         android:text="Ride Share/Carpool"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/btnPublicTransportation"
         app:layout_constraintTop_toBottomOf="@+id/btnElectricCar" />
 
     <ImageView
