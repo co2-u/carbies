@@ -210,8 +210,8 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                                     byte[] byteArray = stream.toByteArray();
-
                                     args.putByteArray("snapshot", byteArray);
+
                                     confirmationFragment.setArguments(args);
                                     fragmentManager.beginTransaction()
                                             .replace(R.id.fragmentPlaceholder, confirmationFragment)

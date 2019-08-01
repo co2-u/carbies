@@ -143,7 +143,7 @@
             android:layout_height="75dp"
             android:layout_marginStart="48dp"
             android:layout_marginLeft="48dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/no_confirm_button"
             android:gravity="center|bottom"
             android:paddingBottom="5dp"
@@ -155,7 +155,7 @@
             android:id="@+id/btnConfirmYes"
             android:layout_width="120dp"
             android:layout_height="75dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="48dp"
             android:layout_marginRight="48dp"
             android:background="@drawable/yes_confirm_button"
@@ -201,6 +201,7 @@
             android:id="@+id/ivMapSnapshot"
             android:layout_width="250dp"
             android:layout_height="250dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
@@ -247,13 +248,46 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
-            android:text="Route Chosen:"
-            android:textStyle="bold"
+            android:text="Route View:"
             android:textColor="#00680A"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDistance" />
+
+        <ProgressBar
+            android:id="@+id/progressBar3"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvDistanceTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Distance:"
+            android:textColor="#00680A"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tvMode2"
+            app:layout_constraintStart_toStartOf="@+id/tvMode2"
             app:layout_constraintTop_toBottomOf="@+id/tvMode2" />
+
+        <TextView
+            android:id="@+id/tvDistance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="distance in miles"
+            app:layout_constraintEnd_toEndOf="@+id/tvDistanceTitle"
+            app:layout_constraintStart_toStartOf="@+id/tvDistanceTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvDistanceTitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
