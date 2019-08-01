@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,9 +16,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.bumptech.glide.Glide;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.SaveCallback;
 
 import butterknife.BindView;
@@ -26,8 +29,6 @@ import butterknife.ButterKnife;
 public class DetailsFragment extends Fragment {
     private static final String TAG = "DetailsFragment";
     private static final Integer MAX_CARBON = 2000;
-
-    private FragmentManager fragmentManager;
 
     @BindView(R.id.tvTitle)
     TextView tvTitle;
@@ -45,7 +46,12 @@ public class DetailsFragment extends Fragment {
     TextView tvSuggestion;
     @BindView(R.id.btnAddToFavorites)
     Button btnAddToFav;
-    Carbie carbie;
+    @BindView(R.id.ivMapShot)
+    ImageView ivMapShot;
+
+    private FragmentManager fragmentManager;
+    private Carbie carbie;
+    private ParseFile photoFile;
 
     @Nullable
     @Override
@@ -59,15 +65,34 @@ public class DetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         fragmentManager = getFragmentManager();
-        carbie = getArguments().getParcelable("carbie");
-        tvTitle.setText(carbie.getTitle());
-        tvStartPoint2.setText(carbie.getStartLocation());
-        tvEndPoint2.setText(carbie.getEndLocation());
-        tvMode2.setText(carbie.getTransportation());
-        tvDistance2.setText(carbie.getDistance().toString());
-        tvScore2.setText(Integer.toString(carbie.getScore()));
-        setMessage(carbie.getTransportation());
-        setScoreColor(carbie.getScore());
+
+        try {
+            carbie = getArguments().getParcelable("carbie");
+            tvTitle.setText(carbie.getTitle());
+            tvStartPoint2.setText(carbie.getStartLocation());
+            tvEndPoint2.setText(carbie.getEndLocation());
+            tvMode2.setText(carbie.getTransportation());
+            tvDistance2.setText(carbie.getDistance().toString());
+            tvScore2.setText(Integer.toString(carbie.getScore()));
+            setMessage(carbie.getTransportation());
+            setScoreColor(carbie.getScore());
+            photoFile = carbie.getMapShot();
+
+        } catch (NullPointerException e) {
+            Log.d(TAG, "Carbie was not passed in from DailyLog");
+            e.printStackTrace();
+            return;
+        }
+
+        if (photoFile != null) {
+            String preURL = photoFile.getUrl();
+            String completeURL = preURL.substring(0, 4) + "s" + preURL.substring(4, preURL.length());
+            Glide.with(getContext())
+                    .load(completeURL)
+                    .into(ivMapShot);
+        } else {
+            ivMapShot.setVisibility(View.GONE);
+        }
 
         btnAddToFav.setOnClickListener(new View.OnClickListener() {
             @Override
