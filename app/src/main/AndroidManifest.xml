@@ -34,20 +34,21 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".ChangeProfilePictureActivity"
-                  android:theme="@style/Theme.AppCompat.Dialog"></activity>
+                  android:theme="@style/Theme.AppCompat.Dialog"
+                  android:screenOrientation="portrait"></activity>
 
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".MainActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".LoginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".OnBoardingActivity" />
+        <activity android:name=".SignupActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".OnBoardingActivity" android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
