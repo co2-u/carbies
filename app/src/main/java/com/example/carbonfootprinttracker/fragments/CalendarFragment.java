@@ -46,12 +46,16 @@ public class CalendarFragment extends Fragment{
     @BindView(R.id.btnPrevious) ImageButton btnPrevious;
     @BindView(R.id.gridView) GridView gridView;
 
-    private static final int DAYS_COUNT = 42;
+
     protected CalendarAdapter calendarAdapter;
     private ArrayList<Date> cells;
 
+    // how many days to show, defaults to six weeks, 42 days
+    private static final int DAYS_COUNT = 42;
+
     private Calendar currentDate = Calendar.getInstance();
     Context context;
+
 
     @Nullable
     @Override
@@ -59,7 +63,6 @@ public class CalendarFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         ButterKnife.bind(view);
         return view;
-
     }
 
     @Override
@@ -73,25 +76,22 @@ public class CalendarFragment extends Fragment{
         updateCalendar();
     }
 
-    //    public CalendarFragment(Context context){
-//        super(context);
-//    }
-//
-//    public CalendarFragment(Context context, @Nullable AttributeSet attrs){
-//        super(context, attrs);
-//    }
-
-    //displays the dates correctly in the calendar
     public void updateCalendar()
     {
+        updateCalendar(null);
+    }
+
+    public void updateCalendar(HashSet<Date> events)
+    {
+        ArrayList<Date> cells = new ArrayList<>();
         Calendar calendar = (Calendar)currentDate.clone();
 
         // determine the cell for current month's beginning
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        int monthBeginningCell = calendar.get(Calendar.DAY_OF_WEEK) - 2;
+        int monthBeginningCell = calendar.get(Calendar.DAY_OF_WEEK) - 1;
 
         // move calendar backwards to the beginning of the week
-        calendar.add(Calendar.DAY_OF_MONTH, - monthBeginningCell);
+        calendar.add(Calendar.DAY_OF_MONTH, -monthBeginningCell);
 
         // fill cells
         while (cells.size() < DAYS_COUNT)
@@ -101,20 +101,8 @@ public class CalendarFragment extends Fragment{
         }
 
         // update grid
-        gridView.setAdapter(calendarAdapter);
+        gridView.setAdapter(new CalendarAdapter(context, cells));
 
-        // update title
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE,d MMM,yyyy");
-        String[] dateToday = sdf.format(currentDate.getTime()).split(",");
-//        txtDateDay.setText(dateToday[0]);
-//        txtDisplayDate.setText(dateToday[1]);
-//        txtDateYear.setText(dateToday[2]);
     }
-
-
-
-
-
-
 
 }
