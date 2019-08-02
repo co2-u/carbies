@@ -1,12 +1,14 @@
 package com.example.carbonfootprinttracker.fragments;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CalendarView;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -45,7 +47,7 @@ public class CalendarFragment extends Fragment{
     @BindView(R.id.btnNext) ImageButton btnNext;
     @BindView(R.id.btnPrevious) ImageButton btnPrevious;
     @BindView(R.id.gridView) GridView gridView;
-
+    @BindView(R.id.tvCurrentDate) TextView tvCurrentDate;
 
     protected CalendarAdapter calendarAdapter;
     private ArrayList<Date> cells;
@@ -53,9 +55,15 @@ public class CalendarFragment extends Fragment{
     // how many days to show, defaults to six weeks, 42 days
     private static final int DAYS_COUNT = 42;
 
-    private Calendar currentDate = Calendar.getInstance();
-    Context context;
+    // default date format
+    private static final String DATE_FORMAT = "MMM yyyy";
 
+    // date format
+    private String dateFormat;
+
+    private Calendar currentDate = Calendar.getInstance();
+
+    Context context;
 
     @Nullable
     @Override
@@ -74,6 +82,25 @@ public class CalendarFragment extends Fragment{
         calendarAdapter = new CalendarAdapter(context, cells);
 
         updateCalendar();
+
+        //add one month and refresh the UI
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentDate.add(Calendar.MONTH, 1);
+                updateCalendar();
+            }
+        });
+
+        //subtract one month and refresh the UI
+        btnPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentDate.add(Calendar.MONTH, -1);
+                updateCalendar();
+            }
+        });
+
     }
 
     public void updateCalendar()
@@ -91,7 +118,7 @@ public class CalendarFragment extends Fragment{
         int monthBeginningCell = calendar.get(Calendar.DAY_OF_WEEK) - 1;
 
         // move calendar backwards to the beginning of the week
-        calendar.add(Calendar.DAY_OF_MONTH, -monthBeginningCell);
+        calendar.add(Calendar.DAY_OF_MONTH, - monthBeginningCell);
 
         // fill cells
         while (cells.size() < DAYS_COUNT)
@@ -103,6 +130,8 @@ public class CalendarFragment extends Fragment{
         // update grid
         gridView.setAdapter(new CalendarAdapter(context, cells));
 
+        // update date title
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        tvCurrentDate.setText(sdf.format(currentDate.getTime()));
     }
-
 }
