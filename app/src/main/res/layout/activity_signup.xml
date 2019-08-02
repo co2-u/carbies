@@ -17,7 +17,7 @@
         android:layout_marginRight="8dp"
         android:background="@drawable/green_border"
         android:ems="10"
-        android:hint="Create a Username"
+        android:hint="Create a Username (case-sensitive)"
         android:inputType="textPersonName"
         android:paddingLeft="10dp"
         android:textColor="@android:color/black"
@@ -40,7 +40,7 @@
         android:background="@drawable/green_border"
         android:ems="10"
         android:hint="Enter Password"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:textColor="@android:color/black"
         android:textSize="15dp"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@android:color/holo_green_dark"
-        android:text="@string/sign_up"
+        android:text="Confirm"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,7 +95,7 @@
         android:background="@drawable/green_border"
         android:ems="10"
         android:hint="Confirm Password"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:textColor="@android:color/black"
         android:textSize="15dp"
@@ -143,5 +143,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.607" />
+
+    <ProgressBar
+        android:id="@+id/progressBar4"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

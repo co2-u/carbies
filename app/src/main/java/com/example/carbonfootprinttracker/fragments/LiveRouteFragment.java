@@ -154,6 +154,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
                         ));
                 isTracking = false;
+                stopLocationUpdates();
 
                 carbie.setDistance(toMiles(getTotalDistance()));
                 carbie.setStartLocation("Live Start");
@@ -247,8 +248,10 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         fusedLocationProviderClient.requestLocationUpdates(mLocationRequest, locationCallback, Looper.myLooper());
     }
 
+    @SuppressLint("MissingPermission")
     private void stopLocationUpdates() {
         Log.d(TAG, "stop location updates");
+        mGoogleMap.setMyLocationEnabled(false);
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
 
@@ -286,6 +289,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         );
     }
 
+    @SuppressLint("MissingPermission")
     private void prepMapForSnapshot() {
         final LatLngBounds routeBounds = findBounds();
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(routeBounds, 120), 600, null);
@@ -368,18 +372,12 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private LatLngBounds findBounds() {
-        Location preNE = mLocations.get(0);
-        Location preSW = mLocations.get(0);
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Location location: mLocations) {
-            if (location.getLatitude() > preNE.getLatitude()) {
-                preNE = location;
-            } else if (location.getLatitude() < preSW.getLatitude()) {
-                preSW = location;
-            }
-
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            builder.include(latLng);
         }
-        LatLng northeast = new LatLng(preNE.getLatitude(), preNE.getLongitude());
-        LatLng southwest = new LatLng(preSW.getLatitude(), preSW.getLongitude());
-        return new LatLngBounds(southwest, northeast);
+        LatLngBounds bounds = builder.build();
+        return bounds;
     }
 }

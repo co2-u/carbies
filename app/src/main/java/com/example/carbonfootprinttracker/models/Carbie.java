@@ -1,6 +1,7 @@
 package com.example.carbonfootprinttracker.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -18,6 +19,7 @@ public class Carbie extends ParseObject {
     public static final String KEY_START_LOCATION = "startLocation";
     public static final String KEY_END_LOCATION = "endLocation";
     public static final String KEY_IS_FAVORITED = "isFavorited";
+    public static final String KEY_MAP_SHOT = "mapShot";
     public static final String KEY_IS_DELETED = "isDeleted";
 
     public ParseUser getUser() { return getParseUser(KEY_USER); }
@@ -49,6 +51,10 @@ public class Carbie extends ParseObject {
     public Boolean getIsDeleted() {  return getBoolean(KEY_IS_DELETED);  }
 
     public Boolean getIsFavorited() { return getBoolean(KEY_IS_FAVORITED); }
+
+    public ParseFile getMapShot() { return getParseFile(KEY_MAP_SHOT); }
+
+    public void setMapShot(ParseFile image) { put(KEY_MAP_SHOT, image); }
 
     public void setIsFavorited(Boolean status) { put(KEY_IS_FAVORITED, status); }
 

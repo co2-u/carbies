@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -103,7 +102,7 @@ public class SettingsFragment extends Fragment {
         btnMoreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, new InfoFragment()).commit();
+                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, new InfoFragment()).addToBackStack("SettingsFragment").commit();
             }
         });
 
@@ -133,21 +132,5 @@ public class SettingsFragment extends Fragment {
     private void showChangeProfilePictureActivity() {
         Intent intent = new Intent(getContext(), ChangeProfilePictureActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
-        mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
-        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
-        mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
-        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 }

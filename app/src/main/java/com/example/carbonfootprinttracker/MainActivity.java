@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +22,7 @@ import com.example.carbonfootprinttracker.fragments.ComposeFragment;
 import com.example.carbonfootprinttracker.fragments.CurrentScoreFragment;
 import com.example.carbonfootprinttracker.fragments.DailyLogFragment;
 import com.example.carbonfootprinttracker.fragments.FavoritesFragment;
-import com.example.carbonfootprinttracker.fragments.InfoFragment;
+import com.example.carbonfootprinttracker.fragments.PageFragment;
 import com.example.carbonfootprinttracker.fragments.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.GetCallback;
@@ -64,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
         final Fragment currentScoreFragment = new CurrentScoreFragment();
         final Fragment composeFragment = new ComposeFragment();
         final Fragment dailyLogFragment = new DailyLogFragment();
-        final Fragment infoFragment = new InfoFragment();
+        final Fragment newFragment = new PageFragment();
+        final Fragment settingsFragment = new SettingsFragment();
         final Fragment favoritesFragment = new FavoritesFragment();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                                 fragTag = "ComposeFragment";
                                 break;
                             case R.id.dailyLogTab:
-                                fragment = dailyLogFragment;
+                                fragment = newFragment;
                                 fragTag = "DailyLogFragment";
                                 break;
                             case R.id.favoritesTab:
@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
                                 fragTag = "FavoritesFragment";
                                 break;
                             case R.id.moreTab:
-                                fragment = infoFragment;
-                                fragTag = "InfoFragment";
+                                fragment = settingsFragment;
+                                fragTag = "SettingsFragment";
                                 break;
                             default:
                                 fragment = currentScoreFragment;

@@ -11,18 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.SaveCallback;
+
+import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,10 +47,16 @@ public class ConfirmationFragment extends Fragment {
     ImageView ivMapSnapshot;
     @BindView (R.id.tvName2)
     TextView tvName2;
+    @BindView (R.id.progressBar3)
+    ProgressBar pbLoading;
+    @BindView(R.id.tvDistance)
+    TextView tvDistance;
 
-    private final String TAG = "ConfirmationFragment";
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+    private static final String TAG = "ConfirmationFragment";
+
     private Carbie carbie;
-    private FragmentManager fragmentManager;
+    private ParseFile photoFile;
 
     @Nullable
     @Override
@@ -59,8 +68,6 @@ public class ConfirmationFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        fragmentManager = getFragmentManager();
-
         try {
             carbie = getArguments().getParcelable("carbie");
             carbie.setScore();
@@ -69,18 +76,22 @@ public class ConfirmationFragment extends Fragment {
             tvEndPoint2.setText(carbie.getEndLocation());
             tvMode2.setText(carbie.getTransportation());
             tvName2.setText(carbie.getTitle());
+            tvDistance.setText(df.format(carbie.getDistance()) + " miles");
         } catch (NullPointerException e) {
             Log.d(TAG, "Carbie not passed into ConfirmationFragment");
             e.printStackTrace();
+            return;
         }
 
         try {
             byte[] byteArray = getArguments().getByteArray("snapshot");
+            photoFile = new ParseFile("map_screenshot.png", byteArray);
             Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             ivMapSnapshot.setImageBitmap(bitmap);
         } catch (NullPointerException e) {
-            Log.d(TAG, "Missing snapshot");
+            Log.d(TAG, "Map Snapshot not passed into ConfirmationFragment");
             e.printStackTrace();
+            return;
         }
 
         btnConfirmNo.setOnClickListener(new View.OnClickListener() {
@@ -93,20 +104,33 @@ public class ConfirmationFragment extends Fragment {
         btnConfirmYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                carbie.setIsFavorited(false);
-                carbie.setIsDeleted(false);
-                carbie.saveInBackground(new SaveCallback() {
+                showProgressBar();
+                photoFile.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        if (e != null) {
-                            Log.d(TAG, "Error while saving");
+                        if (e == null) {
+                            carbie.setMapShot(photoFile);
+                            carbie.setIsFavorited(false);
+                            carbie.setIsDeleted(false);
+                            carbie.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null) {
+                                        Log.d(TAG, "Successfully saved carbie with map snapshot.");
+                                        hideProgressBar();
+                                        goToMainFragment();
+                                    } else {
+                                        Log.d(TAG, "Error while saving carbie.");
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        } else {
+                            Log.d(TAG, "Error while saving photo file.");
                             e.printStackTrace();
-                            return;
                         }
-                        Log.d(TAG, "Success!");
                     }
                 });
-                goToMainFragment();
             }
         });
 
@@ -190,5 +214,13 @@ public class ConfirmationFragment extends Fragment {
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+
+    private void showProgressBar() {
+        pbLoading.setVisibility(ProgressBar.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        pbLoading.setVisibility(ProgressBar.GONE);
     }
 }
