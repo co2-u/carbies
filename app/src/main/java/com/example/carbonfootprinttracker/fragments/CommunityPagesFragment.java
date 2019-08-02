@@ -25,10 +25,15 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +54,8 @@ public class CommunityPagesFragment extends Fragment {
     private FragmentManager fragmentManager;
     private Context context;
     private int mPage;
+    private Set<String> following;
+    private List<String> userIds;
 
     public CommunityPagesFragment (int page) {
         this.mPage = page;
@@ -65,6 +72,13 @@ public class CommunityPagesFragment extends Fragment {
         ButterKnife.bind(this, view);
         fragmentManager = getFragmentManager();
         context = getContext();
+        following = new HashSet<>();
+        userIds = new ArrayList<>();
+        if (mPage == 0) {
+            tvMessage.setText("No one has logged Carbies today yet!");
+        } else {
+            tvMessage.setText("No one you follow has logged Carbies today yet!");
+        }
 
         rvCarbies.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         mCarbies = new ArrayList<>();
@@ -73,29 +87,62 @@ public class CommunityPagesFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvCarbies.setLayoutManager(linearLayoutManager);
 
-        ParseQuery<Carbie> queryCarbies = getQuery();
-        if (mPage == 1) {
-            queryCarbies.whereEqualTo(Carbie.KEY_USER, ParseUser.getCurrentUser());
+        JSONArray followingArray = ParseUser.getCurrentUser().getJSONArray("following");
+        if (followingArray != null) {
+            for (int i = 0; i < followingArray.length(); i++) {
+                try {
+                    following.add((String) followingArray.get(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        queryCarbies.findInBackground(new FindCallback<Carbie>() {
+
+        ParseQuery<ParseUser> userParseQuery = ParseQuery.getQuery("User");
+        userParseQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e != null) {
+                    e.printStackTrace();
+                } else {
+                    for (int i = 0; i < objects.size(); i++) {
+                        userIds.add(objects.get(i).getObjectId());
+                    }
+                    queryCarbies();
+                }
+            }
+        });
+
+    }
+
+    private void queryCarbies() {
+        ParseQuery<Carbie> query = getQuery();
+        query.findInBackground(new FindCallback<Carbie>() {
             @Override
             public void done(List<Carbie> objects, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error with query");
                     e.printStackTrace();
-                    return;
                 } else {
-                    mCarbies.addAll(objects);
+                    if (mPage == 0) {
+                        mCarbies.addAll(objects);
+                    } else { //mPage == 1
+                        for (Carbie carbie: objects) {
+                            if (following.contains(carbie.getUser().getObjectId())) {
+                                mCarbies.add(carbie);
+                            }
+                        }
+                    }
                     carbiesAdapter.notifyDataSetChanged();
                     pbLoading.setVisibility(ProgressBar.INVISIBLE);
                     setMessageVisibility();
+
                 }
             }
         });
     }
 
-    // Get the current user's carbies from today and add them to recycler view
-    protected ParseQuery<Carbie> getQuery() {
+    private ParseQuery<Carbie> getQuery() {
         pbLoading.setVisibility(ProgressBar.VISIBLE);
 
         Date date = new Date();
@@ -116,7 +163,7 @@ public class CommunityPagesFragment extends Fragment {
         return query;
     }
 
-    public void setMessageVisibility() {
+    private void setMessageVisibility() {
         if (mCarbies.size() > 0) {
             tvMessage.setVisibility(TextView.GONE);
         } else {

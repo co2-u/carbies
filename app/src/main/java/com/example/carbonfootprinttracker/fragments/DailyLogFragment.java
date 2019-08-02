@@ -62,6 +62,7 @@ public class DailyLogFragment extends Fragment {
         ButterKnife.bind(this, view);
         fragmentManager = getFragmentManager();
         context = getContext();
+        tvMessage.setText("You haven't added any Carbies to your daily log yet!");
 
         rvCarbies.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         mCarbies = new ArrayList<>();
