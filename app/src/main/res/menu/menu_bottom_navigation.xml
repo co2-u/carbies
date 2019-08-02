@@ -23,11 +23,18 @@
         android:title="Add"
         app:showAsAction="ifRoom" />
 
+    <!--<item-->
+        <!--android:id="@+id/favoritesTab"-->
+        <!--android:enabled="true"-->
+        <!--android:icon="@drawable/heart_outline"-->
+        <!--android:title="Favorites"-->
+        <!--app:showAsAction="ifRoom" />-->
+
     <item
-        android:id="@+id/favoritesTab"
+        android:id="@+id/communityTab"
         android:enabled="true"
-        android:icon="@drawable/heart_outline"
-        android:title="Favorites"
+        android:icon="@drawable/ic_account_group"
+        android:title="Community"
         app:showAsAction="ifRoom" />
 
     <item
