@@ -49,10 +49,12 @@ public class SignupActivity extends AppCompatActivity {
 
         if (username.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Missing Username!", Toast.LENGTH_SHORT).show();
-            return;
         } else if (email.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Missing Email!", Toast.LENGTH_SHORT).show();
-            return;
+        } else if (!email.matches("[^@]+@[^\\.]+\\..+")) {
+            Toast.makeText(getApplicationContext(), "Invalid Email Address!", Toast.LENGTH_SHORT).show();
+        } else if(password.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Missing Password!", Toast.LENGTH_SHORT).show();
         } else if (password.contentEquals(confirmPassword)) {
             ParseUser user = new ParseUser();
             user.setUsername(username);
@@ -62,7 +64,6 @@ public class SignupActivity extends AppCompatActivity {
             user.signUpInBackground(new SignUpCallback() {
                 @Override
                 public void done(ParseException e) {
-                    pbLoading.setVisibility(View.GONE);
                     if (e == null) {
                         Log.d(TAG, "Sign up successful!");
                         Intent i = new Intent(SignupActivity.this, OnBoardingActivity.class);
@@ -79,8 +80,10 @@ public class SignupActivity extends AppCompatActivity {
             });
         } else {
             Toast.makeText(this, "Passwords don't match!", Toast.LENGTH_LONG).show();
-            return;
+            etPassword.setText("");
+            etConfirmPassword.setText("");
         }
+        pbLoading.setVisibility(View.GONE);
     }
 
     @Override
