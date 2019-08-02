@@ -29,7 +29,7 @@
             android:layout_height="40dp"
             android:id="@+id/btnNext"
             android:layout_margin="10dp"/>
-
+x
     </LinearLayout>
 
 

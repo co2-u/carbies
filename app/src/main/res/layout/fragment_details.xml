@@ -206,23 +206,5 @@
         app:layout_constraintStart_toStartOf="@+id/tvBorder"
         app:layout_constraintTop_toBottomOf="@+id/tvScore" />
 
-    <Button
-        android:id="@+id/btnAddToFavorites"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/main_button_white"
-        android:text="Add to Favorites"
-        android:textColor="#00581B"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSuggestion" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

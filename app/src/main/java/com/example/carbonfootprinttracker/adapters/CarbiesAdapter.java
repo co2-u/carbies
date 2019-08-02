@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.fragments.AddFavoriteFragment;
 import com.example.carbonfootprinttracker.fragments.DetailsFragment;
@@ -84,6 +87,10 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
         } else {
             holder.ivCircle.setBackground(context.getResources().getDrawable(R.drawable.green_circle));
         }
+
+        if (!isDailyLog) {
+            holder.ivLogMore.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -97,55 +104,147 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
         @BindView(R.id.tvStartAddress) TextView tvStartAddress;
         @BindView(R.id.tvEndAddress) TextView tvEndAddress;
         @BindView(R.id.tvScore) TextView tvScore;
+        @BindView(R.id.ivLogMore) ImageView ivLogMore;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
+            if (isDailyLog) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Fragment fragment = new DetailsFragment();
+                        Bundle args = new Bundle();
+                        args.putParcelable("carbie", carbies.get(getAdapterPosition()));
+                        args.putInt("itemPosition", getAdapterPosition());
+                        fragment.setArguments(args);
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.fragmentPlaceholder, fragment)
+                                .addToBackStack("DailyLogFragment")
+                                .commit();
+                    }
+                });
+            }
+
+            ivLogMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popup = new PopupMenu(context, ivLogMore);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater()
+                            .inflate(R.menu.daily_log_popup, popup.getMenu());
+                    //registering popup with OnMenuItemClickListener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getTitle().toString()) {
+                                case "Favorite":
+                                    carbies.get(getAdapterPosition()).setIsFavorited(true);
+                                    carbies.get(getAdapterPosition()).saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if (e != null) {
+                                                Log.d(TAG, "Error while saving");
+                                                e.printStackTrace();
+                                                return;
+                                            }
+                                            Log.d(TAG, "Success!");
+                                        }
+                                    });
+                                    break;
+                                case "Share":
+                                    Intent sendIntent = new Intent();
+                                    sendIntent.setAction(Intent.ACTION_SEND);
+                                    sendIntent.putExtra(Intent.EXTRA_TEXT, "My CO2&U score is " + MainActivity.score);
+                                    sendIntent.setType("text/plain");
+                                    mActivity.startActivity(sendIntent);
+                                    break;
+                                case "Delete":
+                                    deleteItem(getAdapterPosition());
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
+                    popup.show(); //showing popup menu
+                }
+            });
 
         }
     }
 
     public void deleteItem(int position) {
-        mRecentlyDeletedItem = carbies.get(position);
-        mRecentlyDeletedItemPosition = position;
-        mRecentlyDeletedItem.deleteInBackground(new DeleteCallback() {
-            @Override
-            public void done(ParseException e) {
-                carbies.remove(position);
-                notifyItemRemoved(position);
-                Log.d(TAG, "Successfully deleted item " + mRecentlyDeletedItem.getObjectId());
-                Carbie carbie = new Carbie();
-                showUndoSnackbar(true, carbie);
-            }
-        });
-
-    }
-
-    private void showUndoSnackbar(boolean isDeleting, Carbie carbie) {
-        View view = mActivity.findViewById(R.id.rvCarbies);
-        if (isDeleting) {
-            Snackbar snackbar = Snackbar.make(view, "Deleted 1 carbie", Snackbar.LENGTH_LONG);
-            snackbar.setAction("UNDO", v -> undoDelete());
-            snackbar.show();
+        if (carbies.get(position).getIsFavorited()) {
+            carbies.get(position).setIsDeleted(true);
+            carbies.get(position).saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        Log.d(TAG, "Error while saving");
+                        e.printStackTrace();
+                        return;
+                    }
+                    Log.d(TAG, "Success!");
+                }
+            });
+            notifyItemRemoved(position);
+            showUndoSnackbar(carbies.get(position));
+        } else {
+            mRecentlyDeletedItem = carbies.get(position);
+            mRecentlyDeletedItemPosition = position;
+            mRecentlyDeletedItem.deleteInBackground(new DeleteCallback() {
+                @Override
+                public void done(ParseException e) {
+                    carbies.remove(position);
+                    notifyItemRemoved(position);
+                    Log.d(TAG, "Successfully deleted item " + mRecentlyDeletedItem.getObjectId());
+                    Carbie carbie = new Carbie();
+                    showUndoSnackbar(carbie);
+                }
+            });
         }
     }
 
-    private void undoDelete() {
-        //must make copy of recently deleted item before saving it back to Parse
-        Carbie copied = mRecentlyDeletedItem.copy();
-        copied.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    carbies.add(mRecentlyDeletedItemPosition, copied);
-                    notifyItemInserted(mRecentlyDeletedItemPosition);
-                    Log.d(TAG, "Successfully undid deleting of item " + mRecentlyDeletedItem.getObjectId());
-                } else {
-                    Log.d(TAG, "Failed to undo deleting of item " + mRecentlyDeletedItem.getObjectId());
-                    e.printStackTrace();
+    private void showUndoSnackbar(Carbie carbie) {
+        View view = mActivity.findViewById(R.id.rvCarbies);
+        Snackbar snackbar = Snackbar.make(view, "Deleted 1 carbie", Snackbar.LENGTH_LONG);
+        snackbar.setAction("UNDO", v -> undoDelete(carbie));
+        snackbar.show();
+
+    }
+
+    private void undoDelete(Carbie carbie) {
+        if (carbie.getIsFavorited()) {
+            carbie.setIsDeleted(false);
+            carbie.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        Log.d(TAG, "Error while saving");
+                        e.printStackTrace();
+                        return;
+                    }
+                    Log.d(TAG, "Success!");
                 }
-            }
-        });
+            });
+            notifyDataSetChanged();
+        } else {
+            //must make copy of recently deleted item before saving it back to Parse
+            Carbie copied = mRecentlyDeletedItem.copy();
+            copied.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        carbies.add(mRecentlyDeletedItemPosition, copied);
+                        notifyItemInserted(mRecentlyDeletedItemPosition);
+                        Log.d(TAG, "Successfully undid deleting of item " + mRecentlyDeletedItem.getObjectId());
+                    } else {
+                        Log.d(TAG, "Failed to undo deleting of item " + mRecentlyDeletedItem.getObjectId());
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
     }
 }

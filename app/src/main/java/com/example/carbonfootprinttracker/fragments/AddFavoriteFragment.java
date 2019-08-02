@@ -50,6 +50,7 @@ public class AddFavoriteFragment extends AppCompatDialogFragment {
                 }
                 Carbie newCarbie = carbie.copy();
                 newCarbie.setIsFavorited(false);
+                newCarbie.setIsDeleted(false);
                 newCarbie.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {

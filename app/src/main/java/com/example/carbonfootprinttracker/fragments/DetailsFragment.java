@@ -43,8 +43,6 @@ public class DetailsFragment extends Fragment {
     TextView tvScore2;
     @BindView(R.id.tvSuggestion)
     TextView tvSuggestion;
-    @BindView(R.id.btnAddToFavorites)
-    Button btnAddToFav;
     Carbie carbie;
 
     @Nullable
@@ -69,25 +67,6 @@ public class DetailsFragment extends Fragment {
         setMessage(carbie.getTransportation());
         setScoreColor(carbie.getScore());
 
-        btnAddToFav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO add an isDeleted field
-                Carbie newCarbie = carbie.copy();
-                newCarbie.setIsFavorited(true);
-                newCarbie.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.d(TAG, "Error while saving");
-                            e.printStackTrace();
-                            return;
-                        }
-                        Log.d(TAG, "Success!");
-                    }
-                });
-            }
-        });
     }
 
     private void setMessage(String transportation) {

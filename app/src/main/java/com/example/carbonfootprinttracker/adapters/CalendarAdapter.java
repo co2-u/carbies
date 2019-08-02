@@ -47,19 +47,17 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
         int day = calendar.get(Calendar.DATE);
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
-
-        // today
         Date today = new Date();
         Calendar calendarToday = Calendar.getInstance();
         calendarToday.setTime(today);
 
         // inflate item if it does not exist yet
-        if (view == null)
-            view = inflater.inflate(R.layout.fragment_calendar, parent, false);
-        // clear styling
-//        ((TextView)view).setTypeface(null, Typeface.NORMAL);
-//        ((TextView)view).setTextColor(Color.BLACK);
-//
+//        if (view == null)
+//            view = inflater.inflate(R.layout.fragment_calendar, parent, false);
+//        // clear styling
+////        ((TextView)view).setTypeface(null, Typeface.NORMAL);
+////        ((TextView)view).setTextColor(Color.BLACK);
+////
 //        if (month != calendarToday.get(Calendar.MONTH) || year != calendarToday.get(Calendar.YEAR)) {
 //            // if this day is outside current month, grey it out
 //            ((TextView) view).setTextColor(Color.parseColor("#E0E0E0"));

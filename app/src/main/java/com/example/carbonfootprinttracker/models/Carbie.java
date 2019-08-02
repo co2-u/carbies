@@ -18,6 +18,7 @@ public class Carbie extends ParseObject {
     public static final String KEY_START_LOCATION = "startLocation";
     public static final String KEY_END_LOCATION = "endLocation";
     public static final String KEY_IS_FAVORITED = "isFavorited";
+    public static final String KEY_IS_DELETED = "isDeleted";
 
     public ParseUser getUser() { return getParseUser(KEY_USER); }
 
@@ -44,6 +45,8 @@ public class Carbie extends ParseObject {
     public String getStartLocation() { return getString(KEY_START_LOCATION); }
 
     public String getEndLocation() { return getString(KEY_END_LOCATION); }
+
+    public Boolean getIsDeleted() {  return getBoolean(KEY_IS_DELETED);  }
 
     public Boolean getIsFavorited() { return getBoolean(KEY_IS_FAVORITED); }
 
@@ -103,6 +106,7 @@ public class Carbie extends ParseObject {
 
     public void setEndLocation(String endLocation) { put(KEY_END_LOCATION, endLocation); }
 
+    public void setIsDeleted(Boolean isDeleted) { put(KEY_IS_DELETED, isDeleted); }
 
     public Carbie copy() {
         Carbie copied = new Carbie();

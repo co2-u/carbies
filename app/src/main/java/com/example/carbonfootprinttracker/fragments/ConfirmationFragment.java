@@ -94,6 +94,7 @@ public class ConfirmationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 carbie.setIsFavorited(false);
+                carbie.setIsDeleted(false);
                 carbie.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {

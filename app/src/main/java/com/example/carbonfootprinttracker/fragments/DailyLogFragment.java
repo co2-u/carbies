@@ -76,21 +76,21 @@ public class DailyLogFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(carbiesAdapter, context));
         itemTouchHelper.attachToRecyclerView(rvCarbies);
 
-        ItemClickSupport.addTo(rvCarbies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                scrollPosition = position;
-                Fragment fragment = new DetailsFragment();
-                Bundle args = new Bundle();
-                args.putParcelable("carbie", mCarbies.get(position));
-                args.putInt("itemPosition", position);
-                fragment.setArguments(args);
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentPlaceholder, fragment)
-                        .addToBackStack("DailyLogFragment")
-                        .commit();
-            }
-        });
+//        ItemClickSupport.addTo(rvCarbies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+//            @Override
+//            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//                scrollPosition = position;
+//                Fragment fragment = new DetailsFragment();
+//                Bundle args = new Bundle();
+//                args.putParcelable("carbie", mCarbies.get(position));
+//                args.putInt("itemPosition", position);
+//                fragment.setArguments(args);
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.fragmentPlaceholder, fragment)
+//                        .addToBackStack("DailyLogFragment")
+//                        .commit();
+//            }
+//        });
 
         queryCarbies();
     }
@@ -111,7 +111,8 @@ public class DailyLogFragment extends Fragment {
         ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
         query.include(Carbie.KEY_USER);
         query.whereEqualTo(Carbie.KEY_USER, ParseUser.getCurrentUser());
-        query.whereEqualTo(Carbie.KEY_IS_FAVORITED, false);
+//        query.whereEqualTo(Carbie.KEY_IS_FAVORITED, false);
+        query.whereEqualTo(Carbie.KEY_IS_DELETED, false);
         query.whereGreaterThanOrEqualTo(Carbie.KEY_CREATED_AT, calendarA.getTime());
         query.whereLessThan(Carbie.KEY_CREATED_AT, calendarB.getTime());
         query.addDescendingOrder(Carbie.KEY_CREATED_AT);

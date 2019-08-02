@@ -107,7 +107,8 @@ public class CurrentScoreFragment extends Fragment {
         ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
         query.include(Carbie.KEY_USER);
         query.whereEqualTo(Carbie.KEY_USER, ParseUser.getCurrentUser());
-        query.whereEqualTo(Carbie.KEY_IS_FAVORITED, false);
+//        query.whereEqualTo(Carbie.KEY_IS_FAVORITED, false);
+        query.whereEqualTo(Carbie.KEY_IS_DELETED, false);
         query.whereGreaterThanOrEqualTo(Carbie.KEY_CREATED_AT, calendarA.getTime());
         query.whereLessThan(Carbie.KEY_CREATED_AT, calendarB.getTime());
         query.addDescendingOrder(Carbie.KEY_CREATED_AT);
