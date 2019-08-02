@@ -1,7 +1,6 @@
 package com.example.carbonfootprinttracker;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -46,8 +45,11 @@ public class SignupActivity extends AppCompatActivity {
 
         //check if username is empty, check if email is empty
         if (username.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Missing Username!", Toast.LENGTH_SHORT).show();
             return;}
+
         if (email.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Missing Email!", Toast.LENGTH_SHORT).show();
             return;}
 
         if (password.contentEquals(confirmPassword)) {
@@ -72,7 +74,8 @@ public class SignupActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Toast.makeText(this, "Passwords don't match. Please try again", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Passwords don't match!", Toast.LENGTH_LONG).show();
+            return;
         }
     }
 

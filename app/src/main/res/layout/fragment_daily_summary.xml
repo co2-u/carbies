@@ -26,11 +26,9 @@
         android:id="@+id/ivShare"
         android:layout_width="136dp"
         android:layout_height="45dp"
-        android:layout_marginTop="556dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/actionModeShareDrawable" />
 
     <TextView
