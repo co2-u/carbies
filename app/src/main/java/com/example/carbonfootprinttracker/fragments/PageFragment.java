@@ -37,7 +37,12 @@ public class PageFragment extends Fragment {
     public static Fragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
-        PageFragment fragment = new PageFragment();
+        Fragment fragment;
+        if (page == 1) {
+            fragment = new DailyLogFragment();
+        } else {
+            fragment = new FavoritesFragment();
+        }
         fragment.setArguments(args);
         return fragment;
     }
