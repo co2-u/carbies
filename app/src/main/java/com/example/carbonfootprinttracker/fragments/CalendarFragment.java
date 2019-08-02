@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +87,7 @@ public class CalendarFragment extends Fragment{
         Date date = new Date();
 
         tvCurrentDate.setText(month_name);
-        calendarAdapter = new CalendarAdapter(context, cells);
+        calendarAdapter = new CalendarAdapter(context, cells, currentDate);
 
         updateCalendar();
 
@@ -109,6 +110,7 @@ public class CalendarFragment extends Fragment{
                 String month_name = dateFormat.format(currentDate.getTime());
                 tvCurrentDate.setText(month_name);
                 updateCalendar();
+
             }
         });
 
@@ -119,7 +121,6 @@ public class CalendarFragment extends Fragment{
 //
 //            }
 //        });
-
     }
 
     public void updateCalendar()
@@ -130,7 +131,8 @@ public class CalendarFragment extends Fragment{
     public void updateCalendar(HashSet<Date> events)
     {
         ArrayList<Date> cells = new ArrayList<>();
-        Calendar calendar = (Calendar)currentDate.clone();
+        Calendar calendar = (Calendar) currentDate.clone();
+        int month = calendar.get(Calendar.MONTH);
 
         // determine the cell for current month's beginning
         calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -145,8 +147,9 @@ public class CalendarFragment extends Fragment{
             cells.add(calendar.getTime());
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
+        calendar.set(Calendar.MONTH, month);
         // update grid
-        gridView.setAdapter(new CalendarAdapter(context, cells));
+        gridView.setAdapter(new CalendarAdapter(context, cells, calendar));
 
     }
 }
