@@ -14,9 +14,16 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.adapters.CommunityPagerAdapter;
+import com.google.android.material.tabs.TabLayout;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class CommunityFragment extends Fragment {
     private static final String TAG = "CommunityFragment";
+
+    @BindView(R.id.vpCommunity) ViewPager vpCommunity;
+    @BindView(R.id.tlCommunity) TabLayout tlCommunity;
 
     @Nullable
     @Override
@@ -27,9 +34,12 @@ public class CommunityFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Get the ViewPager and set it's PagerAdapter so that it can display items
-        ViewPager viewPager = view.findViewById(R.id.vpCommunity);
-        viewPager.setAdapter(new CommunityPagerAdapter(getChildFragmentManager(), getContext()));
+        ButterKnife.bind(this, view);
+        vpCommunity.setAdapter(new CommunityPagerAdapter(getChildFragmentManager(), getContext()));
+        tlCommunity.setupWithViewPager(vpCommunity);
+        tlCommunity.setInlineLabel(true);
+        tlCommunity.getTabAt(0).setIcon(R.drawable.ic_web);
+        tlCommunity.getTabAt(1).setIcon(R.drawable.ic_account_multiple);
     }
 
     public void onResume() {

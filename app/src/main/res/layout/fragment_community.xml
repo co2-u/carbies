@@ -15,8 +15,10 @@
             android:id="@+id/tlCommunity"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:tabIndicatorColor="@android:color/holo_green_dark">
-        </com.google.android.material.tabs.TabLayout>
+            app:tabIndicatorColor="@android:color/holo_green_dark"
+            android:elevation="@dimen/cardview_default_elevation"
+            android:background="@android:color/white"/>
+
     </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>
