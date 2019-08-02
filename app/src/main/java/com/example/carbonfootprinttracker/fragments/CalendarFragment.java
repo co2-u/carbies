@@ -27,6 +27,7 @@ import com.example.carbonfootprinttracker.adapters.CalendarAdapter;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,6 +49,7 @@ public class CalendarFragment extends Fragment{
     @BindView(R.id.btnPrevious) ImageButton btnPrevious;
     @BindView(R.id.gridView) GridView gridView;
     @BindView(R.id.tvCurrentDate) TextView tvCurrentDate;
+    //@BindView(R.id.tvDay) TextView tvDay;
 
     protected CalendarAdapter calendarAdapter;
     private ArrayList<Date> cells;
@@ -79,6 +81,11 @@ public class CalendarFragment extends Fragment{
         ButterKnife.bind(this, view);
         context = getContext();
         cells = new ArrayList<>();
+        DateFormat dateFormat = new SimpleDateFormat("MMMM");
+        String month_name= dateFormat.format(currentDate.getTime());
+        Date date = new Date();
+
+        tvCurrentDate.setText(month_name);
         calendarAdapter = new CalendarAdapter(context, cells);
 
         updateCalendar();
@@ -88,6 +95,8 @@ public class CalendarFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 currentDate.add(Calendar.MONTH, 1);
+                String month_name = dateFormat.format(currentDate.getTime());
+                tvCurrentDate.setText(month_name);
                 updateCalendar();
             }
         });
@@ -97,9 +106,19 @@ public class CalendarFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 currentDate.add(Calendar.MONTH, -1);
+                String month_name = dateFormat.format(currentDate.getTime());
+                tvCurrentDate.setText(month_name);
                 updateCalendar();
             }
         });
+
+//        //click into a day and leads to the daily summary fragment
+//        tvDay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
     }
 
@@ -126,12 +145,8 @@ public class CalendarFragment extends Fragment{
             cells.add(calendar.getTime());
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
-
         // update grid
         gridView.setAdapter(new CalendarAdapter(context, cells));
 
-        // update date title
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-        tvCurrentDate.setText(sdf.format(currentDate.getTime()));
     }
 }
