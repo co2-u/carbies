@@ -17,7 +17,7 @@ import com.google.android.material.tabs.TabLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PageFragment extends Fragment {
+public class LogFragment extends Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
     @BindView(R.id.viewpager)
