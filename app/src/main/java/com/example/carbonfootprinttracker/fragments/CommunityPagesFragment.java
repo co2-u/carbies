@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.carbonfootprinttracker.R;
-import com.example.carbonfootprinttracker.adapters.CarbiesAdapter;
+import com.example.carbonfootprinttracker.adapters.CommunityCarbiesAdapter;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
@@ -48,7 +48,7 @@ public class CommunityPagesFragment extends Fragment {
     @BindView(R.id.tvMessage) TextView tvMessage;
     @BindView(R.id.fabFollowUser) FloatingActionButton fabFollowUser;
 
-    private CarbiesAdapter carbiesAdapter;
+    private CommunityCarbiesAdapter communityCarbiesAdapter;
     private List<Carbie> mCarbies;
     private FragmentManager fragmentManager;
     private Context context;
@@ -89,8 +89,8 @@ public class CommunityPagesFragment extends Fragment {
 
         rvCarbies.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         mCarbies = new ArrayList<>();
-        carbiesAdapter = new CarbiesAdapter(context, fragmentManager, mCarbies, getActivity(), true);
-        rvCarbies.setAdapter(carbiesAdapter);
+        communityCarbiesAdapter = new CommunityCarbiesAdapter(context, mCarbies);
+        rvCarbies.setAdapter(communityCarbiesAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvCarbies.setLayoutManager(linearLayoutManager);
 
@@ -139,7 +139,7 @@ public class CommunityPagesFragment extends Fragment {
                             }
                         }
                     }
-                    carbiesAdapter.notifyDataSetChanged();
+                    communityCarbiesAdapter.notifyDataSetChanged();
                     pbLoading.setVisibility(ProgressBar.INVISIBLE);
                     setMessageVisibility();
                 }
