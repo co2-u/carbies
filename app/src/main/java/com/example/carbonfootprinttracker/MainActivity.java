@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
         scheduleAlarm();
     }
 
-    // Inflate toolbar with
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;

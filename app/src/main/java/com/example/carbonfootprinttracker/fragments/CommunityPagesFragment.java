@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.adapters.CarbiesAdapter;
 import com.example.carbonfootprinttracker.models.Carbie;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -42,12 +43,10 @@ public class CommunityPagesFragment extends Fragment {
     private static final String TAG = "CommunityPagesFragment";
     public static final String ARG_PAGE = "ARG_PAGE";
 
-    @BindView(R.id.rvCarbies)
-    RecyclerView rvCarbies;
-    @BindView(R.id.pbLoading)
-    ProgressBar pbLoading;
-    @BindView(R.id.tvMessage)
-    TextView tvMessage;
+    @BindView(R.id.rvCarbies) RecyclerView rvCarbies;
+    @BindView(R.id.pbLoading) ProgressBar pbLoading;
+    @BindView(R.id.tvMessage) TextView tvMessage;
+    @BindView(R.id.fabFollowUser) FloatingActionButton fabFollowUser;
 
     private CarbiesAdapter carbiesAdapter;
     private List<Carbie> mCarbies;
@@ -74,9 +73,17 @@ public class CommunityPagesFragment extends Fragment {
         context = getContext();
         following = new HashSet<>();
         userIds = new ArrayList<>();
+
         if (mPage == 0) {
             tvMessage.setText("No one has logged Carbies today yet!");
         } else {
+            fabFollowUser.setVisibility(View.VISIBLE);
+            fabFollowUser.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO - go to FollowUserFragment
+                }
+            });
             tvMessage.setText("No one you follow has logged Carbies today yet!");
         }
 
@@ -112,7 +119,6 @@ public class CommunityPagesFragment extends Fragment {
                 }
             }
         });
-
     }
 
     private void queryCarbies() {
@@ -136,7 +142,6 @@ public class CommunityPagesFragment extends Fragment {
                     carbiesAdapter.notifyDataSetChanged();
                     pbLoading.setVisibility(ProgressBar.INVISIBLE);
                     setMessageVisibility();
-
                 }
             }
         });
