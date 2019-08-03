@@ -34,8 +34,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FavoritesFragment extends  Fragment{
-    private final String TAG = "FavoritesFragment";
+public class FrequentsFragment extends  Fragment{
+    private final String TAG = "FrequentsFragment";
     boolean isDailyLogFragment = false;
 
     @BindView(R.id.rvCarbies) RecyclerView rvCarbies;
@@ -68,21 +68,6 @@ public class FavoritesFragment extends  Fragment{
         rvCarbies.setAdapter(carbiesAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvCarbies.setLayoutManager(linearLayoutManager);
-
-        // item touch helper that listens for swipe to delete
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(carbiesAdapter, context));
-        itemTouchHelper.attachToRecyclerView(rvCarbies);
-
-        ItemClickSupport.addTo(rvCarbies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                AddFavoriteFragment addFavoriteFragment = new AddFavoriteFragment();
-                Bundle args = new Bundle();
-                args.putParcelable("carbie", mCarbies.get(position));
-                addFavoriteFragment.setArguments(args);
-                addFavoriteFragment.show(fragmentManager, "favorites_fragment");
-            }
-        });
         queryCarbies();
     }
 

@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/add_to_log"
+        android:title="Add to Daily Log"/>
+
+    <item
+        android:id="@+id/share_frequent"
+        android:title="Share"/>
+
+    <item
+        android:id="@+id/delete_frequent"
+        android:title="Delete"/>
+
+</menu>

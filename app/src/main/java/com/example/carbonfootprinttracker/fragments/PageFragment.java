@@ -4,18 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.adapters.TabAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -41,7 +35,7 @@ public class PageFragment extends Fragment {
         if (page == 1) {
             fragment = new DailyLogFragment();
         } else {
-            fragment = new FavoritesFragment();
+            fragment = new FrequentsFragment();
         }
         fragment.setArguments(args);
         return fragment;
@@ -50,8 +44,6 @@ public class PageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
-//        TextView textView = (TextView) view;
-//        textView.setText("Fragment #" );
         return view;
     }
 
@@ -59,7 +51,7 @@ public class PageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        tabAdapter = new TabAdapter(getFragmentManager(), getContext());
+        tabAdapter = new TabAdapter(getChildFragmentManager(), getContext());
         viewPager.setAdapter(tabAdapter);
         // Give the TabLayout the ViewPager
         tabLayout.setupWithViewPager(viewPager);
