@@ -21,7 +21,7 @@ import com.example.carbonfootprinttracker.alarm.MyAlarmReceiver;
 import com.example.carbonfootprinttracker.fragments.CommunityFragment;
 import com.example.carbonfootprinttracker.fragments.ComposeFragment;
 import com.example.carbonfootprinttracker.fragments.CurrentScoreFragment;
-import com.example.carbonfootprinttracker.fragments.DailyLogFragment;
+import com.example.carbonfootprinttracker.fragments.LogFragment;
 import com.example.carbonfootprinttracker.fragments.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.GetCallback;
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         final Fragment currentScoreFragment = new CurrentScoreFragment();
         final Fragment composeFragment = new ComposeFragment();
-        final Fragment dailyLogFragment = new DailyLogFragment();
+        final Fragment logFragment = new LogFragment();
         final Fragment settingsFragment = new SettingsFragment();
         final Fragment communityFragment = new CommunityFragment();
 
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                                 fragTag = "ComposeFragment";
                                 break;
                             case R.id.dailyLogTab:
-                                fragment = dailyLogFragment;
+                                fragment = logFragment;
                                 fragTag = "DailyLogFragment";
                                 break;
                             case R.id.communityTab:

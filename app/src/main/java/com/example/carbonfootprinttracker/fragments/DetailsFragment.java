@@ -94,24 +94,6 @@ public class DetailsFragment extends Fragment {
             ivMapShot.setVisibility(View.GONE);
         }
 
-        btnAddToFav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Carbie newCarbie = carbie.copy();
-                newCarbie.setIsFavorited(true);
-                newCarbie.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.d(TAG, "Error while saving");
-                            e.printStackTrace();
-                            return;
-                        }
-                        Log.d(TAG, "Success!");
-                    }
-                });
-            }
-        });
     }
 
     private void setMessage(String transportation) {

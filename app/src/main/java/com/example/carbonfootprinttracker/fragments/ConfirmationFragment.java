@@ -111,6 +111,7 @@ public class ConfirmationFragment extends Fragment {
                         if (e == null) {
                             carbie.setMapShot(photoFile);
                             carbie.setIsFavorited(false);
+                            carbie.setIsDeleted(false);
                             carbie.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
