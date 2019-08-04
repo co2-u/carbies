@@ -69,10 +69,9 @@ public class CommunityPagesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        fragmentManager = getFragmentManager();
+        fragmentManager = getActivity().getSupportFragmentManager();
         context = getContext();
         following = new HashSet<>();
-        userIds = new ArrayList<>();
 
         if (mPage == 0) {
             tvMessage.setText("No one has logged Carbies today yet!");
@@ -81,7 +80,11 @@ public class CommunityPagesFragment extends Fragment {
             fabFollowUser.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO - go to FollowUserFragment
+                    FollowFragment followFragment = new FollowFragment();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragmentPlaceholder, followFragment)
+                            .addToBackStack(TAG)
+                            .commit();
                 }
             });
             tvMessage.setText("No one you follow has logged Carbies today yet!");
@@ -105,20 +108,7 @@ public class CommunityPagesFragment extends Fragment {
             }
         }
 
-        ParseQuery<ParseUser> userParseQuery = ParseQuery.getQuery("User");
-        userParseQuery.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> objects, ParseException e) {
-                if (e != null) {
-                    e.printStackTrace();
-                } else {
-                    for (int i = 0; i < objects.size(); i++) {
-                        userIds.add(objects.get(i).getObjectId());
-                    }
-                    queryCarbies();
-                }
-            }
-        });
+        queryCarbies();
     }
 
     private void queryCarbies() {

@@ -52,7 +52,7 @@
         android:focusable="true"
         android:visibility="gone"
         app:backgroundTint="@android:color/holo_green_dark"
-        app:layout_constraintBottom_toBottomOf="@+id/rvCarbies"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_account_plus_outline" />
 </androidx.constraintlayout.widget.ConstraintLayout>
