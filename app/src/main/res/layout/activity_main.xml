@@ -31,12 +31,12 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#ffffff"
+        android:background="@android:color/white"
         android:elevation="@dimen/cardview_default_elevation"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/white" />
+        app:titleTextColor="@android:color/black" />
 
     <TextView
         android:id="@+id/tvName"

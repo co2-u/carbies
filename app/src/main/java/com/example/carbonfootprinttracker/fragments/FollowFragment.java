@@ -134,6 +134,8 @@ public class FollowFragment extends Fragment {
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        mainActivity.getSupportActionBar().setTitle("Follow User");
     }
 
     @Override
@@ -142,5 +144,6 @@ public class FollowFragment extends Fragment {
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 }
