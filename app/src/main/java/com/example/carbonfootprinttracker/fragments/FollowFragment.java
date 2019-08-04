@@ -1,7 +1,9 @@
 package com.example.carbonfootprinttracker.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +12,21 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.carbonfootprinttracker.ItemClickSupport;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.adapters.UserAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +75,39 @@ public class FollowFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 queryUsersStartWith(newText);
                 return false;
+            }
+        });
+
+        ItemClickSupport.addTo(rvUsers).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                alertDialog.setTitle("Follow User?");
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                ParseUser clickedUser = mUsers.get(position);
+                                ParseUser.getCurrentUser().add("following", clickedUser.getObjectId());
+                                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e != null) {
+                                            e.printStackTrace();
+                                        } else {
+                                            Log.d(TAG, "" + ParseUser.getCurrentUser().getUsername() + " followed " + clickedUser.getUsername());
+                                        }
+                                        dialog.dismiss();
+                                    }
+                                });
+                            }
+                        });
+                alertDialog.show();
             }
         });
     }
