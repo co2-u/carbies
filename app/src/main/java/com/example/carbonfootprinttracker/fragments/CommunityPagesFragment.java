@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.adapters.CommunityCarbiesAdapter;
 import com.example.carbonfootprinttracker.models.Carbie;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -46,7 +45,7 @@ public class CommunityPagesFragment extends Fragment {
     @BindView(R.id.rvCarbies) RecyclerView rvCarbies;
     @BindView(R.id.pbLoading) ProgressBar pbLoading;
     @BindView(R.id.tvMessage) TextView tvMessage;
-    @BindView(R.id.fabFollowUser) FloatingActionButton fabFollowUser;
+//    @BindView(R.id.fabFollowUser) FloatingActionButton fabFollowUser;
 
     private CommunityCarbiesAdapter communityCarbiesAdapter;
     private List<Carbie> mCarbies;
@@ -54,7 +53,6 @@ public class CommunityPagesFragment extends Fragment {
     private Context context;
     private int mPage;
     private Set<String> following;
-    private List<String> userIds;
 
     public CommunityPagesFragment (int page) {
         this.mPage = page;
@@ -74,20 +72,9 @@ public class CommunityPagesFragment extends Fragment {
         following = new HashSet<>();
 
         if (mPage == 0) {
-            tvMessage.setText("No one has logged Carbies today yet!");
-        } else {
-            fabFollowUser.setVisibility(View.VISIBLE);
-            fabFollowUser.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FollowFragment followFragment = new FollowFragment();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragmentPlaceholder, followFragment)
-                            .addToBackStack(TAG)
-                            .commit();
-                }
-            });
             tvMessage.setText("No one you follow has logged Carbies today yet!");
+        } else { //mPage == 1
+            tvMessage.setText("No one has logged Carbies today yet!");
         }
 
         rvCarbies.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
@@ -120,14 +107,14 @@ public class CommunityPagesFragment extends Fragment {
                     Log.e(TAG, "Error with query");
                     e.printStackTrace();
                 } else {
-                    if (mPage == 0) {
-                        mCarbies.addAll(objects);
-                    } else { //mPage == 1
+                    if (mPage == 0) { // Following page
                         for (Carbie carbie: objects) {
                             if (following.contains(carbie.getUser().getObjectId())) {
                                 mCarbies.add(carbie);
                             }
                         }
+                    } else { // All page
+                        mCarbies.addAll(objects);
                     }
                     communityCarbiesAdapter.notifyDataSetChanged();
                     pbLoading.setVisibility(ProgressBar.INVISIBLE);

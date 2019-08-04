@@ -22,7 +22,7 @@ public class CommunityPagerAdapter extends FragmentPagerAdapter {
                 new CommunityPagesFragment(0),
                 new CommunityPagesFragment(1)
         };
-        tabTitles = new String[] { "All", "Following" };
+        tabTitles = new String[] { "Following", "All" };
     }
 
     @Override

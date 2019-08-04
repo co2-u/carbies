@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.adapters.CommunityPagerAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import butterknife.BindView;
@@ -24,6 +25,7 @@ public class CommunityFragment extends Fragment {
 
     @BindView(R.id.vpCommunity) ViewPager vpCommunity;
     @BindView(R.id.tlCommunity) TabLayout tlCommunity;
+    @BindView(R.id.fabFollow) FloatingActionButton fabFollow;
 
     @Nullable
     @Override
@@ -38,8 +40,18 @@ public class CommunityFragment extends Fragment {
         vpCommunity.setAdapter(new CommunityPagerAdapter(getChildFragmentManager(), getContext()));
         tlCommunity.setupWithViewPager(vpCommunity);
         tlCommunity.setInlineLabel(true);
-        tlCommunity.getTabAt(0).setIcon(R.drawable.ic_web);
-        tlCommunity.getTabAt(1).setIcon(R.drawable.ic_account_multiple);
+        tlCommunity.getTabAt(0).setIcon(R.drawable.ic_account_multiple);
+        tlCommunity.getTabAt(1).setIcon(R.drawable.ic_web);
+        fabFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FollowFragment followFragment = new FollowFragment();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentPlaceholder, followFragment)
+                        .addToBackStack(TAG)
+                        .commit();
+            }
+        });
     }
 
     public void onResume() {

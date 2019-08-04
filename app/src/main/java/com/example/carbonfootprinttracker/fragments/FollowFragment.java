@@ -41,7 +41,6 @@ public class FollowFragment extends Fragment {
     @BindView(R.id.rvUsers) RecyclerView rvUsers;
 
     private List<ParseUser> mUsers;
-    private List<ParseUser> allUsers;
     private UserAdapter userAdapter;
     private Context context;
 
