@@ -114,6 +114,7 @@ public class FollowFragment extends Fragment {
     private void queryUsersStartWith(String prefix) {
         ParseQuery<ParseUser> userParseQuery = ParseUser.getQuery();
         userParseQuery.whereStartsWith("username", prefix);
+        userParseQuery.whereNotEqualTo("username", ParseUser.getCurrentUser().getUsername());
         userParseQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
