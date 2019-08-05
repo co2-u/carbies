@@ -125,6 +125,7 @@ public class Carbie extends ParseObject {
         copied.setEndLocation(this.getEndLocation());
         copied.setScore(this.getScore());
         copied.setIsFavorited(this.getIsFavorited());
+        copied.setIsDeleted(false);
         return copied;
     }
 }

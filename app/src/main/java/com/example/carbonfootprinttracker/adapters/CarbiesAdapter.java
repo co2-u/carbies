@@ -14,6 +14,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -110,15 +111,13 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
                         Fragment fragment = new DetailsFragment();
                         Bundle args = new Bundle();
                         args.putParcelable("carbie", carbies.get(getAdapterPosition()));
                         args.putInt("itemPosition", getAdapterPosition());
                         fragment.setArguments(args);
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.fragmentPlaceholder, fragment)
-                                .addToBackStack("DailyLogFragment")
-                                .commit();
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentPlaceholder, fragment).addToBackStack(null).commit();
                     }
                 });
             }
@@ -245,8 +244,7 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                         carbies.remove(position);
                         notifyItemRemoved(position);
                         Log.d(TAG, "Successfully deleted item " + mRecentlyDeletedItem.getObjectId());
-                        Carbie carbie = new Carbie();
-                        showUndoSnackbar(carbie);
+                        showUndoSnackbar(mRecentlyDeletedItem);
                     }
                 });
             }

@@ -72,11 +72,6 @@ public class DailyLogFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvCarbies.setLayoutManager(linearLayoutManager);
 
-
-        // item touch helper that listens for swipe to delete
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(carbiesAdapter, context));
-        itemTouchHelper.attachToRecyclerView(rvCarbies);
-
 //        ItemClickSupport.addTo(rvCarbies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
 //            @Override
 //            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
