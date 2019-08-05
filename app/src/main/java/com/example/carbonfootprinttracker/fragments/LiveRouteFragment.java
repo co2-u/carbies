@@ -298,7 +298,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     private void drawPolyline(Location from, Location to) {
@@ -354,6 +354,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.GONE);
         mainActivity.findViewById(R.id.tvEnterData).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -374,6 +375,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
         mainActivity.findViewById(R.id.tvEnterData).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.VISIBLE);
     }
 
     @Override

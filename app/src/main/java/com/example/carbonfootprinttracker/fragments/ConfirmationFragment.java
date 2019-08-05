@@ -206,6 +206,9 @@ public class ConfirmationFragment extends Fragment {
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.GONE);
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        mainActivity.getSupportActionBar().setTitle("Confirm Details");
     }
 
     @Override
@@ -214,6 +217,8 @@ public class ConfirmationFragment extends Fragment {
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.VISIBLE);
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     private void showProgressBar() {

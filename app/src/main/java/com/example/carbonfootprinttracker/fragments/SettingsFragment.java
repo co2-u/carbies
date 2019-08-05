@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -19,7 +22,9 @@ import com.example.carbonfootprinttracker.ChangeProfilePictureActivity;
 import com.example.carbonfootprinttracker.LoginActivity;
 import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +40,8 @@ public class SettingsFragment extends Fragment {
     @BindView(R.id.btnMoreInfo) public Button btnMoreInfo;
     @BindView(R.id.tvUsername) public TextView tvUsername;
     @BindView(R.id.ivProfileImage) public ImageView ivProfileImage;
+    @BindView(R.id.switchUserPrivacy) public Switch switchPrivacy;
+    @BindView(R.id.progressBar5) public ProgressBar pbLoading;
 
     @BindView(R.id.btnCalendar) Button btnCalendar;
 
@@ -55,8 +62,15 @@ public class SettingsFragment extends Fragment {
         user = ParseUser.getCurrentUser();
         tvUsername.setText(user.getUsername());
         Log.d(TAG, Boolean.toString(ParseUser.getCurrentUser().getParseFile("profileImage") == null) );
+
         if (ParseUser.getCurrentUser().getParseFile("profileImage") != null) {
             Glide.with(getContext()).load(ParseUser.getCurrentUser().getParseFile("profileImage").getUrl()).dontAnimate().into(ivProfileImage);
+        }
+
+        if (user.getBoolean("isPrivate")) {
+            switchPrivacy.setChecked(true);
+        } else {
+            switchPrivacy.setChecked(false);
         }
 
         btLogout.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +124,27 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, new CalendarFragment()).commit();
+            }
+        });
+
+        switchPrivacy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                pbLoading.setVisibility(View.VISIBLE);
+                ParseUser.getCurrentUser().put("isPrivate", isChecked);
+                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        pbLoading.setVisibility(View.INVISIBLE);
+                        if (e != null) {
+                            Log.d(TAG, "failed to switch user privacy");
+                            e.printStackTrace();
+                            switchPrivacy.setChecked(!isChecked);
+                        } else {
+                            Log.d(TAG, "Successfully switched user privacy");
+                        }
+                    }
+                });
             }
         });
     }
