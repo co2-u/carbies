@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,11 +38,13 @@ import java.util.Locale;
 import java.util.HashSet;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.ListFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CalendarFragment extends Fragment{
+public class CalendarFragment extends Fragment {
 
     //declare the calendar itself
     //declare and set up the adapter
@@ -50,7 +53,9 @@ public class CalendarFragment extends Fragment{
     @BindView(R.id.btnPrevious) ImageButton btnPrevious;
     @BindView(R.id.gridView) GridView gridView;
     @BindView(R.id.tvCurrentDate) TextView tvCurrentDate;
-    //@BindView(R.id.tvDay) TextView tvDay;
+//    @BindView(R.id.tvDay) TextView tvDay;
+
+    private FragmentManager fragmentManager;
 
     protected CalendarAdapter calendarAdapter;
     private ArrayList<Date> cells;
@@ -114,13 +119,13 @@ public class CalendarFragment extends Fragment{
             }
         });
 
-//        //click into a day and leads to the daily summary fragment
-//        tvDay.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(context, "the date is: yee", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void updateCalendar()
@@ -150,6 +155,5 @@ public class CalendarFragment extends Fragment{
         calendar.set(Calendar.MONTH, month);
         // update grid
         gridView.setAdapter(new CalendarAdapter(context, cells, calendar));
-
     }
 }
