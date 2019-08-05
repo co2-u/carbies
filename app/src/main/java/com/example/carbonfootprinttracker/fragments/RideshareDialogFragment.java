@@ -61,15 +61,15 @@ public class RideshareDialogFragment extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 carbie.setRiders(Integer.valueOf(spNumPassengers.getSelectedItem().toString()));
-                goRoute();
+                goLiveRoute();
                 //// Close the dialog and return back to the parent activity
                 dismiss();
             }
         });
     }
 
-    private void goRoute() {
-        Fragment fragment = new RouteFragment();
+    private void goLiveRoute() {
+        Fragment fragment = new LiveRouteFragment();
         Bundle args = new Bundle();
         args.putParcelable("carbie", carbie);
         fragment.setArguments(args);

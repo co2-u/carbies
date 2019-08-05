@@ -25,7 +25,6 @@ public class ComposeFragment extends Fragment {
     @BindView(R.id.btnGasCar) Button btnGasCar;
     @BindView(R.id.btnPublicTransportation) Button btnPublicTransportation;
     @BindView(R.id.btnWalk) Button btnWalk;
-    // @BindView(R.id.btnBack) Button btnBack;
 
     //this is the button that will have the dialog
     @BindView(R.id.btnCarpool) Button btnCarpool;
@@ -50,7 +49,7 @@ public class ComposeFragment extends Fragment {
         btnBike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goRoute(TransportationMode.Bike);
+                goLiveRoute(TransportationMode.Bike);
             }
         });
 
@@ -85,15 +84,15 @@ public class ComposeFragment extends Fragment {
         btnWalk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goRoute(TransportationMode.Walk);
+                goLiveRoute(TransportationMode.Walk);
             }
         });
     }
 
     //this is a helper method -- it tells the buttons to go to the RouteFragment
     //once you are in the RouteFragment, you inflate the view and the route xml file shows up
-    private void goRoute(TransportationMode mode) {
-        Fragment fragment = new RouteFragment();
+    private void goLiveRoute(TransportationMode mode) {
+        Fragment fragment = new LiveRouteFragment();
 
         Bundle args = new Bundle();
         Carbie carbie = new Carbie();

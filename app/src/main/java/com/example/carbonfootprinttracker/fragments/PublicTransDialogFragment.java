@@ -50,7 +50,7 @@ public class PublicTransDialogFragment extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 carbie.setTransportation("Rail");
-                goRoute();
+                goLiveRoute();
                 //// Close the dialog and return back to the parent activity
                 dismiss();
             }
@@ -60,15 +60,15 @@ public class PublicTransDialogFragment extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 carbie.setTransportation("Bus");
-                goRoute();
+                goLiveRoute();
                 //// Close the dialog and return back to the parent activity
                 dismiss();
             }
         });
     }
 
-    private void goRoute() {
-        Fragment fragment = new RouteFragment();
+    private void goLiveRoute() {
+        Fragment fragment = new LiveRouteFragment();
         Bundle args = new Bundle();
         args.putParcelable("carbie", carbie);
         fragment.setArguments(args);

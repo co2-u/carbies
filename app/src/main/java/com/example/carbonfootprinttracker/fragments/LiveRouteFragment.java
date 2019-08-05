@@ -130,6 +130,8 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                     if (mCurrentLocation != null) {
                         mLocations.add(mCurrentLocation);
                         mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude())));
+                        btStart.setVisibility(View.INVISIBLE);
+                        btStop.setVisibility(View.VISIBLE);
                     } else {
                         Log.d(TAG, "mCurrentLocation is null");
                     }

@@ -52,7 +52,7 @@ public class GasCarDialogFragment extends AppCompatDialogFragment {
 
             public void onClick(View v) {
                 carbie.setTransportation("SmallCar");
-                goRoute();
+                goLiveRoute();
                 //// Close the dialog and return back to the parent activity
                 dismiss();
             }
@@ -62,7 +62,7 @@ public class GasCarDialogFragment extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 carbie.setTransportation("MediumCar");
-                goRoute();
+                goLiveRoute();
                 //// Close the dialog and return back to the parent activity
                 dismiss();
             }
@@ -72,15 +72,15 @@ public class GasCarDialogFragment extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 carbie.setTransportation("LargeCar");
-                goRoute();
+                goLiveRoute();
                 //// Close the dialog and return back to the parent activity
                 dismiss();
             }
         });
     }
 
-    private void goRoute() {
-        Fragment fragment = new RouteFragment();
+    private void goLiveRoute() {
+        Fragment fragment = new LiveRouteFragment();
         Bundle args = new Bundle();
         args.putParcelable("carbie", carbie);
         fragment.setArguments(args);
