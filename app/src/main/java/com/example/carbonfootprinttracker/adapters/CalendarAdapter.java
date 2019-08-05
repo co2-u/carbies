@@ -41,10 +41,6 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
         int day = date.getDate();
         int month = date.getMonth();
         int year = date.getYear();
-//        Date date = getItem(position);
-//        int day = calendar.get(Calendar.DAY_OF_WEEK);
-//        int month = calendar.get(Calendar.MONTH);
-//        int year = calendar.get(Calendar.YEAR) - 1900;
 
         // today
 //        Date today = new Date();
@@ -68,7 +64,7 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
             // if it is today, set it to blue/bold
             ((TextView)view).setTextColor(Color.RED);
             ((TextView) view).setGravity(Gravity.CENTER);
-            view.setBackgroundResource(R.drawable.button_accept);
+//            view.setBackgroundResource(R.drawable.button_accept);
         } else {
 //            Log.e("ca", "month is: " + month);
 //            Log.e("ca", "calendar month is: " + calendar.get(Calendar.MONTH) );

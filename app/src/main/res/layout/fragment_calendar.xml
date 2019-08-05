@@ -11,12 +11,11 @@
         android:background="@android:color/holo_blue_bright">
 
         <ImageButton
+            android:id="@+id/btnPrevious"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/btnPrevious"
             android:layout_margin="10dp"
-            android:background="@drawable/chevron_left"
-            />
+            android:background="@drawable/chevron_left" />
 
         <TextView
             android:id="@+id/tvCurrentDate"
@@ -24,14 +23,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="4dp"
-            android:text="CurrentDate" />
+            android:text="CurrentDate"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            />
 
         <ImageButton
+            android:id="@+id/btnNext"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/btnNext"
             android:layout_margin="10dp"
-            android:background="@drawable/chevron_right"/>
+            android:background="@drawable/chevron_right" />
 
     </LinearLayout>
 
@@ -43,6 +45,10 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:background="@android:color/holo_blue_dark">
+
+        <TextView
+            android:layout_width="15dp"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,10 +63,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Mon"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:textStyle="bold"/>
+            android:text="Mon"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
