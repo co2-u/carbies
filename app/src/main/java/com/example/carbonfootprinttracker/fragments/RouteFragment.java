@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.example.carbonfootprinttracker.models.Route;
@@ -89,6 +90,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
 
         try {
             carbie = getArguments().getParcelable("carbie");
+            ((MainActivity)getActivity()).getSupportActionBar().setTitle(carbie.getTransportation());
         } catch (NullPointerException e) {
             Log.e(TAG, "Carbie was not passed into RouteFragment");
             e.printStackTrace();
@@ -339,6 +341,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         mMapView.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (!etStart.getText().toString().isEmpty() && !etEnd.getText().toString().isEmpty()) {
             btSeeRoutes.performClick();
@@ -357,6 +360,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     @Override

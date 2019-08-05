@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.Manifest;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
@@ -79,6 +80,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.btStop) Button btStop;
     @BindView(R.id.mapView2) MapView mapView;
     @BindView(R.id.progressBar2) ProgressBar pbLoading;
+    TextView tvEnterData;
 
     @Nullable
     @Override
@@ -97,6 +99,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
         try {
             carbie = getArguments().getParcelable("carbie");
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle(carbie.getTransportation());
         } catch (NullPointerException e) {
             Log.e(TAG, "Carbie was not passed into LiveRouteFragment");
             e.printStackTrace();
@@ -121,6 +124,21 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                     .apiKey(getString(R.string.google_maps_api_key))
                     .build();
         }
+
+        tvEnterData = ((MainActivity) getActivity()).findViewById(R.id.tvEnterData);
+        tvEnterData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment routeFragment = new RouteFragment();
+                Bundle args = new Bundle();
+                args.putParcelable("carbie", carbie);
+                routeFragment.setArguments(args);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentPlaceholder, routeFragment)
+                        .addToBackStack("LiveRouteFragment")
+                        .commit();
+            }
+        });
 
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,7 +352,9 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         super.onResume();
         mapView.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.tvEnterData).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -350,7 +370,9 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         Log.d(TAG, "onStop");
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
+        mainActivity.findViewById(R.id.tvEnterData).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
