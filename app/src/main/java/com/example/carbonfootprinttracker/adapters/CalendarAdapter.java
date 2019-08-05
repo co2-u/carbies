@@ -12,23 +12,29 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.carbonfootprinttracker.R;
+import com.example.carbonfootprinttracker.models.Carbie;
+import com.example.carbonfootprinttracker.models.DailySummary;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 
 public class CalendarAdapter extends ArrayAdapter<Date> {
 
     private LayoutInflater inflater;
     private Calendar calendar;
+    private List<DailySummary> dailySummaries;
+    private static final Integer MAX_CARBON_SCORE = 8000;
 
-    public CalendarAdapter(Context context, ArrayList<Date> days, Calendar calendar)
+    public CalendarAdapter(Context context, ArrayList<Date> days, List<DailySummary> dailySummaries, Calendar calendar)
     {
         super(context, R.layout.fragment_calendar, days);
         inflater = LayoutInflater.from(context);
         this.calendar = calendar;
+        this.dailySummaries = dailySummaries;
     }
 
     @Override
@@ -58,18 +64,34 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
             // if this day is outside current month, grey it out
             ((TextView) view).setTextColor(Color.parseColor("#E0E0E0"));
         }
-        else if (day == Calendar.getInstance().getTime().getDate() && month == Calendar.getInstance().getTime().getMonth()
+        else //it is in the month
+        {
+            //SET THE COLORS
+            for(DailySummary dailySummary : dailySummaries){
+                Log.d("Daily Summary", "" + dailySummaries.size());
+                //check their createdAt
+                if(dailySummary.getCreatedAt().equals(Calendar.getInstance().getTime())) {
+                    //set the colors
+                    if (dailySummary.getScore() <= MAX_CARBON_SCORE){
+                        ((TextView)view).setTextColor(Color.GREEN);
+                        Log.d("color", "YUH");
+                    }
+                    else if (dailySummary.getScore() > MAX_CARBON_SCORE && dailySummary.getScore() <= MAX_CARBON_SCORE * 1.1){
+                        ((TextView)view).setTextColor(Color.YELLOW);
+                    } else {
+                        ((TextView)view).setTextColor(Color.RED);
+                    }
+                }
+            }
+        }
+        if (day == Calendar.getInstance().getTime().getDate() && month == Calendar.getInstance().getTime().getMonth()
                 && year == Calendar.getInstance().getTime().getYear())
         {
             // if it is today, set it to blue/bold
-            ((TextView)view).setTextColor(Color.RED);
+            ((TextView)view).setTextColor(Color.BLUE);
             ((TextView) view).setGravity(Gravity.CENTER);
 //            view.setBackgroundResource(R.drawable.button_accept);
-        } else {
-//            Log.e("ca", "month is: " + month);
-//            Log.e("ca", "calendar month is: " + calendar.get(Calendar.MONTH) );
         }
-
         // set text
         ((TextView)view).setText(String.valueOf(date.getDate()));
 

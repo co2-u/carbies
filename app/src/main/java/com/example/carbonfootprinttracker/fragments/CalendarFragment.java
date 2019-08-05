@@ -15,6 +15,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,12 @@ import androidx.fragment.app.Fragment;
 //import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.adapters.CalendarAdapter;
+import com.example.carbonfootprinttracker.models.Carbie;
+import com.example.carbonfootprinttracker.models.DailySummary;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
 
@@ -34,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.HashSet;
 
@@ -45,6 +53,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CalendarFragment extends Fragment {
+
+    private final String TAG = "CalendarFragment";
 
     //declare the calendar itself
     //declare and set up the adapter
@@ -72,6 +82,7 @@ public class CalendarFragment extends Fragment {
     private Calendar currentDate = Calendar.getInstance();
 
     Context context;
+    private List<DailySummary> mDailySummaries;
 
     @Nullable
     @Override
@@ -86,13 +97,16 @@ public class CalendarFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         context = getContext();
+        mDailySummaries = new ArrayList<>();
         cells = new ArrayList<>();
         DateFormat dateFormat = new SimpleDateFormat("MMMM");
         String month_name= dateFormat.format(currentDate.getTime());
         Date date = new Date();
 
         tvCurrentDate.setText(month_name);
-        calendarAdapter = new CalendarAdapter(context, cells, currentDate);
+        queryDailySummaries();
+
+        calendarAdapter = new CalendarAdapter(context, cells, mDailySummaries, currentDate);
 
         updateCalendar();
 
@@ -115,7 +129,6 @@ public class CalendarFragment extends Fragment {
                 String month_name = dateFormat.format(currentDate.getTime());
                 tvCurrentDate.setText(month_name);
                 updateCalendar();
-
             }
         });
 
@@ -126,6 +139,7 @@ public class CalendarFragment extends Fragment {
                 Toast.makeText(context, "the date is: yee", Toast.LENGTH_LONG).show();
             }
         });
+
     }
 
     public void updateCalendar()
@@ -154,6 +168,29 @@ public class CalendarFragment extends Fragment {
         }
         calendar.set(Calendar.MONTH, month);
         // update grid
-        gridView.setAdapter(new CalendarAdapter(context, cells, calendar));
+        gridView.setAdapter(new CalendarAdapter(context, cells, mDailySummaries, calendar));
+    }
+
+    protected void queryDailySummaries() {
+        Log.e(TAG, "queried");
+
+        ParseQuery<DailySummary> query = ParseQuery.getQuery(DailySummary.class);
+        query.include(DailySummary.KEY_USER);
+        query.whereEqualTo(DailySummary.KEY_USER, ParseUser.getCurrentUser());
+        query.addDescendingOrder(DailySummary.KEY_CREATED_AT);
+        query.findInBackground(new FindCallback<DailySummary>() {
+            @Override
+            public void done(List<DailySummary> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error with query");
+                    e.printStackTrace();
+                    return;
+                } else {
+                    Log.e(TAG, "" + objects.size());
+                    mDailySummaries.addAll(objects);
+                    calendarAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 }
