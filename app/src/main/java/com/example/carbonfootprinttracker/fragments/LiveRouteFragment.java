@@ -176,7 +176,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                 showProgressBar();
                 chronometer.stop();
                 long elapsedSeconds = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
-                
+
                 mLocations.add(mCurrentLocation);
                 mGoogleMap.addMarker(
                         new MarkerOptions()
@@ -189,6 +189,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                 carbie.setDistance(toMiles(getTotalDistance()));
                 carbie.setStartLocation("Live Start");
                 carbie.setEndLocation("Live End");
+                carbie.setTripLength(elapsedSeconds);
 
                 final Fragment confirmationFragment = new ConfirmationFragment();
                 final Bundle args = new Bundle();
