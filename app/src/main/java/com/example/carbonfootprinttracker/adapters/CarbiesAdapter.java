@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -134,7 +135,8 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                             public boolean onMenuItemClick(MenuItem item) {
                                 switch (item.getTitle().toString()) {
-                                    case "Favorite":
+                                    case "Add to Frequents":
+                                        Toast.makeText(context, "Added to Frequents", Toast.LENGTH_SHORT).show();
                                         carbies.get(getAdapterPosition()).setIsFavorited(true);
                                         carbies.get(getAdapterPosition()).saveInBackground(new SaveCallback() {
                                             @Override
@@ -147,6 +149,7 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                                                 Log.d(TAG, "Success!");
                                             }
                                         });
+                                        notifyDataSetChanged();
                                         break;
                                     case "Share":
                                         Intent sendIntent = new Intent();
