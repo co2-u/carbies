@@ -67,7 +67,7 @@ public class CalendarFragment extends Fragment {
 
     private FragmentManager fragmentManager;
 
-    protected CalendarAdapter calendarAdapter;
+    private CalendarAdapter calendarAdapter;
     private ArrayList<Date> cells;
 
     // how many days to show, defaults to six weeks, 42 days
@@ -106,9 +106,10 @@ public class CalendarFragment extends Fragment {
         tvCurrentDate.setText(month_name);
         queryDailySummaries();
 
-        calendarAdapter = new CalendarAdapter(context, cells, mDailySummaries, currentDate);
+//        calendarAdapter = new CalendarAdapter(context, cells, mDailySummaries, currentDate);
+//        gridView.setAdapter(calendarAdapter);
 
-        updateCalendar();
+//        updateCalendar();
 
         //add one month and refresh the UI
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -188,7 +189,8 @@ public class CalendarFragment extends Fragment {
                 } else {
                     Log.e(TAG, "" + objects.size());
                     mDailySummaries.addAll(objects);
-                    calendarAdapter.notifyDataSetChanged();
+//                    calendarAdapter.notifyDataSetChanged();
+                    updateCalendar();
                 }
             }
         });

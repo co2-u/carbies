@@ -7,11 +7,11 @@
 
     <ImageView
         android:id="@+id/ivQualScore"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="340dp"
+        android:layout_height="340dp"
         android:background="@drawable/circle_placeholder"
-        android:src="@drawable/img"
         android:elevation="13dp"
+        android:src="@drawable/img"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
