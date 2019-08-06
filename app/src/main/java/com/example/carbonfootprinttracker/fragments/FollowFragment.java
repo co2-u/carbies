@@ -1,9 +1,7 @@
 package com.example.carbonfootprinttracker.fragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,7 +24,6 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +40,7 @@ public class FollowFragment extends Fragment {
     private List<ParseUser> mUsers;
     private UserAdapter userAdapter;
     private Context context;
+    private FragmentManager fragmentManager;
 
     @Nullable
     @Override
@@ -55,6 +53,7 @@ public class FollowFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         context = getActivity().getApplicationContext();
+        fragmentManager = getFragmentManager();
 
         rvUsers.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         mUsers = new ArrayList<>();
@@ -80,33 +79,34 @@ public class FollowFragment extends Fragment {
         ItemClickSupport.addTo(rvUsers).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-                alertDialog.setTitle("Follow User?");
-                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                ParseUser clickedUser = mUsers.get(position);
-                                ParseUser.getCurrentUser().add("following", clickedUser.getObjectId());
-                                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        if (e != null) {
-                                            e.printStackTrace();
-                                        } else {
-                                            Log.d(TAG, "" + ParseUser.getCurrentUser().getUsername() + " followed " + clickedUser.getUsername());
-                                        }
-                                        dialog.dismiss();
-                                    }
-                                });
-                            }
-                        });
-                alertDialog.show();
+//                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+//                alertDialog.setTitle("Follow User?");
+//                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                ParseUser clickedUser = mUsers.get(position);
+//                                ParseUser.getCurrentUser().add("following", clickedUser.getObjectId());
+//                                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+//                                    @Override
+//                                    public void done(ParseException e) {
+//                                        if (e != null) {
+//                                            e.printStackTrace();
+//                                        } else {
+//                                            Log.d(TAG, "" + ParseUser.getCurrentUser().getUsername() + " followed " + clickedUser.getUsername());
+//                                        }
+//                                        dialog.dismiss();
+//                                    }
+//                                });
+//                            }
+//                        });
+//                alertDialog.show();
+                goToProfile(mUsers.get(position));
             }
         });
     }
@@ -127,6 +127,14 @@ public class FollowFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void goToProfile(ParseUser user) {
+        Fragment profileFragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("user", user);
+        profileFragment.setArguments(args);
+        fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, profileFragment).addToBackStack("CommunityFragment").commit();
     }
 
     @Override

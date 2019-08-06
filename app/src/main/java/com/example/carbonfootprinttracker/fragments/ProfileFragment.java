@@ -25,11 +25,13 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -76,6 +78,26 @@ public class ProfileFragment extends Fragment {
             return;
         }
 
+        if (isFollowing()) {
+            btFollow.setText("Unfollow");
+            btFollow.setBackground(context.getResources().getDrawable(R.drawable.no_confirm_button));
+        } else {
+            btFollow.setText("Follow");
+            btFollow.setBackground(context.getResources().getDrawable(R.drawable.yes_confirm_button));
+        }
+
+        btFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFollowing()) {
+                    unfollowUser();
+                } else {
+                    followUser();
+                }
+                onViewCreated(view, savedInstanceState);
+            }
+        });
+
         tvUsername.setText(user.getUsername());
 
         queryUsersCarbies();
@@ -115,6 +137,34 @@ public class ProfileFragment extends Fragment {
             }
         }
         return false;
+    }
+
+    private void followUser() {
+        ParseUser.getCurrentUser().add("following", user.getObjectId());
+        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    e.printStackTrace();
+                } else {
+                    Log.d(TAG, "" + ParseUser.getCurrentUser().getUsername() + " followed " + user.getUsername());
+                }
+            }
+        });
+    }
+
+    private void unfollowUser() {
+        ParseUser.getCurrentUser().removeAll("following", Collections.singleton(user.getObjectId()));
+        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    e.printStackTrace();
+                } else {
+                    Log.d(TAG, "" + ParseUser.getCurrentUser().getUsername() + " followed " + user.getUsername());
+                }
+            }
+        });
     }
 
     @Override
