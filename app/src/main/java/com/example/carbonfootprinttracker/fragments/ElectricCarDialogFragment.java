@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,12 @@ public class ElectricCarDialogFragment extends AppCompatDialogFragment {
     private Carbie carbie;
     @BindView(R.id.btnHybrid) Button btnHybrid;
     @BindView(R.id.btnElectric) Button btnElectric;
+    @BindView(R.id.tvFuelSource)
+    TextView tvEnergySource;
+    @BindView(R.id.btnFossilFuel)
+    Button btnFossilFuel;
+    @BindView(R.id.btnRenewable)
+    Button btnRenewable;
 
     @Nullable
     @Override
@@ -39,6 +46,9 @@ public class ElectricCarDialogFragment extends AppCompatDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        tvEnergySource.setVisibility(View.GONE);
+        btnFossilFuel.setVisibility(View.GONE);
+        btnRenewable.setVisibility(View.GONE);
 
         try {
             carbie = getArguments().getParcelable("carbie");
@@ -60,7 +70,26 @@ public class ElectricCarDialogFragment extends AppCompatDialogFragment {
         btnElectric.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                carbie.setTransportation("Electric");
+                tvEnergySource.setVisibility(View.VISIBLE);
+                btnFossilFuel.setVisibility(View.VISIBLE);
+                btnRenewable.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnFossilFuel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                carbie.setTransportation("FossilFuel");
+                goLiveRoute();
+                //// Close the dialog and return back to the parent activity
+                dismiss();
+            }
+        });
+
+        btnRenewable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                carbie.setTransportation("Renewable");
                 goLiveRoute();
                 //// Close the dialog and return back to the parent activity
                 dismiss();

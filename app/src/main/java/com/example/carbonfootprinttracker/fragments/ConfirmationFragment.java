@@ -199,7 +199,10 @@ public class ConfirmationFragment extends Fragment {
             case "Hybrid":
                 transport = "d";
                 break;
-            case "Electric":
+            case "Renewable":
+                transport = "d";
+                break;
+            case "FossilFuel":
                 transport = "d";
                 break;
             case "Bus":

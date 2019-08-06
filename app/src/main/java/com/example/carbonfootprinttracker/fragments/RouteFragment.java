@@ -112,7 +112,10 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
             case "Hybrid":
                 travelMode = TravelMode.DRIVING;
                 break;
-            case "Electric":
+            case "FossilFuel":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "Renewable":
                 travelMode = TravelMode.DRIVING;
                 break;
             case "Bus":
