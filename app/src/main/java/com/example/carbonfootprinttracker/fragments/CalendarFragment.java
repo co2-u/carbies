@@ -63,7 +63,6 @@ public class CalendarFragment extends Fragment {
     @BindView(R.id.btnPrevious) ImageButton btnPrevious;
     @BindView(R.id.gridView) GridView gridView;
     @BindView(R.id.tvCurrentDate) TextView tvCurrentDate;
-//    @BindView(R.id.tvDay) TextView tvDay;
 
     private FragmentManager fragmentManager;
 
@@ -99,7 +98,7 @@ public class CalendarFragment extends Fragment {
         context = getContext();
         mDailySummaries = new ArrayList<>();
         cells = new ArrayList<>();
-        DateFormat dateFormat = new SimpleDateFormat("MMMM");
+        DateFormat dateFormat = new SimpleDateFormat("MMMM YYYY");
         String month_name= dateFormat.format(currentDate.getTime());
         Date date = new Date();
 
