@@ -209,17 +209,17 @@
             app:layout_constraintStart_toStartOf="@+id/tvBorder"
             app:layout_constraintTop_toBottomOf="@+id/tvScore" />
 
-        <Button
-            android:id="@+id/btnAddToFavorites"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/main_button_white"
-            android:text="Add to Favorites"
-            android:textColor="#00581B"
-            app:layout_constraintEnd_toEndOf="@+id/tvSuggestion"
-            app:layout_constraintStart_toStartOf="@+id/tvSuggestion"
-            app:layout_constraintTop_toBottomOf="@+id/tvSuggestion" />
+        <!--<Button-->
+            <!--android:id="@+id/btnAddToFavorites"-->
+            <!--android:layout_width="160dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:background="@drawable/main_button_white"-->
+            <!--android:text="Add to Favorites"-->
+            <!--android:textColor="#00581B"-->
+            <!--app:layout_constraintEnd_toEndOf="@+id/tvSuggestion"-->
+            <!--app:layout_constraintStart_toStartOf="@+id/tvSuggestion"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/tvSuggestion" />-->
 
         <ImageView
             android:id="@+id/ivMapShot"

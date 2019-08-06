@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.alarm.MyAlarmReceiver;
+import com.example.carbonfootprinttracker.fragments.CalendarFragment;
 import com.example.carbonfootprinttracker.fragments.CommunityFragment;
 import com.example.carbonfootprinttracker.fragments.ComposeFragment;
 import com.example.carbonfootprinttracker.fragments.CurrentScoreFragment;
@@ -130,6 +131,14 @@ public class MainActivity extends AppCompatActivity {
                         .beginTransaction()
                         .replace(R.id.fragmentPlaceholder, settingsFragment)
                         .addToBackStack("InfoFragment")
+                        .commit();
+                break;
+            case R.id.calendarTab:
+                Fragment calendarFragment = new CalendarFragment();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragmentPlaceholder, calendarFragment)
+                        .addToBackStack("CalendarFragment")
                         .commit();
                 break;
             case android.R.id.home:

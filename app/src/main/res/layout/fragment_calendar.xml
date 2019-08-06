@@ -8,14 +8,15 @@
         android:orientation="horizontal"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:background="@android:color/holo_blue_bright">
+        android:gravity="center">
 
         <ImageButton
             android:id="@+id/btnPrevious"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
-            android:background="@drawable/chevron_left" />
+            android:background="@drawable/chevron_left"
+            android:gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/tvCurrentDate"
@@ -24,8 +25,10 @@
             android:layout_gravity="center"
             android:layout_marginTop="4dp"
             android:text="CurrentDate"
+            android:textColor="#29914e"
             android:textStyle="bold"
             android:textSize="30dp"
+            android:gravity="center_horizontal"
             />
 
         <ImageButton
@@ -33,22 +36,20 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
-            android:background="@drawable/chevron_right" />
+            android:background="@drawable/chevron_right"
+            android:gravity="center_horizontal" />
 
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
         android:orientation="horizontal"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:background="@android:color/holo_blue_dark">
-
-        <TextView
-            android:layout_width="15dp"
-            android:layout_height="wrap_content" />
+        android:background="#29914e"
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,7 +58,8 @@
             android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:text="Sun"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:gravity="center"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -66,7 +68,8 @@
             android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:text="Mon"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:gravity="center"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -75,7 +78,8 @@
             android:text="Tues"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:gravity="center"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -84,7 +88,8 @@
             android:text="Wed"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:gravity="center"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -93,7 +98,8 @@
             android:text="Thurs"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:gravity="center"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -102,7 +108,8 @@
             android:text="Fri"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:gravity="center"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -111,7 +118,8 @@
             android:text="Sat"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:gravity="center"/>
 
     </LinearLayout>
 
@@ -119,7 +127,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/gridView"
-        android:numColumns="7"/>
+        android:numColumns="7"
+        android:background="#ffffff"/>
 
 </LinearLayout>
 

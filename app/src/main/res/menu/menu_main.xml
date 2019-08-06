@@ -9,4 +9,12 @@
         android:visible="false"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/calendarTab"
+        android:enabled="true"
+        android:icon="@drawable/calendar_month"
+        android:title="settings"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+
 </menu>

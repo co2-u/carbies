@@ -44,8 +44,6 @@ public class DetailsFragment extends Fragment {
     TextView tvScore2;
     @BindView(R.id.tvSuggestion)
     TextView tvSuggestion;
-    @BindView(R.id.btnAddToFavorites)
-    Button btnAddToFav;
     @BindView(R.id.ivMapShot)
     ImageView ivMapShot;
 

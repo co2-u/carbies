@@ -59,7 +59,7 @@ public class FrequentsFragment extends  Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        tvMessage.setText("You haven't added any Carbies to your favorites yet!");
+        tvMessage.setText("You haven't added any Carbies to your Frequently Used yet!");
         fragmentManager = getFragmentManager();
         context = getContext();
 
