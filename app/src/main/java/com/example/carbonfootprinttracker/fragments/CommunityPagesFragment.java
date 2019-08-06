@@ -43,7 +43,6 @@ public class CommunityPagesFragment extends Fragment {
     @BindView(R.id.rvCarbies) RecyclerView rvCarbies;
     @BindView(R.id.pbLoading) ProgressBar pbLoading;
     @BindView(R.id.tvMessage) TextView tvMessage;
-//    @BindView(R.id.fabFollowUser) FloatingActionButton fabFollowUser;
 
     private CommunityCarbiesAdapter communityCarbiesAdapter;
     private List<Carbie> mCarbies;
@@ -77,7 +76,7 @@ public class CommunityPagesFragment extends Fragment {
 
         rvCarbies.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         mCarbies = new ArrayList<>();
-        communityCarbiesAdapter = new CommunityCarbiesAdapter(context, mCarbies);
+        communityCarbiesAdapter = new CommunityCarbiesAdapter(context, mCarbies, fragmentManager);
         rvCarbies.setAdapter(communityCarbiesAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvCarbies.setLayoutManager(linearLayoutManager);
