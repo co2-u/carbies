@@ -6,11 +6,13 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,6 +82,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.btStop) Button btStop;
     @BindView(R.id.mapView2) MapView mapView;
     @BindView(R.id.progressBar2) ProgressBar pbLoading;
+    @BindView(R.id.chronometer) Chronometer chronometer;
     TextView tvEnterData;
 
     @Nullable
@@ -146,6 +149,10 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                 if (!isTracking) {
                     isTracking = true;
                     if (mCurrentLocation != null) {
+                        Log.d(TAG, "start");
+                        chronometer.setVisibility(View.VISIBLE);
+                        chronometer.setBase(SystemClock.elapsedRealtime());
+                        chronometer.start();
                         mLocations.add(mCurrentLocation);
                         mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude())));
                         btStart.setVisibility(View.INVISIBLE);
@@ -167,6 +174,9 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                     return;
                 }
                 showProgressBar();
+                chronometer.stop();
+                long elapsedSeconds = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
+                
                 mLocations.add(mCurrentLocation);
                 mGoogleMap.addMarker(
                         new MarkerOptions()
