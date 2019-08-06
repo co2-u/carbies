@@ -6,8 +6,11 @@ import android.media.Image;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CalendarView;
@@ -52,12 +55,9 @@ import androidx.fragment.app.ListFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends Fragment implements View.OnTouchListener, GestureDetector.OnGestureListener {
 
     private final String TAG = "CalendarFragment";
-
-    //declare the calendar itself
-    //declare and set up the adapter
 
     @BindView(R.id.btnNext) ImageButton btnNext;
     @BindView(R.id.btnPrevious) ImageButton btnPrevious;
@@ -72,9 +72,6 @@ public class CalendarFragment extends Fragment {
     // how many days to show, defaults to six weeks, 42 days
     private static final int DAYS_COUNT = 42;
 
-    // default date format
-    private static final String DATE_FORMAT = "MMM yyyy";
-
     // date format
     private String dateFormat;
 
@@ -82,6 +79,12 @@ public class CalendarFragment extends Fragment {
 
     Context context;
     private List<DailySummary> mDailySummaries;
+
+    // for the Calendar swipe
+    private GestureDetector mGestureDetector;
+
+    public CalendarFragment() {
+    }
 
     @Nullable
     @Override
@@ -104,6 +107,10 @@ public class CalendarFragment extends Fragment {
 
         tvCurrentDate.setText(month_name);
         queryDailySummaries();
+
+        gridView.setOnTouchListener(this);
+        mGestureDetector = new GestureDetector(this);
+
 
         //add one month and refresh the UI
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +138,7 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(context, "the date is: yee", Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "the date is: yee", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -188,4 +195,56 @@ public class CalendarFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        mGestureDetector.onTouchEvent(event);
+        return false;
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+        DateFormat dateFormat = new SimpleDateFormat("MMMM YYYY");
+
+        if (e1.getX() - e2.getX() > 100 && Math.abs(velocityX) > 100) {
+            currentDate.add(Calendar.MONTH, 1);
+            String month_name= dateFormat.format(currentDate.getTime());
+            updateCalendar();
+            tvCurrentDate.setText(month_name);
+
+        }  else if (e2.getX() - e1.getX() > 100 && Math.abs(velocityX) > 100) {
+            currentDate.add(Calendar.MONTH, -1);
+            String month_name= dateFormat.format(currentDate.getTime());
+            updateCalendar();
+            tvCurrentDate.setText(month_name);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
 }
