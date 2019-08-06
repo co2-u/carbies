@@ -57,7 +57,8 @@ public class DailySummaryFragment extends Fragment {
             public void onClick(View v) {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "My CO2&U score is " + MainActivity.score);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "I just tracked and decreased" +
+                        "my carbon output for the day using CO2&U! My daily carbon score is " + MainActivity.score);
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
             }
