@@ -31,7 +31,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,6 +44,7 @@ public class ProfileFragment extends Fragment {
 
     @BindView(R.id.ivProfileImage2) ImageView ivProfileImage;
     @BindView(R.id.tvUsername2) TextView tvUsername;
+    @BindView(R.id.tvScoreProfile) TextView tvScore;
     @BindView(R.id.btFollow) Button btFollow;
     @BindView(R.id.rvProfileCarbies) RecyclerView rvProfileCarbies;
 
@@ -50,6 +53,7 @@ public class ProfileFragment extends Fragment {
     private CommunityCarbiesAdapter communityCarbiesAdapter;
     private FragmentManager fragmentManager;
     private Context context;
+    private int score;
 
     @Nullable
     @Override
@@ -69,6 +73,8 @@ public class ProfileFragment extends Fragment {
         rvProfileCarbies.setAdapter(communityCarbiesAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvProfileCarbies.setLayoutManager(linearLayoutManager);
+
+        score = 0;
 
         try{
             user = getArguments().getParcelable("user");
@@ -104,6 +110,15 @@ public class ProfileFragment extends Fragment {
     }
 
     private void queryUsersCarbies() {
+        Date date = new Date();
+        Calendar calendarA = Calendar.getInstance();
+        calendarA.setTime(date);
+        calendarA.set(Calendar.HOUR_OF_DAY, 0);
+        Calendar calendarB = Calendar.getInstance();
+        calendarB.setTime(date);
+        calendarB.set(Calendar.HOUR_OF_DAY, 23);
+        calendarB.set(Calendar.MINUTE, 59);
+
         ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
         query.include(Carbie.KEY_USER);
         query.whereEqualTo(Carbie.KEY_USER, user);
@@ -113,6 +128,13 @@ public class ProfileFragment extends Fragment {
             @Override
             public void done(List<Carbie> objects, ParseException e) {
                 if (e == null) {
+                    for (Carbie carbie: objects) {
+                        Date createdAt = carbie.getCreatedAt();
+                        if (createdAt.before(calendarB.getTime()) && createdAt.after(calendarA.getTime())) {
+                            score += carbie.getInt("score");
+                        }
+                    }
+                    tvScore.setText("" + score);
                     carbies.addAll(objects);
                     communityCarbiesAdapter.notifyDataSetChanged();
                 } else {
