@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -71,11 +72,6 @@ public class DailyLogFragment extends Fragment {
         rvCarbies.setAdapter(carbiesAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         rvCarbies.setLayoutManager(linearLayoutManager);
-
-
-        // item touch helper that listens for swipe to delete
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(carbiesAdapter, context));
-        itemTouchHelper.attachToRecyclerView(rvCarbies);
 
 //        ItemClickSupport.addTo(rvCarbies).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
 //            @Override
@@ -146,4 +142,6 @@ public class DailyLogFragment extends Fragment {
             tvMessage.setVisibility(TextView.VISIBLE);
         }
     }
+
+
 }
