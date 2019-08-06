@@ -50,8 +50,6 @@ public class ChangeProfilePictureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_profile_picture);
         ButterKnife.bind(this);
 
-//        isStoragePermissionGranted();
-
         btnSelectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,33 +189,6 @@ public class ChangeProfilePictureActivity extends AppCompatActivity {
                     break;
             }
     }
-
-//    public  boolean isStoragePermissionGranted() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-//                Log.v(TAG,"Permission is granted");
-//                return true;
-//            } else {
-//                Log.v(TAG,"Permission is revoked");
-//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-//                return false;
-//            }
-//        }
-//        else { //permission is automatically granted on sdk<23 upon installation
-//            Log.v(TAG,"Permission is granted");
-//            return true;
-//        }
-//    }
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-//            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
-//        } else {
-//            //leave
-//        }
-//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

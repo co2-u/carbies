@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/ivProfileImage"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivCircleProfile"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="10dp"
@@ -16,8 +16,7 @@
         android:background="@drawable/ic_account_circle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/circle_placeholder" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvUsername"
@@ -29,7 +28,7 @@
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/ivProfileImage"
-        app:layout_constraintStart_toEndOf="@+id/ivProfileImage"
-        app:layout_constraintTop_toTopOf="@+id/ivProfileImage" />
+        app:layout_constraintBottom_toBottomOf="@+id/ivCircleProfile"
+        app:layout_constraintStart_toEndOf="@+id/ivCircleProfile"
+        app:layout_constraintTop_toTopOf="@+id/ivCircleProfile" />
 </androidx.constraintlayout.widget.ConstraintLayout>
