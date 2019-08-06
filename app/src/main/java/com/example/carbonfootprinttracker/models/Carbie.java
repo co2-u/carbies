@@ -73,7 +73,10 @@ public class Carbie extends ParseObject {
             case "Hybrid":
                 footprint = 196;
                 break;
-            case "Electric":
+            case "FossilFuel":
+                footprint = 129;
+                break;
+            case "Renewable":
                 footprint = 129;
                 break;
             case "Bus":

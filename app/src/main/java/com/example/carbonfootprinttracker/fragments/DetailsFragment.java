@@ -115,7 +115,10 @@ public class DetailsFragment extends Fragment {
                 case "Hybrid":
                     tvSuggestion.setText(getString(R.string.hybridSuggestion));
                     break;
-                case "Electric":
+                case "FossilFuel":
+                    tvSuggestion.setText(getString(R.string.electricSuggestion));
+                    break;
+                case "Renewable":
                     tvSuggestion.setText(getString(R.string.electricSuggestion));
                     break;
                 case "Bus":
