@@ -172,6 +172,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                     carbie.setStartLocation(selectedRoute.getStartAddress());
                     carbie.setEndLocation(selectedRoute.getEndAddress());
                     long duration = Math.round(selectedRoute.getDuration().inSeconds); // in seconds
+                    carbie.setTripLength(duration);
 
                     // Create confirmationFragment and arguments bundle
                     final Fragment confirmationFragment = new ConfirmationFragment();

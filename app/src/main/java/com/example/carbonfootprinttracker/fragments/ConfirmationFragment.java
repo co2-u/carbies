@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -34,29 +33,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ConfirmationFragment extends Fragment {
-    @BindView(R.id.tvStartPoint2)
-    TextView tvStartPoint2;
-    @BindView(R.id.tvEndPoint2)
-    TextView tvEndPoint2;
-    @BindView(R.id.tvMode2)
-    TextView tvMode2;
-    @BindView(R.id.btnConfirmNo)
-    Button btnConfirmNo;
-    @BindView(R.id.btnConfirmYes)
-    Button btnConfirmYes;
-    @BindView(R.id.btnYesAndGo)
-    Button btnYesAndGo;
-    @BindView(R.id.ivMapSnapshot)
-    ImageView ivMapSnapshot;
-    @BindView(R.id.etConfirmName)
-    TextInputLayout etConfirmName;
-    @BindView (R.id.progressBar3)
-    ProgressBar pbLoading;
-    @BindView(R.id.tvDistance)
-    TextView tvDistance;
-
     private static final DecimalFormat df = new DecimalFormat("0.00");
     private static final String TAG = "ConfirmationFragment";
+
+    @BindView(R.id.tvStartPoint2) TextView tvStartPoint2;
+    @BindView(R.id.tvEndPoint2) TextView tvEndPoint2;
+    @BindView(R.id.tvMode2) TextView tvMode2;
+    @BindView(R.id.btnConfirmNo) Button btnConfirmNo;
+    @BindView(R.id.btnConfirmYes) Button btnConfirmYes;
+    @BindView(R.id.btnYesAndGo) Button btnYesAndGo;
+    @BindView(R.id.ivMapSnapshot) ImageView ivMapSnapshot;
+    @BindView(R.id.etConfirmName) TextInputLayout etConfirmName;
+    @BindView (R.id.progressBar3) ProgressBar pbLoading;
+    @BindView(R.id.tvDistance) TextView tvDistance;
+    @BindView(R.id.tvDuration) TextView tvDuration;
 
     private Carbie carbie;
     private ParseFile photoFile;
@@ -79,6 +69,7 @@ public class ConfirmationFragment extends Fragment {
             tvEndPoint2.setText(carbie.getEndLocation());
             tvMode2.setText(carbie.getTransportation());
             tvDistance.setText(df.format(carbie.getDistance()) + " miles");
+            tvDuration.setText(formatSeconds(carbie.getTripLength()));
         } catch (NullPointerException e) {
             Log.d(TAG, "Carbie not passed into ConfirmationFragment");
             e.printStackTrace();
@@ -255,5 +246,23 @@ public class ConfirmationFragment extends Fragment {
 
     private void hideProgressBar() {
         pbLoading.setVisibility(ProgressBar.GONE);
+    }
+
+    private String formatSeconds(Long seconds) {
+        long p1 = seconds % 60;
+        long p2 = seconds / 60;
+        long p3 = p2 % 60;
+        p2 = p2 / 60;
+
+        String p1s = "" + p1;
+        String p2s = "" + p2;
+        String p3s = "" + p3;
+
+        if (p1 < 10) { p1s = "0" + p1; }
+        if (p2 < 10) { p2s = "0" + p2; }
+        if (p3 < 10) { p3s = "0" + p3; }
+
+        String res = p2s + ":" + p3s + ":" + p1s;
+        return res;
     }
 }

@@ -183,7 +183,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:background="#00680A"
@@ -210,7 +210,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDistance" />
+            app:layout_constraintTop_toBottomOf="@+id/tvDuration" />
 
         <ProgressBar
             android:id="@+id/progressBar3"
@@ -247,22 +247,51 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etConfirmName"
-            android:layout_width="401dp"
-            android:layout_height="59dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="@+id/tvStartPointConfirm"
+            app:layout_constraintStart_toStartOf="@+id/tvStartPointConfirm"
+            app:layout_constraintTop_toBottomOf="@+id/tvNameTitle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Please enter a title for your Carbie" />
+                android:hint="Enter a Title" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvNameTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Title: "
+            android:textColor="#00680A"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/etConfirmName"
+            app:layout_constraintStart_toStartOf="@+id/etConfirmName"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvDurationTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Duration (hh:mm:ss):"
+            android:textColor="#00680A"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tvDistance"
+            app:layout_constraintStart_toStartOf="@+id/tvDistance"
+            app:layout_constraintTop_toBottomOf="@+id/tvDistance" />
+
+        <TextView
+            android:id="@+id/tvDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="time"
+            app:layout_constraintEnd_toEndOf="@+id/tvDurationTitle"
+            app:layout_constraintStart_toStartOf="@+id/tvDurationTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvDurationTitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
