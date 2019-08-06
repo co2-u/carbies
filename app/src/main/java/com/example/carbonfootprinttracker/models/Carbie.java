@@ -21,6 +21,7 @@ public class Carbie extends ParseObject {
     public static final String KEY_IS_FAVORITED = "isFavorited";
     public static final String KEY_MAP_SHOT = "mapShot";
     public static final String KEY_IS_DELETED = "isDeleted";
+    public static final String KEY_TRIP_LENGTH = "tripLength";
 
     public ParseUser getUser() { return getParseUser(KEY_USER); }
 
@@ -51,6 +52,8 @@ public class Carbie extends ParseObject {
     public Boolean getIsDeleted() {  return getBoolean(KEY_IS_DELETED);  }
 
     public Boolean getIsFavorited() { return getBoolean(KEY_IS_FAVORITED); }
+
+    public Double getTripLength() { return getDouble(KEY_TRIP_LENGTH); }
 
     public ParseFile getMapShot() { return getParseFile(KEY_MAP_SHOT); }
 
@@ -110,6 +113,8 @@ public class Carbie extends ParseObject {
     public void setTransportation(String transportation) { put(KEY_TRANSPORTATION, transportation); }
 
     public void setTitle(String title) { put(KEY_TITLE, title); }
+
+    public void setTripLength(Double tripLength) { put(KEY_TRIP_LENGTH, tripLength); }
 
     public void setStartLocation(String startLocation) { put(KEY_START_LOCATION, startLocation); }
 
