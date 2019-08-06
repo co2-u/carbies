@@ -9,50 +9,46 @@
     <TextView
         android:id="@+id/tvCurrentDate"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_gravity="center"
-        android:layout_marginStart="104dp"
-        android:layout_marginLeft="104dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:gravity="center_horizontal"
-        android:text="month"
+        android:text="Month Year"
         android:textColor="#000000"
         android:textSize="30dp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
         app:layout_constraintStart_toStartOf="@+id/imageView5"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/btnPrevious"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_margin="10dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginLeft="44dp"
-        android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/chevron_left"
         android:gravity="center_horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/imageView5"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCurrentDate"
         app:layout_constraintEnd_toStartOf="@+id/tvCurrentDate"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tvCurrentDate" />
 
 
     <ImageButton
         android:id="@+id/btnNext"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_margin="10dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:background="@drawable/chevron_right"
         android:gravity="center_horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/imageView5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvCurrentDate"
+        app:layout_constraintStart_toEndOf="@+id/tvCurrentDate"
+        app:layout_constraintTop_toTopOf="@+id/tvCurrentDate" />
 
     <TextView
         android:id="@+id/textView5"
