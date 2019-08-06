@@ -78,8 +78,7 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
                     Log.d("CalendarAdapter", "Dates match");//set the colors
                     if (dailySummary.getScore() <= MAX_CARBON_SCORE){
                         ((TextView)view).setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
-//                        view.setBackgroundResource(R.drawable.green_calendar_circle);
-                        Log.d("color", "YUH");
+//                        view.setBackgroundResource(R.drawable.green_calendar_circle)
                     }
                     else if (dailySummary.getScore() > MAX_CARBON_SCORE && dailySummary.getScore() <= MAX_CARBON_SCORE * 1.1){
                         ((TextView)view).setTextColor(Color.YELLOW);
