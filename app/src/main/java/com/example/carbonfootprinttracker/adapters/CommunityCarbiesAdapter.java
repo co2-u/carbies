@@ -1,6 +1,7 @@
 package com.example.carbonfootprinttracker.adapters;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +28,7 @@ import butterknife.ButterKnife;
 public class CommunityCarbiesAdapter extends RecyclerView.Adapter<CommunityCarbiesAdapter.ViewHolder> {
     private static final String TAG = "CommunityCarbieAdapter";
     private static final Integer MAX_CARBON = 2000;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     private List<Carbie> carbies;
     private Context context;
@@ -44,10 +51,47 @@ public class CommunityCarbiesAdapter extends RecyclerView.Adapter<CommunityCarbi
         final String username = carbie.getUser().getUsername();
         final Integer score = carbie.getScore();
         final String title = carbie.getTitle();
+        final Date date = carbie.getCreatedAt();
 
         holder.tvTitle.setText(title);
         holder.tvScore.setText(score.toString());
         holder.tvUsername.setText(username);
+        holder.tvDate.setText(getRelativeTimeAgo(carbie.getCreatedAt().toString()));
+        String transport = "";
+        switch (carbie.getTransportation()) {
+            case "SmallCar":
+                transport = " drove ";
+                break;
+            case "MediumCar":
+                transport = " drove ";
+                break;
+            case "LargeCar":
+                transport = " drove ";
+                break;
+            case "Hybrid":
+                transport = " drove ";
+                break;
+            case "Electric":
+                transport = " drove ";
+                break;
+            case "Bus":
+                transport = " took a bus for ";
+                break;
+            case "Rail":
+                transport = " went by rail for ";
+                break;
+            case "Bike":
+                transport = " biked ";
+                break;
+            case "Walk":
+                transport = " walked ";
+                break;
+            case "Rideshare":
+                transport = " carpooled ";
+                break;
+        }
+        holder.tvMoved.setText(transport);
+        holder.tvDistance.setText(df.format(carbie.getDistance()) + " mi.");
 
         if (score > MAX_CARBON * 1.1) {
             holder.tvScore.setTextColor(context.getResources().getColor(R.color.colorRed));
@@ -67,11 +111,29 @@ public class CommunityCarbiesAdapter extends RecyclerView.Adapter<CommunityCarbi
         @BindView(R.id.tvUsername) TextView tvUsername;
         @BindView(R.id.tvTitle) TextView tvTitle;
         @BindView(R.id.tvScore) TextView tvScore;
+        @BindView(R.id.tvDate) TextView tvDate;
+        @BindView(R.id.tvMoved) TextView tvMoved;
+        @BindView(R.id.tvDistance) TextView tvDistance;
         @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    private String getRelativeTimeAgo(String rawJsonDate) {
+        String instagramFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(instagramFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+        String relativeDate = "";
+        try {
+            long dateMillis = sf.parse(rawJsonDate).getTime();
+            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE).toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return relativeDate;
     }
 }
