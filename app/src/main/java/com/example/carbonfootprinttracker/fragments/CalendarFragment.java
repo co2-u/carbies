@@ -138,7 +138,12 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-//                Toast.makeText(context, "the date is: yee", Toast.LENGTH_LONG).show();
+                Fragment fragment = new DailySummaryFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentPlaceholder, fragment)
+                        .addToBackStack("DailySummaryFragment")
+                        .commit();
             }
         });
 
