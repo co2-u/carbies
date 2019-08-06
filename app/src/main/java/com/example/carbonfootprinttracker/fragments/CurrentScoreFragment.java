@@ -65,7 +65,7 @@ public class CurrentScoreFragment extends Fragment {
         ivQualScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new DailySummaryFragment();
+                Fragment fragment = new CurrentDaySummaryFragment();
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragmentPlaceholder, fragment)

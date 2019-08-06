@@ -61,6 +61,7 @@ public class LogFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
+        viewPager.setCurrentItem(0);
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().hide();

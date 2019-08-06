@@ -44,8 +44,6 @@ public class SettingsFragment extends Fragment {
     @BindView(R.id.switchUserPrivacy) public Switch switchPrivacy;
     @BindView(R.id.progressBar5) public ProgressBar pbLoading;
 
-    @BindView(R.id.btnCalendar) Button btnCalendar;
-
     private FragmentManager fragmentManager;
     private ParseUser user;
 
@@ -129,13 +127,6 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, new InfoFragment()).addToBackStack("SettingsFragment").commit();
-            }
-        });
-
-        btnCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, new CalendarFragment()).commit();
             }
         });
 

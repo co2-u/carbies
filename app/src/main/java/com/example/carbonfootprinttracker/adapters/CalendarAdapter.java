@@ -61,7 +61,10 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
         ((TextView)view).setTypeface(null, Typeface.NORMAL);
         ((TextView)view).setTextColor(Color.BLACK);
 
-        if (month != calendar.get(Calendar.MONTH) || year != calendar.get(Calendar.YEAR)-1900)
+        Log.d("cal", "the mon is" + calendar.get(Calendar.MONTH));
+        Log.d("cal", "the year is" + calendar.get(Calendar.YEAR));
+
+        if (month != calendar.get(Calendar.MONTH))
         {
             // if this day is outside current month, grey it out
             ((TextView) view).setTextColor(Color.parseColor("#E0E0E0"));

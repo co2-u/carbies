@@ -53,7 +53,7 @@ public class Carbie extends ParseObject {
 
     public Boolean getIsFavorited() { return getBoolean(KEY_IS_FAVORITED); }
 
-    public Double getTripLength() { return getDouble(KEY_TRIP_LENGTH); }
+    public Long getTripLength() { return getLong(KEY_TRIP_LENGTH); }
 
     public ParseFile getMapShot() { return getParseFile(KEY_MAP_SHOT); }
 
@@ -63,7 +63,8 @@ public class Carbie extends ParseObject {
 
     public void setScore() {
         int footprint = 0;
-        switch (getString(KEY_TRANSPORTATION)) {
+        String transport = getString(KEY_TRANSPORTATION);
+        switch (transport) {
             case "SmallCar":
                 footprint = 390;
                 break;
@@ -98,7 +99,12 @@ public class Carbie extends ParseObject {
                 footprint = 400 / getRiders();
                 break;
         }
-        int score = (int)(footprint * getDistance());
+        int score = 0;
+        if (transport.equals("Renewable") || transport.equals("Bike") || transport.equals("Walk")) {
+            score = (int) (footprint * (getTripLength() / 60));
+        } else {
+            score = (int)(footprint * getDistance());
+        }
         put(KEY_SCORE, score);
     }
 
@@ -114,7 +120,7 @@ public class Carbie extends ParseObject {
 
     public void setTitle(String title) { put(KEY_TITLE, title); }
 
-    public void setTripLength(Double tripLength) { put(KEY_TRIP_LENGTH, tripLength); }
+    public void setTripLength(Long tripLength) { put(KEY_TRIP_LENGTH, tripLength); }
 
     public void setStartLocation(String startLocation) { put(KEY_START_LOCATION, startLocation); }
 

@@ -134,7 +134,7 @@ public class DetailsFragment extends Fragment {
                     tvSuggestion.setText(getString(R.string.walkSuggestion));
                     break;
                 case "Rideshare":
-                    tvSuggestion.setText(getString(R.string.walkSuggestion));
+                    tvSuggestion.setText(R.string.rideShareSuggestion);
                     break;
             }
         }

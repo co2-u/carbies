@@ -25,9 +25,14 @@ public class TabAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public  Fragment getItem(int position) {
+        return getItemTwo(position);
+    }
+
+    public static Fragment getItemTwo(int position) {
         return LogFragment.newInstance(position + 1);
     }
+
 
     @Override
     public CharSequence getPageTitle(int position) {
