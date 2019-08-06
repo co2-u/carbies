@@ -75,7 +75,6 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
     @BindView(R.id.etStart) EditText etStart;
     @BindView(R.id.etEnd) EditText etEnd;
     @BindView(R.id.progressBar) ProgressBar pbLoading;
-    @BindView(R.id.etCarbieName) EditText etCarbieName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -163,12 +162,9 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
             public void onClick(View v) {
                 if (selectedRoute == null) {
                     Toast.makeText(getContext(), "Need to select a route!", Toast.LENGTH_SHORT).show();
-                } else if(etCarbieName.getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
                 } else {
                     showProgressBar();
                     // Add information about selectedRoute and title to carbie
-                    carbie.setTitle(etCarbieName.getText().toString());
                     carbie.setDistance(toMiles(selectedRoute.getDistance().inMeters));
                     carbie.setStartLocation(selectedRoute.getStartAddress());
                     carbie.setEndLocation(selectedRoute.getEndAddress());

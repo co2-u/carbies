@@ -29,8 +29,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -132,20 +130,9 @@ public class CommunityPagesFragment extends Fragment {
     private ParseQuery<Carbie> getQuery() {
         pbLoading.setVisibility(ProgressBar.VISIBLE);
 
-        Date date = new Date();
-        Calendar calendarA = Calendar.getInstance();
-        calendarA.setTime(date);
-        calendarA.set(Calendar.HOUR_OF_DAY, 0);
-        Calendar calendarB = Calendar.getInstance();
-        calendarB.setTime(date);
-        calendarB.set(Calendar.HOUR_OF_DAY, 23);
-        calendarB.set(Calendar.MINUTE, 59);
-
         ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
         query.include(Carbie.KEY_USER);
         query.whereEqualTo(Carbie.KEY_IS_FAVORITED, false);
-        query.whereGreaterThanOrEqualTo(Carbie.KEY_CREATED_AT, calendarA.getTime());
-        query.whereLessThan(Carbie.KEY_CREATED_AT, calendarB.getTime());
         query.addDescendingOrder(Carbie.KEY_CREATED_AT);
         return query;
     }
