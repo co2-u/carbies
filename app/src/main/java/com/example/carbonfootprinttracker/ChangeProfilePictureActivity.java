@@ -1,77 +1,103 @@
 package com.example.carbonfootprinttracker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class ChangeProfilePictureActivity extends AppCompatActivity {
-
+    private static final String TAG = "ProfilePicActivity";
     public final static int PICK_PHOTO_CODE = 1046;
+
     @BindView(R.id.btnSelectPhoto)
     Button btnSelectPhoto;
     @BindView(R.id.imageView)
     ImageView imageView;
     @BindView(R.id.btnConfirm)
+
     Button btnConfirm;
+    File photofile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_profile_picture);
         ButterKnife.bind(this);
+
+//        isStoragePermissionGranted();
+
         btnSelectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onPickPhoto();
+                ChangeProfilePictureActivityPermissionsDispatcher.onPickPhotoWithPermissionCheck(ChangeProfilePictureActivity.this);
             }
         });
 
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ParseUser user = ParseUser.getCurrentUser();
-                user.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            e.printStackTrace();
-                        } else {
-                            int i = 0;
+                if (photofile != null) {
+                    ParseFile parseFile = new ParseFile(photofile);
+                    parseFile.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if ( e != null) {
+                                Log.d(TAG, "Error while saving image.");
+                                e.printStackTrace();
+                            } else {
+                                ParseUser user = ParseUser.getCurrentUser();
+                                user.put("profileImage", parseFile);
+                                user.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e != null) {
+                                            Log.d(TAG, "Error while saving image to profile.");
+                                            e.printStackTrace();
+                                        } else {
+                                            Log.d(TAG, "Updated user's profile image.");
+                                        }
+                                        Intent intent = new Intent(ChangeProfilePictureActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                    }
+                                });
+                            }
                         }
-
-                        Intent intent = new Intent(ChangeProfilePictureActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                });
+                    });
+                } else {
+                    Log.d(TAG, "Photofile is null");
+                }
             }
         });
     }
 
-    private void onPickPhoto(){
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    public void onPickPhoto(){
         //Create an Intent with action as ACTION_PICK
         Intent intent=new Intent(Intent.ACTION_PICK);
         // Sets the type as image/*. This ensures only components of type image are selected
@@ -160,18 +186,55 @@ public class ChangeProfilePictureActivity extends AppCompatActivity {
                     String imgDecodableString = cursor.getString(columnIndex);
                     cursor.close();
                     // Set the Image in ImageView after decoding the String
-                    File file;
-                    file = new File(imgDecodableString);
-                    if (file != null) {
-                        ParseFile parseFile = new ParseFile(file);
-                        parseFile.saveInBackground();
-                        imageView.setImageURI(selectedImage);
-                        ParseUser user = ParseUser.getCurrentUser();
-                        user.put("profileImage", parseFile);
-                        break;
-                    }
+                    photofile = new File(imgDecodableString);
+                    imageView.setImageURI(selectedImage);
+                    break;
             }
     }
 
+//    public  boolean isStoragePermissionGranted() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+//                Log.v(TAG,"Permission is granted");
+//                return true;
+//            } else {
+//                Log.v(TAG,"Permission is revoked");
+//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+//                return false;
+//            }
+//        }
+//        else { //permission is automatically granted on sdk<23 upon installation
+//            Log.v(TAG,"Permission is granted");
+//            return true;
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+//            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
+//        } else {
+//            //leave
+//        }
+//    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        ChangeProfilePictureActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    // Annotate a method which is invoked if the user doesn't grant the permissions
+    @OnPermissionDenied(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void showDeniedForStorage() {
+        Toast.makeText(this, "Storage access was denied.", Toast.LENGTH_SHORT).show();
+    }
+
+    // Annotates a method which is invoked if the user
+    // chose to have the device "never ask again" about a permission
+    @OnNeverAskAgain(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void showNeverAskForStorage() {
+        Toast.makeText(this, "Storage access was revoked.", Toast.LENGTH_SHORT).show();
+    }
 }
