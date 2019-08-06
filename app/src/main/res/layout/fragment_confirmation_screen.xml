@@ -42,9 +42,9 @@
             android:textColor="#00680A"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvName2" />
+            app:layout_constraintTop_toBottomOf="@+id/etConfirmName" />
 
         <TextView
             android:id="@+id/tvEndPointConfirm"
@@ -213,20 +213,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvName2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:text="Bubbles"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvNameConfirm" />
-
-        <TextView
             android:id="@+id/tvRouteConfirm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -275,6 +261,25 @@
             app:layout_constraintEnd_toEndOf="@+id/tvDistanceTitle"
             app:layout_constraintStart_toStartOf="@+id/tvDistanceTitle"
             app:layout_constraintTop_toBottomOf="@+id/tvDistanceTitle" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etConfirmName"
+            android:layout_width="401dp"
+            android:layout_height="59dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvNameConfirm">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="enter carbie name" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

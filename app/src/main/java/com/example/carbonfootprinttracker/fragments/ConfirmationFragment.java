@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
+import com.google.android.material.textfield.TextInputLayout;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.SaveCallback;
@@ -45,8 +48,8 @@ public class ConfirmationFragment extends Fragment {
     Button btnYesAndGo;
     @BindView(R.id.ivMapSnapshot)
     ImageView ivMapSnapshot;
-    @BindView (R.id.tvName2)
-    TextView tvName2;
+    @BindView(R.id.etConfirmName)
+    TextInputLayout etConfirmName;
     @BindView (R.id.progressBar3)
     ProgressBar pbLoading;
     @BindView(R.id.tvDistance)
@@ -75,7 +78,6 @@ public class ConfirmationFragment extends Fragment {
             tvStartPoint2.setText(carbie.getStartLocation());
             tvEndPoint2.setText(carbie.getEndLocation());
             tvMode2.setText(carbie.getTransportation());
-            tvName2.setText(carbie.getTitle());
             tvDistance.setText(df.format(carbie.getDistance()) + " miles");
         } catch (NullPointerException e) {
             Log.d(TAG, "Carbie not passed into ConfirmationFragment");
@@ -104,57 +106,80 @@ public class ConfirmationFragment extends Fragment {
         btnConfirmYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showProgressBar();
-                photoFile.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            carbie.setMapShot(photoFile);
-                            carbie.setIsFavorited(false);
-                            carbie.setIsDeleted(false);
-                            carbie.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if (e == null) {
-                                        Log.d(TAG, "Successfully saved carbie with map snapshot.");
-                                        hideProgressBar();
-                                        goToMainFragment();
-                                    } else {
-                                        Log.d(TAG, "Error while saving carbie.");
-                                        e.printStackTrace();
+                if(etConfirmName.getEditText().getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
+                } else {
+                    showProgressBar();
+                    photoFile.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                carbie.setMapShot(photoFile);
+                                carbie.setIsFavorited(false);
+                                carbie.setIsDeleted(false);
+                                carbie.setTitle(etConfirmName.getEditText().getText().toString());
+                                carbie.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e == null) {
+                                            Log.d(TAG, "Successfully saved carbie with map snapshot.");
+                                            hideProgressBar();
+                                            goToMainFragment();
+                                        } else {
+                                            Log.d(TAG, "Error while saving carbie.");
+                                            e.printStackTrace();
+                                        }
                                     }
-                                }
-                            });
-                        } else {
-                            Log.d(TAG, "Error while saving photo file.");
-                            e.printStackTrace();
+                                });
+                            } else {
+                                Log.d(TAG, "Error while saving photo file.");
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
 
         btnYesAndGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                carbie.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.d(TAG, "Error while saving");
-                            e.printStackTrace();
-                            return;
-                        }
-                        Log.d(TAG, "Success!");
-                    }
-                });
-                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + carbie.getEndLocation().replaceAll(" ", "+")
-                        + "&mode=" + typeOfTransport());
+                if(etConfirmName.getEditText().getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
+                } else {
+                    photoFile.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                carbie.setMapShot(photoFile);
+                                carbie.setIsFavorited(false);
+                                carbie.setIsDeleted(false);
+                                carbie.setTitle(etConfirmName.getEditText().getText().toString());
+                                carbie.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e != null) {
+                                            Log.d(TAG, "Error while saving");
+                                            e.printStackTrace();
+                                            return;
+                                        }
+                                        Log.d(TAG, "Success!");
+                                    }
+                                });
+                                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + carbie.getEndLocation().replaceAll(" ", "+")
+                                        + "&mode=" + typeOfTransport());
 
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                startActivity(mapIntent);
-                goToMainFragment();
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                mapIntent.setPackage("com.google.android.apps.maps");
+                                startActivity(mapIntent);
+                                goToMainFragment();
+                            } else {
+                                Log.d(TAG, "Error while saving photo file.");
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+            }
             }
         });
     }
