@@ -106,11 +106,6 @@ public class CalendarFragment extends Fragment {
         tvCurrentDate.setText(month_name);
         queryDailySummaries();
 
-//        calendarAdapter = new CalendarAdapter(context, cells, mDailySummaries, currentDate);
-//        gridView.setAdapter(calendarAdapter);
-
-//        updateCalendar();
-
         //add one month and refresh the UI
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,7 +184,6 @@ public class CalendarFragment extends Fragment {
                 } else {
                     Log.e(TAG, "" + objects.size());
                     mDailySummaries.addAll(objects);
-//                    calendarAdapter.notifyDataSetChanged();
                     updateCalendar();
                 }
             }

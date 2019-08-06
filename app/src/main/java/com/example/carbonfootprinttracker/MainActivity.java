@@ -122,6 +122,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void setCalendarTabVisibility(boolean status) {
+        if (menu == null) {
+            return;
+        } else {
+            menu.findItem(R.id.calendarTab).setVisible(status);
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){

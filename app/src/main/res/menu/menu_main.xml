@@ -12,7 +12,7 @@
     <item
         android:id="@+id/calendarTab"
         android:enabled="true"
-        android:icon="@drawable/calendar_month"
+        android:icon="@drawable/grey_calendar"
         android:title="settings"
         android:visible="true"
         app:showAsAction="ifRoom" />
