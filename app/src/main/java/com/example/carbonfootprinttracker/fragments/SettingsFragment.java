@@ -23,6 +23,7 @@ import com.example.carbonfootprinttracker.LoginActivity;
 import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -39,7 +40,7 @@ public class SettingsFragment extends Fragment {
     @BindView(R.id.btChangePassword) public Button btChangePassword;
     @BindView(R.id.btnMoreInfo) public Button btnMoreInfo;
     @BindView(R.id.tvUsername) public TextView tvUsername;
-    @BindView(R.id.ivProfileImage) public ImageView ivProfileImage;
+    @BindView(R.id.ivCircleProfile) public ImageView ivProfileImage;
     @BindView(R.id.switchUserPrivacy) public Switch switchPrivacy;
     @BindView(R.id.progressBar5) public ProgressBar pbLoading;
 
@@ -69,6 +70,17 @@ public class SettingsFragment extends Fragment {
             switchPrivacy.setChecked(true);
         } else {
             switchPrivacy.setChecked(false);
+        }
+
+        ParseFile photoFile = user.getParseFile("profileImage");
+        if (photoFile != null) {
+            String preUrl = photoFile.getUrl();
+            String completeURL = preUrl.substring(0, 4) + "s" + preUrl.substring(4, preUrl.length());
+            Glide.with(getContext())
+                    .load(completeURL)
+                    .into(ivProfileImage);
+        } else {
+            ivProfileImage.setBackground(getContext().getResources().getDrawable(R.drawable.ic_account_circle));
         }
 
         btLogout.setOnClickListener(new View.OnClickListener() {

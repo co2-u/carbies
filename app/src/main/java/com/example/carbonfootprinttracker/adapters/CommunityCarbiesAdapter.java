@@ -1,6 +1,7 @@
 package com.example.carbonfootprinttracker.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.carbonfootprinttracker.R;
+import com.example.carbonfootprinttracker.fragments.ProfileFragment;
 import com.example.carbonfootprinttracker.models.Carbie;
+import com.parse.ParseUser;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -32,10 +37,12 @@ public class CommunityCarbiesAdapter extends RecyclerView.Adapter<CommunityCarbi
 
     private List<Carbie> carbies;
     private Context context;
+    private FragmentManager fragmentManager;
 
-    public CommunityCarbiesAdapter(Context context, List<Carbie> carbies) {
-        this.context = context;
+    public CommunityCarbiesAdapter(Context context, List<Carbie> carbies, FragmentManager fragmentManager) {
         this.carbies = carbies;
+        this.context = context;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -93,6 +100,20 @@ public class CommunityCarbiesAdapter extends RecyclerView.Adapter<CommunityCarbi
         holder.tvMoved.setText(transport);
         holder.tvDistance.setText(df.format(carbie.getDistance()) + " mi.");
 
+        holder.tvUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToProfile(carbies.get(position).getUser());
+            }
+        });
+
+        holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToProfile(carbies.get(position).getUser());
+            }
+        });
+
         if (score > MAX_CARBON * 1.1) {
             holder.tvScore.setTextColor(context.getResources().getColor(R.color.colorRed));
         } else if (score > MAX_CARBON && score <= MAX_CARBON * 1.1) {
@@ -135,5 +156,13 @@ public class CommunityCarbiesAdapter extends RecyclerView.Adapter<CommunityCarbi
             e.printStackTrace();
         }
         return relativeDate;
+    }
+
+    private void goToProfile(ParseUser user) {
+        Fragment profileFragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("user", user);
+        profileFragment.setArguments(args);
+        fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, profileFragment).addToBackStack("CommunityFragment").commit();
     }
 }

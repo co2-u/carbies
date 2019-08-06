@@ -112,7 +112,10 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
             case "Hybrid":
                 travelMode = TravelMode.DRIVING;
                 break;
-            case "Electric":
+            case "FossilFuel":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "Renewable":
                 travelMode = TravelMode.DRIVING;
                 break;
             case "Bus":
@@ -164,10 +167,12 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                     Toast.makeText(getContext(), "Need to select a route!", Toast.LENGTH_SHORT).show();
                 } else {
                     showProgressBar();
-                    // Add information about selectedRoute and title to carbie
+                    // Add information about selectedRoute
                     carbie.setDistance(toMiles(selectedRoute.getDistance().inMeters));
                     carbie.setStartLocation(selectedRoute.getStartAddress());
                     carbie.setEndLocation(selectedRoute.getEndAddress());
+                    long duration = Math.round(selectedRoute.getDuration().inSeconds); // in seconds
+
                     // Create confirmationFragment and arguments bundle
                     final Fragment confirmationFragment = new ConfirmationFragment();
                     final Bundle args = new Bundle();
