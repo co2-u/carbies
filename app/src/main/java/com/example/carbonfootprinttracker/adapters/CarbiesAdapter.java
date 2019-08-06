@@ -201,7 +201,7 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                                             }
                                         });
                                         //TODO maybe go to daily log
-                                        mActivity.findViewById(R.id.dailyLogTab).performClick();
+
                                         break;
                                     case "Share":
                                         Intent sendIntent = new Intent();

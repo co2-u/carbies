@@ -1,6 +1,7 @@
 package com.example.carbonfootprinttracker.adapters;
 
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -8,10 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.content.Context;
 import android.graphics.Color;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import com.example.carbonfootprinttracker.R;
+import com.example.carbonfootprinttracker.fragments.DailySummaryFragment;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.example.carbonfootprinttracker.models.DailySummary;
 
@@ -29,14 +36,19 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
     private List<DailySummary> dailySummaries;
     private static final Integer MAX_CARBON_SCORE = 8000;
     private Context context;
+    private GridView gridView;
+    private FragmentManager fragmentManager;
 
-    public CalendarAdapter(Context context, ArrayList<Date> days, List<DailySummary> dailySummaries, Calendar calendar)
+    public CalendarAdapter(Context context, ArrayList<Date> days, List<DailySummary> dailySummaries, Calendar calendar, GridView gridView,
+    FragmentManager fragmentManager)
     {
         super(context, R.layout.fragment_calendar, days);
         inflater = LayoutInflater.from(context);
         this.calendar = calendar;
         this.dailySummaries = dailySummaries;
         this.context = context;
+        this.gridView = gridView;
+        this.fragmentManager = fragmentManager;
     }
 
     @Override
@@ -104,6 +116,36 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
         // set text
         ((TextView)view).setText(String.valueOf(date.getDate()));
 
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Fragment fragment = new DailySummaryFragment();
+                Bundle args = new Bundle();
+                for (DailySummary dailySummary : dailySummaries) {
+                    Date dsDate = dailySummary.getCreatedAt();
+                    Date date = getItem(position);
+                    Calendar cal1 = Calendar.getInstance();
+                    Calendar cal2 = Calendar.getInstance();
+                    cal1.setTime(dsDate);
+                    cal2.setTime(date);
+                    boolean sameDay = cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+                            cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+                    if (sameDay) {
+                        args.putParcelable("dailySummary", dailySummary);
+                    }
+
+                }
+                fragment.setArguments(args);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentPlaceholder, fragment)
+                        .addToBackStack("DailySummaryFragment")
+                        .commit();
+            }
+        });
+
         return view;
     }
+
+
+
 }
