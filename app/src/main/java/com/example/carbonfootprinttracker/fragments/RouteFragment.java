@@ -1,15 +1,19 @@
 package com.example.carbonfootprinttracker.fragments;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,7 +71,6 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
     private Carbie carbie;
     private TravelMode travelMode;
     private LatLngBounds routeBounds;
-
 
     @BindView(R.id.mapView) MapView mMapView;
     @BindView(R.id.btSeeRoutes) Button btSeeRoutes;
@@ -215,6 +218,36 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         mGoogleMap = googleMap;
         mGoogleMap.setOnPolylineClickListener(this);
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+
+        mGoogleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                LinearLayout info = new LinearLayout(getContext());
+                info.setOrientation(LinearLayout.VERTICAL);
+
+                TextView title = new TextView(getContext());
+                title.setTextColor(Color.BLACK);
+                title.setGravity(Gravity.CENTER);
+                title.setTypeface(null, Typeface.BOLD);
+                title.setText(marker.getTitle());
+
+                TextView snippet = new TextView(getContext());
+                snippet.setTextColor(Color.GRAY);
+                snippet.setText(marker.getSnippet());
+
+                info.addView(title);
+                info.addView(snippet);
+
+                return info;
+            }
+        });
 
         LatLng googleplex = new LatLng(37.422133, -122.084042);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(googleplex));
@@ -383,7 +416,9 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                 selectedRoute = route;
                 route.getPolyline().setColor(ContextCompat.getColor(getActivity(), R.color.colorSkyBlue));
                 route.getPolyline().setZIndex(1); // brings polyline to front
-                endMarker.setSnippet("Distance: " + route.getDistance());
+                endMarker.setSnippet("Distance: " + route.getDistance() + "\n" +
+                                    "Duration: " + route.getDuration() + "\n" +
+                                    "Score: " + calculateScore(carbie.getTransportation(), carbie.getRiders(), route.getDuration().inSeconds, route.getDistance().inMeters ));
                 endMarker.showInfoWindow();
             }
         }
@@ -398,6 +433,53 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                 route.getPolyline().setVisible(false);
             }
         }
+    }
+
+    private int calculateScore(String transport, int riders, long duration, long distance) {
+        double distanceDbl = toMiles(distance);
+        int footprint = 0;
+        switch (transport) {
+            case "SmallCar":
+                footprint = 390;
+                break;
+            case "MediumCar":
+                footprint = 430;
+                break;
+            case "LargeCar":
+                footprint = 600;
+                break;
+            case "Hybrid":
+                footprint = 196;
+                break;
+            case "FossilFuel":
+                footprint = 129;
+                break;
+            case "Renewable":
+                footprint = 129;
+                break;
+            case "Bus":
+                footprint = 290;
+                break;
+            case "Rail":
+                footprint = 130;
+                break;
+            case "Bike":
+                footprint = 25;
+                break;
+            case "Walk":
+                footprint = 10;
+                break;
+            case "Rideshare":
+                footprint = 400 / riders;
+                break;
+        }
+        int score = 0;
+        if (transport.equals("Renewable") || transport.equals("Bike") || transport.equals("Walk")) {
+            score = (int) (footprint * (duration / 60));
+        } else {
+            score = (int)(footprint * distanceDbl);
+        }
+        return score;
     }
 
     private double toMiles(long meters) {
