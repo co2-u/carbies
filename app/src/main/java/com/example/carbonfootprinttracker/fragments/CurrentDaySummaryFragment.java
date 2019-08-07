@@ -48,6 +48,7 @@ public class CurrentDaySummaryFragment extends Fragment {
     @BindView(R.id.tvPTransport)
     TextView tvPTransport;
     @BindView(R.id.tvDailyScore) TextView tvDailyScore;
+    @BindView(R.id.tvCarbiesSaved) TextView tvCarbiesSaved;
     Integer currentScore;
     Context context;
     List<Carbie> mCarbies;
@@ -68,7 +69,6 @@ public class CurrentDaySummaryFragment extends Fragment {
         currentScore = 0;
         mCarbies = new ArrayList<>();
         queryCarbies();
-        //tvDailyScore.setText();
         ivShareScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +168,7 @@ public class CurrentDaySummaryFragment extends Fragment {
                 }
                 setStrings();
                 tvDailyScore.setText("" + currentScore);
+                tvCarbiesSaved.setText(carbiesSaved());
             }
         });
     }
@@ -176,6 +177,7 @@ public class CurrentDaySummaryFragment extends Fragment {
         super.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.tvDailySummary).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     @Override
@@ -183,6 +185,25 @@ public class CurrentDaySummaryFragment extends Fragment {
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
+        mainActivity.findViewById(R.id.tvDailySummary).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+    private String carbiesSaved() {
+        //TODO make better messages ahaha
+        String message = "";
+        double totalMileage = 0;
+        for (Carbie carbie : mCarbies) {
+            totalMileage += carbie.getDistance();
+        }
+        Double medScore = totalMileage * 430.0;
+        int milesSaved = medScore.intValue() - MainActivity.score;
+        if (milesSaved > 0) {
+            message = "By choosing greener modes of transportation you are saving " + milesSaved + " grams of CO2. Great job!";
+        } else if (milesSaved == 0) {
+            message = "ya, ya , ya yeet ya";
+        } else {
+            message = "and I oop";
+        }
+        return message;
     }
 }

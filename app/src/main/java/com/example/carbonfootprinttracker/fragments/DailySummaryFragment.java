@@ -41,6 +41,7 @@ public class DailySummaryFragment extends Fragment {
     @BindView(R.id.tvDailyTitle)
     TextView tvDailyTitle;
     @BindView(R.id.tvDailyScore) TextView tvDailyScore;
+    @BindView(R.id.tvCarbiesSaved) TextView tvCarbiesSaved;
 
     Context context;
     DailySummary dailySummary;
@@ -77,7 +78,8 @@ public class DailySummaryFragment extends Fragment {
         tvCarpooled.setText( "" + Math.floor(dailySummary.getMilesCarpooled() * 100) / 100);
         tvPTransport.setText( "" + Math.floor(dailySummary.getMilesPublicTransport() * 100) / 100);
         tvDailyScore.setText("" + dailySummary.getScore().intValue());
-        tvDailyTitle.setText(getDay(day) + " " + getMonth(month) + " " + date);
+        tvDailyTitle.setText(getDay(day) + ", " + getMonth(month) + " " + date);
+        tvCarbiesSaved.setText(carbiesSaved());
         ivShareScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,19 +97,18 @@ public class DailySummaryFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
-        mainActivity.findViewById(R.id.tvDailyScore).setVisibility(TextView.VISIBLE);
+        mainActivity.findViewById(R.id.tvDailySummary).setVisibility(TextView.VISIBLE);
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
         mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.GONE);
-        mainActivity.findViewById(R.id.tvDailyScore).setVisibility(TextView.VISIBLE);
     }
     @Override
     public void onStop() {
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
-        mainActivity.findViewById(R.id.tvDailyScore).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.tvDailySummary).setVisibility(TextView.GONE);
         mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 //        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -183,6 +184,23 @@ public class DailySummaryFragment extends Fragment {
                 break;
         }
         return d;
+    }
+
+    private String carbiesSaved() {
+        //TODO make better messages ahaha
+        String message = "";
+        double totalMileage = dailySummary.getMilesBiked() + dailySummary.getMilesCarpooled() + dailySummary.getMilesEDriven() +
+                dailySummary.getMilesGasDriven() + dailySummary.getMilesPublicTransport() + dailySummary.getMilesWalked();
+        Double medScore = totalMileage * 430.0;
+        Double milesSaved = medScore.intValue() - dailySummary.getScore();
+        if (milesSaved > 0) {
+            message = "By choosing greener modes of transportation you saved " + milesSaved.intValue() + " grams of CO2. Great job!";
+        } else if (milesSaved == 0) {
+            message = "ya, ya , ya yeet ya";
+        } else {
+            message = "and I oop";
+        }
+        return message;
     }
 
 
