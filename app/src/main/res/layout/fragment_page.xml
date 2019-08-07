@@ -7,9 +7,12 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/sliding_tabs"
-        app:tabIndicatorColor="@android:color/holo_green_dark"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        app:tabBackground="@android:color/white"
+        app:tabIndicatorColor="@android:color/holo_green_dark"
+        android:elevation="@dimen/cardview_default_elevation"
         app:tabMode="fixed" />
 
     <androidx.viewpager.widget.ViewPager
