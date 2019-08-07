@@ -145,6 +145,9 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
                             Fragment fragment = new DailySummaryFragment();
                             args = new Bundle();
                             args.putParcelable("dailySummary", dailySummary);
+                            args.putInt("month", date.getMonth());
+                            args.putInt("date", date.getDate());
+                            args.putInt("day", date.getDay());
                             fragment.setArguments(args);
                             fragmentManager.beginTransaction()
                                     .replace(R.id.fragmentPlaceholder, fragment)

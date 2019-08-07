@@ -38,10 +38,15 @@ public class DailySummaryFragment extends Fragment {
     TextView tvCarpooled;
     @BindView(R.id.tvPTransport)
     TextView tvPTransport;
+    @BindView(R.id.tvDailyTitle)
+    TextView tvDailyTitle;
     @BindView(R.id.tvDailyScore) TextView tvDailyScore;
 
     Context context;
     DailySummary dailySummary;
+    int date;
+    int month;
+    int day;
 
     @Nullable
     @Override
@@ -58,6 +63,9 @@ public class DailySummaryFragment extends Fragment {
         context = getContext();
         try {
             dailySummary = getArguments().getParcelable("dailySummary");
+            date = getArguments().getInt("date");
+            month = getArguments().getInt("month");
+            day = getArguments().getInt("day");
         } catch (NullPointerException e) {
             Log.e("DSF", "Daily Summary was not passed in to Daily Summary Fragment");
             e.printStackTrace();
@@ -69,6 +77,7 @@ public class DailySummaryFragment extends Fragment {
         tvCarpooled.setText( "" + Math.floor(dailySummary.getMilesCarpooled() * 100) / 100);
         tvPTransport.setText( "" + Math.floor(dailySummary.getMilesPublicTransport() * 100) / 100);
         tvDailyScore.setText("" + dailySummary.getScore().intValue());
+        tvDailyTitle.setText(getDay(day) + " " + getMonth(month) + " " + date);
         ivShareScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,14 +95,98 @@ public class DailySummaryFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity.findViewById(R.id.tvDailyScore).setVisibility(TextView.VISIBLE);
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.tvDailyScore).setVisibility(TextView.VISIBLE);
     }
     @Override
     public void onStop() {
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
+        mainActivity.findViewById(R.id.tvDailyScore).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
     }
+
+    private String getMonth(int month) {
+        String m = "";
+        switch (month) {
+            case 0:
+                m = "January";
+                break;
+            case 1:
+                m = "February";
+                break;
+            case 2:
+                m = "March";
+                break;
+            case 3:
+                m = "April";
+                break;
+            case 4:
+                m = "May";
+                break;
+            case 5:
+                m = "June";
+                break;
+            case 6:
+                m = "July";
+                break;
+            case 7:
+                m = "August";
+                break;
+            case 8:
+                m = "Septepmber";
+                break;
+            case 9:
+                m = "October";
+                break;
+            case 10:
+                m = "November";
+                break;
+            case 11:
+                m = "December";
+                break;
+        }
+        return m;
+    }
+
+    private String getDay(int day) {
+        String d = "";
+        switch (day) {
+            case 0:
+                d = "Sunday";
+                break;
+            case 1:
+                d = "Monday";
+                break;
+            case 2:
+                d = "Tuesday";
+                break;
+            case 3:
+                d = "Wednesday";
+                break;
+            case 4:
+                d = "Thursday";
+                break;
+            case 5:
+                d = "Friday";
+                break;
+            case 6:
+                d = "Saturday";
+                break;
+        }
+        return d;
+    }
+
+
+
+
+
 }
