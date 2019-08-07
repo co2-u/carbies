@@ -1,16 +1,20 @@
 package com.example.carbonfootprinttracker.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.example.carbonfootprinttracker.models.TransportationMode;
@@ -150,5 +154,20 @@ public class ComposeFragment extends Fragment {
         PublicTransDialog.setArguments(args);
 
         PublicTransDialog.show(fm, "compose_fragment");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.GONE);
+        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.VISIBLE);
+        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 }

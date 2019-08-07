@@ -376,6 +376,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         mMapView.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.GONE);
         mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -395,6 +396,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.VISIBLE);
         mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);

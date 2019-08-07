@@ -39,14 +39,12 @@ public class CurrentScoreFragment extends Fragment {
     @BindView(R.id.tvGeneralTips) TextView tvGeneralTips;
     @BindView(R.id.pbLoading) ProgressBar pbLoading;
 
-
     private int currentScore;
     private final String GREEN_SCORE = "good job";
     private final String YELLOW_SCORE = "watch out";
     private final String RED_SCORE = "oof";
     private int maxCarbon = 8000;
     private List<Carbie> mCarbies;
-
 
     @Nullable
     @Override
@@ -73,6 +71,7 @@ public class CurrentScoreFragment extends Fragment {
                         .commit();
             }
         });
+
     }
 
     private void setScore(int currentScore) {

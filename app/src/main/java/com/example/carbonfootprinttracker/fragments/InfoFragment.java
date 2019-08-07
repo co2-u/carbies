@@ -27,6 +27,7 @@ public class InfoFragment extends Fragment {
         super.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mainActivity.getSupportActionBar().setTitle("More Information");
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -37,6 +38,7 @@ public class InfoFragment extends Fragment {
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
     }

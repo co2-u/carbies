@@ -14,6 +14,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -170,5 +171,20 @@ public class SettingsFragment extends Fragment {
     private void showChangeProfilePictureActivity() {
         Intent intent = new Intent(getContext(), ChangeProfilePictureActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.GONE);
+        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.VISIBLE);
+        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 }
