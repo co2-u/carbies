@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -145,11 +146,8 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                     .build();
         }
 
-        // Initialize the AutocompleteSupportFragment.
         autocompleteFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-        // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-        // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -158,13 +156,30 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                 String destination = "place_id:" + place.getId();
                 calculateDirections(start, destination);
             }
-
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
+                Toast.makeText(context, "Error while selecting place.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "An error occurred: " + status);
             }
         });
+
+        autocompleteFragment.getView().findViewById(R.id.places_autocomplete_clear_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mGoogleMap != null) {
+                            mGoogleMap.clear();
+                        }
+                    }
+                });
+
+        autocompleteFragment.getView().setBackground(context.getResources().getDrawable(R.drawable.background_button_rectangle));
+
+        // Move location button below search bar
+        View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+        rlp.setMargins(0, 180, 0, 0);
 
         tvEnterData = ((MainActivity) getActivity()).findViewById(R.id.tvEnterData);
         tvEnterData.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +202,8 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                 if (!isTracking) {
                     isTracking = true;
                     if (mCurrentLocation != null) {
-                        Log.d(TAG, "start");
+                        autocompleteFragment.getView().setVisibility(View.GONE);
+                        rlp.setMargins(0, 20, 0, 0);
                         chronometer.setVisibility(View.VISIBLE);
                         chronometer.setBase(SystemClock.elapsedRealtime());
                         chronometer.start();
