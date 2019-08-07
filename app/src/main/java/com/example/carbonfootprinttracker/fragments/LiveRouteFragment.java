@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.Manifest;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -41,14 +43,24 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
+import com.google.maps.PendingResult;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -77,6 +89,10 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     private List<Location> mLocations;
     private boolean isTracking = false;
     private Carbie carbie;
+    private AutocompleteSupportFragment autocompleteFragment;
+    private TravelMode travelMode;
+    private Marker startMarker;
+    private Marker endMarker;
 
     @BindView(R.id.btStart) Button btStart;
     @BindView(R.id.btStop) Button btStop;
@@ -102,6 +118,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
         try {
             carbie = getArguments().getParcelable("carbie");
+            setTravelMode();
             ((MainActivity) getActivity()).getSupportActionBar().setTitle(carbie.getTransportation());
         } catch (NullPointerException e) {
             Log.e(TAG, "Carbie was not passed into LiveRouteFragment");
@@ -127,6 +144,27 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                     .apiKey(getString(R.string.google_maps_api_key))
                     .build();
         }
+
+        // Initialize the AutocompleteSupportFragment.
+        autocompleteFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Log.d(TAG, "Place: " + place.getName() + ", " + place.getId());
+                String start = "" + mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude();
+                String destination = "place_id:" + place.getId();
+                calculateDirections(start, destination);
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.d(TAG, "An error occurred: " + status);
+            }
+        });
 
         tvEnterData = ((MainActivity) getActivity()).findViewById(R.id.tvEnterData);
         tvEnterData.setOnClickListener(new View.OnClickListener() {
@@ -248,6 +286,9 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                         if (location != null) {
                             updateCurrentLocation(location);
                             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
+                            //Prefer place search results that are nearby
+                            LatLngBounds latLngBounds = new LatLngBounds.Builder().include(new LatLng(location.getLatitude(), location.getLongitude())).build();
+                            autocompleteFragment.setLocationBias(RectangularBounds.newInstance(latLngBounds));
                         }
                     }
                 })
@@ -338,6 +379,146 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         return distance;
     }
 
+    private void showProgressBar() {
+        pbLoading.setVisibility(ProgressBar.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        pbLoading.setVisibility(ProgressBar.INVISIBLE);
+    }
+
+    private double toMiles(float meters) {
+        return (meters * 0.00062137);
+    }
+
+    private void setTravelMode() {
+        // Set TravelMode for Directions API request from our TransportationMode
+        switch (carbie.getTransportation()) {
+            case "SmallCar":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "MediumCar":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "LargeCar":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "Bike":
+                travelMode = TravelMode.BICYCLING;
+                break;
+            case "Hybrid":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "FossilFuel":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "Renewable":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "Bus":
+                travelMode = TravelMode.TRANSIT;
+                break;
+            case "Rail":
+                travelMode = TravelMode.TRANSIT;
+                break;
+            case "Walk":
+                travelMode = TravelMode.WALKING;
+                break;
+            case "Rideshare":
+                travelMode = TravelMode.DRIVING;
+                break;
+        }
+    }
+
+    private LatLngBounds findBounds() {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (Location location: mLocations) {
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            builder.include(latLng);
+        }
+        LatLngBounds bounds = builder.build();
+        return bounds;
+    }
+
+    private void calculateDirections(String startLocation, String endLocation){
+        showProgressBar();
+
+        DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
+
+        directions.alternatives(true);
+        directions.origin(
+                startLocation
+        );
+
+        Log.d(TAG, "calculateDirections: destination: " + endLocation);
+        directions.destination(endLocation)
+                .mode(travelMode)
+                .setCallback(new PendingResult.Callback<DirectionsResult>() {
+                    @Override
+                    public void onResult(DirectionsResult result) {
+                        Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString());
+                        Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
+                        Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
+
+                        // Start and End LatLng coordinates and user-friendly addresses
+                        final com.google.maps.model.LatLng startLatLng = result.routes[0].legs[0].startLocation;
+                        final com.google.maps.model.LatLng endLatLng = result.routes[0].legs[0].endLocation;
+                        final String startAddress = result.routes[0].legs[0].startAddress;
+                        final String endAddress= result.routes[0].legs[0].endAddress;
+
+                        Log.d(TAG, "startAddress: " + startAddress);
+                        Log.d(TAG, "startAddress: " + endAddress);
+
+
+                        // Get northeast and southwest LatLngBounds to use for centering camera
+                        final com.google.maps.model.LatLng preNE = result.routes[0].bounds.northeast;
+                        final com.google.maps.model.LatLng preSW = result.routes[0].bounds.southwest;
+                        final LatLng northeast = new LatLng(preNE.lat, preNE.lng);
+                        final LatLng southwest = new LatLng(preSW.lat, preSW.lng);
+//                        routeBounds = new LatLngBounds(southwest, northeast);
+//
+                        hideProgressBar();
+//                        addMarker(startLatLng.lat, startLatLng.lng, startAddress, BitmapDescriptorFactory.HUE_RED, true);
+                        addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_ORANGE, false);
+//                        addPolylinesToMap(result);
+//                        centerCameraOn(routeBounds);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e) {
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getContext(), "Failed to get directions!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        hideProgressBar();
+                        Log.e(TAG, "calculateDirections: Failed to get directions: " + e.getMessage() );
+                    }
+                });
+    }
+
+    private void addMarker(double lat, double lng, String name, float color, boolean isStart) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                if (isStart) {
+                    final LatLng markerLocation = new LatLng(lat,lng);
+                    startMarker = mGoogleMap.addMarker(
+                            new MarkerOptions().position(markerLocation)
+                                    .title(name)
+                                    .icon(BitmapDescriptorFactory.defaultMarker(color)));
+                } else {
+                    final LatLng markerLocation = new LatLng(lat,lng);
+                    endMarker = mGoogleMap.addMarker(
+                            new MarkerOptions().position(markerLocation)
+                                    .title(name)
+                                    .icon(BitmapDescriptorFactory.defaultMarker(color)));
+                }
+            }
+        });
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -359,7 +540,6 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onResume() {
-        Log.d(TAG, "onResume");
         super.onResume();
         mapView.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
@@ -372,14 +552,12 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onPause() {
-        Log.d(TAG, "onPause");
         super.onPause();
         mapView.onPause();
     }
 
     @Override
     public void onStop() {
-        Log.d(TAG, "onStop");
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -391,30 +569,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onDestroyView() {
-        Log.d(TAG, "onDestryView");
         super.onDestroyView();
         stopLocationUpdates();
-    }
-
-    private void showProgressBar() {
-        pbLoading.setVisibility(ProgressBar.VISIBLE);
-    }
-
-    private void hideProgressBar() {
-        pbLoading.setVisibility(ProgressBar.INVISIBLE);
-    }
-
-    private double toMiles(float meters) {
-        return (meters * 0.00062137);
-    }
-
-    private LatLngBounds findBounds() {
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Location location: mLocations) {
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            builder.include(latLng);
-        }
-        LatLngBounds bounds = builder.build();
-        return bounds;
     }
 }
