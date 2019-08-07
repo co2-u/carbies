@@ -1,5 +1,6 @@
 package com.example.carbonfootprinttracker.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -73,6 +74,7 @@ public class ElectricCarDialogFragment extends AppCompatDialogFragment {
                 tvEnergySource.setVisibility(View.VISIBLE);
                 btnFossilFuel.setVisibility(View.VISIBLE);
                 btnRenewable.setVisibility(View.VISIBLE);
+                btnElectric.setBackground(getContext().getResources().getDrawable(R.drawable.grey_clicked_button));
             }
         });
 
@@ -95,7 +97,6 @@ public class ElectricCarDialogFragment extends AppCompatDialogFragment {
                 dismiss();
             }
         });
-
     }
 
     private void goLiveRoute() {
