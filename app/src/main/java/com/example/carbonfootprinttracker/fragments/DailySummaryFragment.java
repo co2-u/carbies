@@ -68,7 +68,7 @@ public class DailySummaryFragment extends Fragment {
         tvElectric.setText( "" + Math.floor(dailySummary.getMilesEDriven() * 100) / 100);
         tvCarpooled.setText( "" + Math.floor(dailySummary.getMilesCarpooled() * 100) / 100);
         tvPTransport.setText( "" + Math.floor(dailySummary.getMilesPublicTransport() * 100) / 100);
-        tvDailyScore.setText("" + dailySummary.getScore());
+        tvDailyScore.setText("" + dailySummary.getScore().intValue());
         ivShareScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
