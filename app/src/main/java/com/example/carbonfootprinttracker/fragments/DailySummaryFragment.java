@@ -85,17 +85,17 @@ public class DailySummaryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
-        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.GONE);
+        mainActivity.setCalendarTabVisibility(false);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     @Override
     public void onStop() {
         super.onStop();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
-        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.VISIBLE);
+        mainActivity.setCalendarTabVisibility(true);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 }

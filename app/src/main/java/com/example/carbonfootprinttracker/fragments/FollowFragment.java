@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.carbonfootprinttracker.ItemClickSupport;
+import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.adapters.UserAdapter;
 import com.parse.FindCallback;
@@ -140,19 +141,21 @@ public class FollowFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
         mainActivity.getSupportActionBar().setTitle("Follow User");
+        mainActivity.setCalendarTabVisibility(false);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mainActivity.setCalendarTabVisibility(false);
     }
 }

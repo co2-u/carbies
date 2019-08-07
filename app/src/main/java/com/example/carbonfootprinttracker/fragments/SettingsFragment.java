@@ -176,15 +176,15 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
-        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.GONE);
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.setCalendarTabVisibility(false);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
-        mainActivity.findViewById(R.id.tvEnterData).setVisibility(TextView.GONE);
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.setCalendarTabVisibility(true);
     }
 
 }

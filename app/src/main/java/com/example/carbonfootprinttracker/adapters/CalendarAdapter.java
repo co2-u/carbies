@@ -78,14 +78,14 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
         Log.d("cal", "the mon is" + calendar.get(Calendar.MONTH));
         Log.d("cal", "the year is" + calendar.get(Calendar.YEAR));
 
-        if (month != calendar.get(Calendar.MONTH))
-        {
+
+        //SET THE COLORS OF THR NUMBERS
+        if (month != calendar.get(Calendar.MONTH)) {
             // if this day is outside current month, grey it out
             ((TextView) view).setTextColor(Color.parseColor("#E0E0E0"));
         }
         else //it is in the month
         {
-            //SET THE COLORS
             for(DailySummary dailySummary : dailySummaries){
                 Log.d("Daily Summary", "" + dailySummaries.size());
                 //check their createdAt
@@ -93,11 +93,11 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
                 Log.d("CalendarAdapter", "Date is " + dsDate.toString());//set the colors
                 if(dsDate.getDate() == day && dsDate.getMonth() == month && dsDate.getYear() == year) {
                     Log.d("CalendarAdapter", "Dates match");//set the colors
-                    if (dailySummary.getScore() <= MAX_CARBON_SCORE){
+                    if (dailySummary.getScore() <= MAX_CARBON_SCORE) {
                         ((TextView)view).setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
 //                        view.setBackgroundResource(R.drawable.green_calendar_circle)
                     }
-                    else if (dailySummary.getScore() > MAX_CARBON_SCORE && dailySummary.getScore() <= MAX_CARBON_SCORE * 1.1){
+                    else if (dailySummary.getScore() > MAX_CARBON_SCORE && dailySummary.getScore() <= MAX_CARBON_SCORE * 1.1) {
                         ((TextView)view).setTextColor(Color.YELLOW);
                         view.setBackgroundResource(R.drawable.yellow_circle);
                     } else {

@@ -16,7 +16,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/green_border_dark"
@@ -33,15 +33,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:text="Start Location:"
             android:textColor="#00680A"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/tvBorder"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/tvBorder"
-            app:layout_constraintTop_toBottomOf="@+id/tvMode2" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
         <TextView
             android:id="@+id/tvMode"
@@ -49,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:enabled="true"
@@ -57,8 +58,9 @@
             android:textColor="#00680A"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/tvBorder"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/tvBorder"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/tvEndPoint2" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -66,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:gravity="center"
@@ -113,7 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:text="End Location:"
@@ -143,15 +145,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:text="Distance (miles):"
             android:textColor="#00680A"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/tvBorder"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/tvBorder"
-            app:layout_constraintTop_toBottomOf="@+id/tvEndPoint2" />
+            app:layout_constraintTop_toBottomOf="@+id/tvMode2" />
 
         <TextView
             android:id="@+id/tvDistance2"
@@ -171,13 +174,15 @@
             android:id="@+id/tvScore"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="156dp"
-            android:layout_marginLeft="156dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="112dp"
+            android:layout_marginLeft="112dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp"
             android:gravity="right"
             android:text="Score:"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tvSuggestion"
+            app:layout_constraintStart_toStartOf="@+id/tvBorder"
             app:layout_constraintTop_toBottomOf="@id/ivMapShot" />
 
         <TextView
@@ -186,9 +191,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:text="###"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/ivMapShot"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/tvScore"
             app:layout_constraintTop_toTopOf="@+id/tvScore" />
 
@@ -209,27 +218,44 @@
             app:layout_constraintStart_toStartOf="@+id/tvBorder"
             app:layout_constraintTop_toBottomOf="@+id/tvScore" />
 
-        <!--<Button-->
-            <!--android:id="@+id/btnAddToFavorites"-->
-            <!--android:layout_width="160dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:background="@drawable/main_button_white"-->
-            <!--android:text="Add to Favorites"-->
-            <!--android:textColor="#00581B"-->
-            <!--app:layout_constraintEnd_toEndOf="@+id/tvSuggestion"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/tvSuggestion"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/tvSuggestion" />-->
 
         <ImageView
             android:id="@+id/ivMapShot"
             android:layout_width="250dp"
             android:layout_height="250dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDistance2"
+            app:layout_constraintTop_toBottomOf="@+id/tvDuration2"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <TextView
+            android:id="@+id/tvDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="8dp"
+            android:text="Duration (hh:mm:ss):"
+            android:textColor="#00680A"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tvBorder"
+            app:layout_constraintStart_toStartOf="@+id/tvBorder"
+            app:layout_constraintTop_toBottomOf="@+id/tvDistance2" />
+
+        <TextView
+            android:id="@+id/tvDuration2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="@+id/tvBorder"
+            app:layout_constraintStart_toStartOf="@+id/tvBorder"
+            app:layout_constraintTop_toBottomOf="@+id/tvDuration" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
