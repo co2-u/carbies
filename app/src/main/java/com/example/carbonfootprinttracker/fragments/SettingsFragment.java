@@ -178,13 +178,13 @@ public class SettingsFragment extends Fragment {
         super.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.GONE);
-        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
     @Override
     public void onStop() {
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
-        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.VISIBLE);
-        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mainActivity.findViewById(R.id.tvEnterData).setVisibility(TextView.GONE);
     }
+
 }
