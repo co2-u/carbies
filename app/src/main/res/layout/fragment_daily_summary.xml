@@ -57,11 +57,11 @@
     <TextView
         android:id="@+id/tvWalked"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="13dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="44dp"
         android:layout_marginRight="44dp"
-        android:text="TextView"
+        android:text="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
@@ -72,7 +72,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="44dp"
         android:layout_marginRight="44dp"
-        android:text="TextView"
+        android:text="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvWalked" />
 
@@ -85,7 +85,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="136dp"
-        android:text="TextView"
+        android:text="0"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -120,7 +120,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="44dp"
         android:layout_marginRight="44dp"
-        android:text="TextView"
+        android:text="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvBiked" />
 
@@ -131,7 +131,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="44dp"
         android:layout_marginRight="44dp"
-        android:text="TextView"
+        android:text="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvGas" />
 
@@ -164,7 +164,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="44dp"
         android:layout_marginRight="44dp"
-        android:text="TextView"
+        android:text="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvElectric" />
 
@@ -175,7 +175,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="44dp"
         android:layout_marginRight="44dp"
-        android:text="TextView"
+        android:text="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCarpooled" />
 

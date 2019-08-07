@@ -19,7 +19,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.carbonfootprinttracker.R;
+import com.example.carbonfootprinttracker.fragments.CalendarFragment;
 import com.example.carbonfootprinttracker.fragments.CurrentDaySummaryFragment;
+import com.example.carbonfootprinttracker.fragments.CurrentScoreFragment;
 import com.example.carbonfootprinttracker.fragments.DailySummaryFragment;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.example.carbonfootprinttracker.models.DailySummary;
@@ -130,6 +132,7 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
                             .addToBackStack("DailySummaryFragment")
                             .commit();
                 } else {
+                    Bundle args = new Bundle();
                     for (DailySummary dailySummary : dailySummaries) {
                         Date dsDate = dailySummary.getCreatedAt();
                         Calendar cal1 = Calendar.getInstance();
@@ -140,7 +143,7 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
                                 cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
                         if (sameDay) {
                             Fragment fragment = new DailySummaryFragment();
-                            Bundle args = new Bundle();
+                            args = new Bundle();
                             args.putParcelable("dailySummary", dailySummary);
                             fragment.setArguments(args);
                             fragmentManager.beginTransaction()
@@ -149,7 +152,12 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
                                     .commit();
                         }
                     }
-                    //TODO what if there is no data also back button??
+                    if (args.getParcelable("dailySummary") == null) {
+                        if (date.getDate() < Calendar.getInstance().getTime().getDate() && date.getMonth() == Calendar.getInstance().getTime().getMonth()
+                                && date.getYear() == Calendar.getInstance().getTime().getYear()) {
+                            Toast.makeText(context, "No carbies logged for this date", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
             }
         });
