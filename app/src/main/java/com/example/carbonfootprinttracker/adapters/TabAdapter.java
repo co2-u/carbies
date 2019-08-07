@@ -33,7 +33,6 @@ public class TabAdapter extends FragmentPagerAdapter {
         return LogFragment.newInstance(position + 1);
     }
 
-
     @Override
     public CharSequence getPageTitle(int position) {
         // Generate title based on item position
