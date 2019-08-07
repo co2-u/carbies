@@ -10,7 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.carbonfootprinttracker.R;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -39,7 +41,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull UserAdapter.ViewHolder holder, int position) {
         ParseUser user = users.get(position);
-        //TODO - load profile image
+
+        ParseFile photoFile = user.getParseFile("profileImage");
+        if (photoFile != null) {
+            String preUrl = photoFile.getUrl();
+            String completeURL = preUrl.substring(0, 4) + "s" + preUrl.substring(4, preUrl.length());
+            Glide.with(context)
+                    .load(completeURL)
+                    .into(holder.ivProfileImage);
+        } else {
+            holder.ivProfileImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_account_circle));
+        }
+
         holder.tvUsername.setText(user.getUsername());
     }
 
@@ -49,7 +62,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.ivProfileImage)
+        @BindView(R.id.ivCircleProfile)
         ImageView ivProfileImage;
         @BindView(R.id.tvUsername)
         TextView tvUsername;

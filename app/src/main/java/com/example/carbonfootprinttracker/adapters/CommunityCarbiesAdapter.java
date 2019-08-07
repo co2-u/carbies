@@ -14,9 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.fragments.ProfileFragment;
 import com.example.carbonfootprinttracker.models.Carbie;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.text.DecimalFormat;
@@ -55,7 +57,8 @@ public class CommunityCarbiesAdapter extends RecyclerView.Adapter<CommunityCarbi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Carbie carbie = carbies.get(position);
-        final String username = carbie.getUser().getUsername();
+        final ParseUser user = carbie.getUser();
+        final String username = user.getUsername();
         final Integer score = carbie.getScore();
         final String title = carbie.getTitle();
         final Date date = carbie.getCreatedAt();
@@ -63,7 +66,19 @@ public class CommunityCarbiesAdapter extends RecyclerView.Adapter<CommunityCarbi
         holder.tvTitle.setText(title);
         holder.tvScore.setText(score.toString());
         holder.tvUsername.setText(username);
-        holder.tvDate.setText(getRelativeTimeAgo(carbie.getCreatedAt().toString()));
+        holder.tvDate.setText(getRelativeTimeAgo(date.toString()));
+
+        ParseFile photoFile = user.getParseFile("profileImage");
+        if (photoFile != null) {
+            String preUrl = photoFile.getUrl();
+            String completeURL = preUrl.substring(0, 4) + "s" + preUrl.substring(4, preUrl.length());
+            Glide.with(context)
+                    .load(completeURL)
+                    .into(holder.ivProfileImage);
+        } else {
+            holder.ivProfileImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_account_circle));
+        }
+
         String transport = "";
         switch (carbie.getTransportation()) {
             case "SmallCar":
@@ -97,6 +112,7 @@ public class CommunityCarbiesAdapter extends RecyclerView.Adapter<CommunityCarbi
                 transport = " carpooled ";
                 break;
         }
+
         holder.tvMoved.setText(transport);
         holder.tvDistance.setText(df.format(carbie.getDistance()) + " mi.");
 
@@ -135,7 +151,7 @@ public class CommunityCarbiesAdapter extends RecyclerView.Adapter<CommunityCarbi
         @BindView(R.id.tvDate) TextView tvDate;
         @BindView(R.id.tvMoved) TextView tvMoved;
         @BindView(R.id.tvDistance) TextView tvDistance;
-        @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
+        @BindView(R.id.ivCircleProfile) ImageView ivProfileImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

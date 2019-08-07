@@ -98,6 +98,7 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        fragmentManager = getFragmentManager();
         context = getContext();
         mDailySummaries = new ArrayList<>();
         cells = new ArrayList<>();
@@ -134,19 +135,6 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
             }
         });
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Fragment fragment = new DailySummaryFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentPlaceholder, fragment)
-                        .addToBackStack("DailySummaryFragment")
-                        .commit();
-            }
-        });
-
     }
 
     public void updateCalendar()
@@ -175,7 +163,7 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
         }
         calendar.set(Calendar.MONTH, month);
         // update grid
-        gridView.setAdapter(new CalendarAdapter(context, cells, mDailySummaries, calendar));
+        gridView.setAdapter(new CalendarAdapter(context, cells, mDailySummaries, calendar, gridView, fragmentManager));
     }
 
     protected void queryDailySummaries() {

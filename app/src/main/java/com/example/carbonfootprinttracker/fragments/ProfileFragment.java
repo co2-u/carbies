@@ -18,11 +18,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.adapters.CommunityCarbiesAdapter;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -42,7 +44,7 @@ import butterknife.ButterKnife;
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
 
-    @BindView(R.id.ivProfileImage2) ImageView ivProfileImage;
+    @BindView(R.id.ivCircleProfile) ImageView ivProfileImage;
     @BindView(R.id.tvUsername2) TextView tvUsername;
     @BindView(R.id.tvScoreProfile) TextView tvScore;
     @BindView(R.id.btFollow) Button btFollow;
@@ -90,6 +92,17 @@ public class ProfileFragment extends Fragment {
         } else {
             btFollow.setText("Follow");
             btFollow.setBackground(context.getResources().getDrawable(R.drawable.yes_confirm_button));
+        }
+
+        ParseFile photoFile = user.getParseFile("profileImage");
+        if (photoFile != null) {
+            String preUrl = photoFile.getUrl();
+            String completeURL = preUrl.substring(0, 4) + "s" + preUrl.substring(4, preUrl.length());
+            Glide.with(getContext())
+                    .load(completeURL)
+                    .into(ivProfileImage);
+        } else {
+            ivProfileImage.setBackground(getContext().getResources().getDrawable(R.drawable.ic_account_circle));
         }
 
         btFollow.setOnClickListener(new View.OnClickListener() {
