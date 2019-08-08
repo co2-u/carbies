@@ -78,6 +78,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "LiveRouteFragment";
     private static final long UPDATE_INTERVAL = 2 * 1000;  /* 2 secs */
     private static final long FASTEST_INTERVAL = 1000; /* 1 sec */
+    private static final int ZOOM = 17; /* 1 sec */
 
     private GoogleMap mGoogleMap;
     private GeoApiContext mGeoApiContext = null;
@@ -92,8 +93,8 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     private Carbie carbie;
     private AutocompleteSupportFragment autocompleteFragment;
     private TravelMode travelMode;
-    private Marker startMarker;
     private Marker endMarker;
+    private Location endLocation;
 
     @BindView(R.id.btStart) Button btStart;
     @BindView(R.id.btStop) Button btStop;
@@ -116,6 +117,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         fragmentManager = getFragmentManager();
         context = getContext();
         mLocations = new ArrayList<>();
+        endLocation = new Location("");
 
         try {
             carbie = getArguments().getParcelable("carbie");
@@ -167,12 +169,10 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mGoogleMap != null) {
-                            mGoogleMap.clear();
-                        }
+                        if (mGoogleMap != null) { mGoogleMap.clear(); }
+                        autocompleteFragment.setText("");
                     }
                 });
-
         autocompleteFragment.getView().setBackground(context.getResources().getDrawable(R.drawable.background_button_rectangle));
 
         // Move location button below search bar
@@ -202,13 +202,18 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                 if (!isTracking) {
                     isTracking = true;
                     if (mCurrentLocation != null) {
-                        autocompleteFragment.getView().setVisibility(View.GONE);
-                        rlp.setMargins(0, 20, 0, 0);
+                        autocompleteFragment.getView().setVisibility(View.GONE); // Hide searchbar
+                        rlp.setMargins(0, 20, 0, 0); // Move location button to top right
                         chronometer.setVisibility(View.VISIBLE);
                         chronometer.setBase(SystemClock.elapsedRealtime());
                         chronometer.start();
                         mLocations.add(mCurrentLocation);
                         mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude())));
+                        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()), ZOOM));
+                        if (endMarker != null) {
+                            endLocation.setLatitude(endMarker.getPosition().latitude);
+                            endLocation.setLongitude(endMarker.getPosition().longitude);
+                        }
                         btStart.setVisibility(View.INVISIBLE);
                         btStop.setVisibility(View.VISIBLE);
                     } else {
@@ -227,6 +232,10 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                     Toast.makeText(context, "You haven't started a route!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (endMarker != null) {
+                    endMarker.remove();
+                }
+
                 showProgressBar();
                 chronometer.stop();
                 long elapsedSeconds = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
@@ -301,7 +310,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                     public void onSuccess(Location location) {
                         if (location != null) {
                             updateCurrentLocation(location);
-                            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
+                            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), ZOOM));
                             //Prefer place search results that are nearby
                             LatLngBounds latLngBounds = new LatLngBounds.Builder().include(new LatLng(location.getLatitude(), location.getLongitude())).build();
                             autocompleteFragment.setLocationBias(RectangularBounds.newInstance(latLngBounds));
@@ -359,6 +368,15 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
             }
             updateCurrentLocation(location);
         }
+
+        // Check if within
+        if (endMarker != null) {
+            final float distanceToDestination = mCurrentLocation.distanceTo(endLocation);
+            if (distanceToDestination < 10) {
+                btStop.performClick();
+            }
+        }
+
     }
 
     private void updateCurrentLocation (Location location) {
@@ -472,10 +490,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                 .setCallback(new PendingResult.Callback<DirectionsResult>() {
                     @Override
                     public void onResult(DirectionsResult result) {
-                        Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString());
-                        Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
-                        Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
-
+                        hideProgressBar();
                         // Start and End LatLng coordinates and user-friendly addresses
                         final com.google.maps.model.LatLng startLatLng = result.routes[0].legs[0].startLocation;
                         final com.google.maps.model.LatLng endLatLng = result.routes[0].legs[0].endLocation;
@@ -483,21 +498,17 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                         final String endAddress= result.routes[0].legs[0].endAddress;
 
                         Log.d(TAG, "startAddress: " + startAddress);
-                        Log.d(TAG, "startAddress: " + endAddress);
+                        Log.d(TAG, "endAddress: " + endAddress);
 
-
-                        // Get northeast and southwest LatLngBounds to use for centering camera
-                        final com.google.maps.model.LatLng preNE = result.routes[0].bounds.northeast;
-                        final com.google.maps.model.LatLng preSW = result.routes[0].bounds.southwest;
-                        final LatLng northeast = new LatLng(preNE.lat, preNE.lng);
-                        final LatLng southwest = new LatLng(preSW.lat, preSW.lng);
-//                        routeBounds = new LatLngBounds(southwest, northeast);
-//
-                        hideProgressBar();
 //                        addMarker(startLatLng.lat, startLatLng.lng, startAddress, BitmapDescriptorFactory.HUE_RED, true);
-                        addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_ORANGE, false);
+                        addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_ORANGE);
 //                        addPolylinesToMap(result);
-//                        centerCameraOn(routeBounds);
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(endLatLng.lat, endLatLng.lng), ZOOM));
+                            }
+                        });
                     }
 
                     @Override
@@ -514,23 +525,15 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                 });
     }
 
-    private void addMarker(double lat, double lng, String name, float color, boolean isStart) {
+    private void addMarker(double lat, double lng, String name, float color) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                if (isStart) {
-                    final LatLng markerLocation = new LatLng(lat,lng);
-                    startMarker = mGoogleMap.addMarker(
-                            new MarkerOptions().position(markerLocation)
-                                    .title(name)
-                                    .icon(BitmapDescriptorFactory.defaultMarker(color)));
-                } else {
-                    final LatLng markerLocation = new LatLng(lat,lng);
-                    endMarker = mGoogleMap.addMarker(
-                            new MarkerOptions().position(markerLocation)
-                                    .title(name)
-                                    .icon(BitmapDescriptorFactory.defaultMarker(color)));
-                }
+                final LatLng markerLocation = new LatLng(lat,lng);
+                endMarker = mGoogleMap.addMarker(
+                        new MarkerOptions().position(markerLocation)
+                                .title(name)
+                                .icon(BitmapDescriptorFactory.defaultMarker(color)));
             }
         });
     }
