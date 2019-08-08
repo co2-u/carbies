@@ -19,6 +19,8 @@ import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.DailySummary;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -42,6 +44,8 @@ public class DailySummaryFragment extends Fragment {
     TextView tvDailyTitle;
     @BindView(R.id.tvDailyScore) TextView tvDailyScore;
     @BindView(R.id.tvCarbiesSaved) TextView tvCarbiesSaved;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+
 
     Context context;
     DailySummary dailySummary;
@@ -71,12 +75,12 @@ public class DailySummaryFragment extends Fragment {
             Log.e("DSF", "Daily Summary was not passed in to Daily Summary Fragment");
             e.printStackTrace();
         }
-        tvWalked.setText( "" + Math.floor(dailySummary.getMilesWalked() * 100) / 100.0);
-        tvBiked.setText( "" + Math.floor(dailySummary.getMilesBiked() * 100) / 100.0);
-        tvGas.setText( "" + Math.floor(dailySummary.getMilesGasDriven() * 100) / 100.0);
-        tvElectric.setText( "" + Math.floor(dailySummary.getMilesEDriven() * 100) / 100.0);
-        tvCarpooled.setText( "" + Math.floor(dailySummary.getMilesCarpooled() * 100) / 100.0);
-        tvPTransport.setText( "" + Math.floor(dailySummary.getMilesPublicTransport() * 100) / 100.0);
+        tvWalked.setText( "" + df.format(dailySummary.getMilesWalked()));
+        tvBiked.setText( "" + df.format(dailySummary.getMilesBiked()));
+        tvGas.setText( "" + df.format(dailySummary.getMilesGasDriven()));
+        tvElectric.setText( "" + df.format(dailySummary.getMilesEDriven()));
+        tvCarpooled.setText( "" + df.format(dailySummary.getMilesCarpooled()));
+        tvPTransport.setText( "" + df.format(dailySummary.getMilesPublicTransport()));
         tvDailyScore.setText("" + dailySummary.getScore().intValue());
         tvDailyTitle.setText(getDay(day) + ", " + getMonth(month) + " " + date);
         tvCarbiesSaved.setText(carbiesSaved());

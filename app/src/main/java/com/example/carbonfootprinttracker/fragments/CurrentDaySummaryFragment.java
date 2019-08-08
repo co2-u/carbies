@@ -24,6 +24,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,6 +53,8 @@ public class CurrentDaySummaryFragment extends Fragment {
     Integer currentScore;
     Context context;
     List<Carbie> mCarbies;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+
 
     @Nullable
     @Override
@@ -127,12 +130,12 @@ public class CurrentDaySummaryFragment extends Fragment {
                     break;
             }
         }
-        tvWalked.setText("" + Math.floor(milesWalked * 100) / 100);
-        tvBiked.setText("" + Math.floor(milesBiked * 100) / 100);
-        tvGas.setText("" + Math.floor(milesGas * 100) / 100);
-        tvElectric.setText("" + Math.floor(milesElectric * 100) / 100);
-        tvCarpooled.setText("" + Math.floor(milesCarpooled * 100) / 100);
-        tvPTransport.setText("" + Math.floor(milesPublicTransport * 100) / 100);
+        tvWalked.setText("" + df.format(milesWalked));
+        tvBiked.setText("" + df.format(milesBiked));
+        tvGas.setText("" + df.format(milesGas));
+        tvElectric.setText("" + df.format(milesElectric));
+        tvCarpooled.setText("" + df.format(milesCarpooled));
+        tvPTransport.setText("" + df.format(milesPublicTransport));
     }
 
     private void queryCarbies() {
@@ -191,18 +194,23 @@ public class CurrentDaySummaryFragment extends Fragment {
     private String carbiesSaved() {
         //TODO make better messages ahaha
         String message = "";
-        double totalMileage = 0;
-        for (Carbie carbie : mCarbies) {
-            totalMileage += carbie.getDistance();
-        }
-        Double medScore = totalMileage * 430.0;
-        int milesSaved = medScore.intValue() - MainActivity.score;
-        if (milesSaved > 0) {
-            message = "By choosing greener modes of transportation you are saving " + milesSaved + " grams of CO2. Great job!";
-        } else if (milesSaved == 0) {
-            message = "ya, ya , ya yeet ya";
+        if (currentScore == 0) {
+            message = "Don't forget to log your trips today!";
         } else {
-            message = "and I oop";
+            double totalMileage = 0;
+            for (Carbie carbie : mCarbies) {
+                totalMileage += carbie.getDistance();
+            }
+            Double medScore = totalMileage * 430.0;
+            Double busScore = totalMileage * 290;
+            int milesSaved = medScore.intValue() - MainActivity.score;
+            if (milesSaved > 0) {
+                message = "By choosing greener modes of transportation you saved " + milesSaved + " grams of CO2 as compared to driving a medium gasoline car. Great job!";
+            } else if (milesSaved == 0) {
+                message = "By taking the bus instead of using a car you could save " + (currentScore - busScore.intValue()) + " grams of CO2";
+            } else {
+                message = "By using less green modes of transportation you used " + Math.abs(milesSaved) + " more grams of CO2 than a medium car.";
+            }
         }
         return message;
     }
