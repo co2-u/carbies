@@ -244,13 +244,22 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
     public void onResume() {
         super.onResume();
         MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mainActivity.getSupportActionBar().setTitle("Calendar");
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
         mainActivity.setCalendarTabVisibility(false);
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
         MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
+        mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mainActivity.getSupportActionBar().setTitle("Calendar");
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         mainActivity.setCalendarTabVisibility(true);
     }
 

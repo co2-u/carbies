@@ -95,26 +95,28 @@ public class DailySummaryFragment extends Fragment {
                 startActivity(sendIntent);
             }
         });
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Daily Summary"); //"daily summary" instead of title
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
-        mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.GONE);
+        mainActivity.getSupportActionBar().setTitle("Daily Summary");
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        mainActivity.setCalendarTabVisibility(false);
     }
     @Override
     public void onStop() {
         super.onStop();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
-        mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        mainActivity.getSupportActionBar().setTitle("Daily Summary");
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mainActivity.setCalendarTabVisibility(true);
     }
 
     private String getMonth(int month) {
