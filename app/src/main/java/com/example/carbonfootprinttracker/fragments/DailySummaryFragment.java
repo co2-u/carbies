@@ -19,6 +19,8 @@ import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.DailySummary;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -42,6 +44,8 @@ public class DailySummaryFragment extends Fragment {
     TextView tvDailyTitle;
     @BindView(R.id.tvDailyScore) TextView tvDailyScore;
     @BindView(R.id.tvCarbiesSaved) TextView tvCarbiesSaved;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+
 
     Context context;
     DailySummary dailySummary;
@@ -71,12 +75,12 @@ public class DailySummaryFragment extends Fragment {
             Log.e("DSF", "Daily Summary was not passed in to Daily Summary Fragment");
             e.printStackTrace();
         }
-        tvWalked.setText( "" + Math.floor(dailySummary.getMilesWalked() * 100) / 100);
-        tvBiked.setText( "" + Math.floor(dailySummary.getMilesBiked() * 100) / 100);
-        tvGas.setText( "" + Math.floor(dailySummary.getMilesGasDriven() * 100) / 100);
-        tvElectric.setText( "" + Math.floor(dailySummary.getMilesEDriven() * 100) / 100);
-        tvCarpooled.setText( "" + Math.floor(dailySummary.getMilesCarpooled() * 100) / 100);
-        tvPTransport.setText( "" + Math.floor(dailySummary.getMilesPublicTransport() * 100) / 100);
+        tvWalked.setText( "" + df.format(dailySummary.getMilesWalked()));
+        tvBiked.setText( "" + df.format(dailySummary.getMilesBiked()));
+        tvGas.setText( "" + df.format(dailySummary.getMilesGasDriven()));
+        tvElectric.setText( "" + df.format(dailySummary.getMilesEDriven()));
+        tvCarpooled.setText( "" + df.format(dailySummary.getMilesCarpooled()));
+        tvPTransport.setText( "" + df.format(dailySummary.getMilesPublicTransport()));
         tvDailyScore.setText("" + dailySummary.getScore().intValue());
         tvDailyTitle.setText(getDay(day) + ", " + getMonth(month) + " " + date);
         tvCarbiesSaved.setText(carbiesSaved());
@@ -97,7 +101,6 @@ public class DailySummaryFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
-        mainActivity.findViewById(R.id.tvDailySummary).setVisibility(TextView.VISIBLE);
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -108,7 +111,6 @@ public class DailySummaryFragment extends Fragment {
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
-        mainActivity.findViewById(R.id.tvDailySummary).setVisibility(TextView.GONE);
         mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 //        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -187,18 +189,18 @@ public class DailySummaryFragment extends Fragment {
     }
 
     private String carbiesSaved() {
-        //TODO make better messages ahaha
         String message = "";
         double totalMileage = dailySummary.getMilesBiked() + dailySummary.getMilesCarpooled() + dailySummary.getMilesEDriven() +
                 dailySummary.getMilesGasDriven() + dailySummary.getMilesPublicTransport() + dailySummary.getMilesWalked();
         Double medScore = totalMileage * 430.0;
+        Double busScore = totalMileage * 290;
         Double milesSaved = medScore.intValue() - dailySummary.getScore();
         if (milesSaved > 0) {
-            message = "By choosing greener modes of transportation you saved " + milesSaved.intValue() + " grams of CO2. Great job!";
+            message = "By choosing greener modes of transportation you saved " + milesSaved.intValue() + " grams of CO2 as compared to driving a medium gasoline car. Great job!";
         } else if (milesSaved == 0) {
-            message = "ya, ya , ya yeet ya";
+            message = "By taking the bus instead of using a car you could save " + (dailySummary.getScore() - busScore.intValue()) + " grams of CO2";
         } else {
-            message = "and I oop";
+            message = "By using less green modes of transportation you used " + Math.abs(milesSaved.intValue()) + " more grams of CO2 than a medium car.";
         }
         return message;
     }

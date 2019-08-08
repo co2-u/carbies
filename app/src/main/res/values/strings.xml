@@ -28,12 +28,12 @@
         such as public transportation. Hybrid and electric cars are also great ways to cut down your carbon footprint!
     </string>
     <string name="electricSuggestion">
-        Great job cutting down your carbon footprint by choosing to drive a hybrid car! Next time consider using a greener
+        Great job cutting down your carbon footprint by choosing to drive an electric car! Next time consider using a greener
         option such as public transportation.
     </string>
     <string name="hybridSuggestion">
         Great job cutting down your carbon footprint by choosing to drive a hybrid car! Next time consider using a greener
-        option such as public transportation. Electric an electric car also another eco friendly option!
+        option such as public transportation. A full electric car in also another eco friendly option!
     </string>
     <string name="rideShareSuggestion">
         Great job cutting down your carbon footprint by choosing to carpool! Next time consider using a greener
@@ -50,6 +50,7 @@
     <string name="bikeSuggestion">
         Great job cutting down your carbon footprint by biking!
     </string>
+
     <string name="permission_location_rationale">Needs access to location.</string>
     <string name="button_allow">Allow</string>
     <string name="button_deny">Deny</string>

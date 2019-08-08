@@ -579,6 +579,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.GONE);
         mainActivity.findViewById(R.id.tvEnterData).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -596,6 +597,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
         mainActivity.findViewById(R.id.tvEnterData).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.VISIBLE);
     }
