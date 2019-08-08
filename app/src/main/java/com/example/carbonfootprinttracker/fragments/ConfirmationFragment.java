@@ -41,7 +41,6 @@ public class ConfirmationFragment extends Fragment {
     @BindView(R.id.tvMode2) TextView tvMode2;
     @BindView(R.id.btnConfirmNo) Button btnConfirmNo;
     @BindView(R.id.btnConfirmYes) Button btnConfirmYes;
-    @BindView(R.id.btnYesAndGo) Button btnYesAndGo;
     @BindView(R.id.ivMapSnapshot) ImageView ivMapSnapshot;
     @BindView(R.id.etConfirmName) TextInputLayout etConfirmName;
     @BindView (R.id.progressBar3) ProgressBar pbLoading;
@@ -129,48 +128,6 @@ public class ConfirmationFragment extends Fragment {
                         }
                     });
                 }
-            }
-        });
-
-        btnYesAndGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(etConfirmName.getEditText().getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), "Please enter a title!", Toast.LENGTH_LONG).show();
-                } else {
-                    photoFile.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                carbie.setMapShot(photoFile);
-                                carbie.setIsFavorited(false);
-                                carbie.setIsDeleted(false);
-                                carbie.setTitle(etConfirmName.getEditText().getText().toString());
-                                carbie.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        if (e != null) {
-                                            Log.d(TAG, "Error while saving");
-                                            e.printStackTrace();
-                                            return;
-                                        }
-                                        Log.d(TAG, "Success!");
-                                    }
-                                });
-                                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + carbie.getEndLocation().replaceAll(" ", "+")
-                                        + "&mode=" + typeOfTransport());
-
-                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                mapIntent.setPackage("com.google.android.apps.maps");
-                                startActivity(mapIntent);
-                                goToMainFragment();
-                            } else {
-                                Log.d(TAG, "Error while saving photo file.");
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-            }
             }
         });
     }
