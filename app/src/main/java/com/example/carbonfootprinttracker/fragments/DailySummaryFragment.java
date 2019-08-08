@@ -71,12 +71,12 @@ public class DailySummaryFragment extends Fragment {
             Log.e("DSF", "Daily Summary was not passed in to Daily Summary Fragment");
             e.printStackTrace();
         }
-        tvWalked.setText( "" + Math.floor(dailySummary.getMilesWalked() * 100) / 100);
-        tvBiked.setText( "" + Math.floor(dailySummary.getMilesBiked() * 100) / 100);
-        tvGas.setText( "" + Math.floor(dailySummary.getMilesGasDriven() * 100) / 100);
-        tvElectric.setText( "" + Math.floor(dailySummary.getMilesEDriven() * 100) / 100);
-        tvCarpooled.setText( "" + Math.floor(dailySummary.getMilesCarpooled() * 100) / 100);
-        tvPTransport.setText( "" + Math.floor(dailySummary.getMilesPublicTransport() * 100) / 100);
+        tvWalked.setText( "" + Math.floor(dailySummary.getMilesWalked() * 100) / 100.0);
+        tvBiked.setText( "" + Math.floor(dailySummary.getMilesBiked() * 100) / 100.0);
+        tvGas.setText( "" + Math.floor(dailySummary.getMilesGasDriven() * 100) / 100.0);
+        tvElectric.setText( "" + Math.floor(dailySummary.getMilesEDriven() * 100) / 100.0);
+        tvCarpooled.setText( "" + Math.floor(dailySummary.getMilesCarpooled() * 100) / 100.0);
+        tvPTransport.setText( "" + Math.floor(dailySummary.getMilesPublicTransport() * 100) / 100.0);
         tvDailyScore.setText("" + dailySummary.getScore().intValue());
         tvDailyTitle.setText(getDay(day) + ", " + getMonth(month) + " " + date);
         tvCarbiesSaved.setText(carbiesSaved());
@@ -187,18 +187,18 @@ public class DailySummaryFragment extends Fragment {
     }
 
     private String carbiesSaved() {
-        //TODO make better messages ahaha
         String message = "";
         double totalMileage = dailySummary.getMilesBiked() + dailySummary.getMilesCarpooled() + dailySummary.getMilesEDriven() +
                 dailySummary.getMilesGasDriven() + dailySummary.getMilesPublicTransport() + dailySummary.getMilesWalked();
         Double medScore = totalMileage * 430.0;
+        Double busScore = totalMileage * 290;
         Double milesSaved = medScore.intValue() - dailySummary.getScore();
         if (milesSaved > 0) {
-            message = "By choosing greener modes of transportation you saved " + milesSaved.intValue() + " grams of CO2. Great job!";
+            message = "By choosing greener modes of transportation you saved " + milesSaved.intValue() + " grams of CO2 as compared to driving a medium gasoline car. Great job!";
         } else if (milesSaved == 0) {
-            message = "ya, ya , ya yeet ya";
+            message = "By taking the bus instead of using a car you could save " + (dailySummary.getScore() - busScore.intValue()) + " grams of CO2";
         } else {
-            message = "and I oop";
+            message = "By using less green modes of transportation you used " + Math.abs(milesSaved.intValue()) + " more grams of CO2 than a medium car.";
         }
         return message;
     }

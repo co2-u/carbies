@@ -33,6 +33,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+import okhttp3.internal.cache.CacheStrategy;
+
 public class CalendarAdapter extends ArrayAdapter<Date> {
 
     private LayoutInflater inflater;
@@ -101,17 +103,16 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
                     }
                     else if (dailySummary.getScore() > MAX_CARBON_SCORE && dailySummary.getScore() <= MAX_CARBON_SCORE * 1.1){
                         ((TextView)view).setTextColor(Color.YELLOW);
-                        view.setBackgroundResource(R.drawable.yellow_circle);
+//                        view.setBackgroundResource(R.drawable.yellow_circle);
                     } else {
                         ((TextView)view).setTextColor(Color.RED);
-                        view.setBackgroundResource(R.drawable.red_circle);
+//                        view.setBackgroundResource(R.drawable.red_circle);
                     }
                 }
             }
         }
         if (day == Calendar.getInstance().getTime().getDate() && month == Calendar.getInstance().getTime().getMonth()
-                && year == Calendar.getInstance().getTime().getYear())
-        {
+                && year == Calendar.getInstance().getTime().getYear() && calendar.get(Calendar.MONTH) == Calendar.getInstance().getTime().getMonth()) {
             // if it is today, set it to blue
             ((TextView)view).setTextColor(Color.BLUE);
             ((TextView) view).setGravity(Gravity.CENTER);
