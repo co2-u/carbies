@@ -125,10 +125,12 @@
             android:layout_marginStart="48dp"
             android:layout_marginLeft="48dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/no_confirm_button"
             android:gravity="center|bottom"
             android:paddingBottom="5dp"
             android:text="No"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivMapSnapshot" />
 
@@ -138,10 +140,12 @@
             android:layout_height="75dp"
             android:layout_marginEnd="48dp"
             android:layout_marginRight="48dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/yes_confirm_button"
             android:gravity="bottom|center"
             android:paddingBottom="5dp"
             android:text="yes"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btnConfirmNo" />
 
@@ -165,17 +169,6 @@
             app:layout_constraintStart_toStartOf="@+id/btnConfirmYes"
             app:layout_constraintTop_toTopOf="@+id/btnConfirmYes"
             app:srcCompat="@drawable/check_bold" />
-
-        <Button
-            android:id="@+id/btnYesAndGo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="yes, go to destination"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnConfirmNo" />
 
         <ImageView
             android:id="@+id/ivMapSnapshot"

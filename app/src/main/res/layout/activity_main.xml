@@ -70,4 +70,24 @@
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
         app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
+    <TextView
+        android:id="@+id/tvDailySummary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="@dimen/cardview_default_elevation"
+        android:fontFamily="sans-serif"
+        android:text="Daily Summary"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="normal|bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/tvName" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -102,7 +103,16 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
         try {
             carbie = getArguments().getParcelable("carbie");
-            ((MainActivity) getActivity()).getSupportActionBar().setTitle(carbie.getTransportation());
+            String transportation = carbie.getTransportation();
+            String title = "";
+            if (transportation.equals("FossilFuel") || transportation.equals("Renewable")) {
+                title = "Full Electric";
+            } else if (transportation.equals("SmallCar") || transportation.equals("MediumCar") || transportation.equals("LargeCar")) {
+                title = "Gasoline Car";
+            } else {
+                title = transportation;
+            }
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle(title);
         } catch (NullPointerException e) {
             Log.e(TAG, "Carbie was not passed into LiveRouteFragment");
             e.printStackTrace();

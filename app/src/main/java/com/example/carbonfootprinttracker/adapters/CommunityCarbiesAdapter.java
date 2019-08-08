@@ -148,7 +148,7 @@ public class CommunityCarbiesAdapter extends RecyclerView.Adapter<CommunityCarbi
         @BindView(R.id.tvUsername) TextView tvUsername;
         @BindView(R.id.tvTitle) TextView tvTitle;
         @BindView(R.id.tvScore) TextView tvScore;
-        @BindView(R.id.tvDate) TextView tvDate;
+        @BindView(R.id.tvDailyTitle) TextView tvDate;
         @BindView(R.id.tvMoved) TextView tvMoved;
         @BindView(R.id.tvDistance) TextView tvDistance;
         @BindView(R.id.ivCircleProfile) ImageView ivProfileImage;
