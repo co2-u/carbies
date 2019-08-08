@@ -5,16 +5,17 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.Manifest;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -42,14 +44,24 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
+import com.google.maps.PendingResult;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -66,6 +78,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "LiveRouteFragment";
     private static final long UPDATE_INTERVAL = 2 * 1000;  /* 2 secs */
     private static final long FASTEST_INTERVAL = 1000; /* 1 sec */
+    private static final int ZOOM = 17; /* 1 sec */
 
     private GoogleMap mGoogleMap;
     private GeoApiContext mGeoApiContext = null;
@@ -78,6 +91,10 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     private List<Location> mLocations;
     private boolean isTracking = false;
     private Carbie carbie;
+    private AutocompleteSupportFragment autocompleteFragment;
+    private TravelMode travelMode;
+    private Marker endMarker;
+    private Location endLocation;
 
     @BindView(R.id.btStart) Button btStart;
     @BindView(R.id.btStop) Button btStop;
@@ -100,9 +117,12 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         fragmentManager = getFragmentManager();
         context = getContext();
         mLocations = new ArrayList<>();
+        endLocation = new Location("");
 
         try {
             carbie = getArguments().getParcelable("carbie");
+            setTravelMode();
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle(carbie.getTransportation());
             String transportation = carbie.getTransportation();
             String title = "";
             if (transportation.equals("FossilFuel") || transportation.equals("Renewable")) {
@@ -138,6 +158,39 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                     .build();
         }
 
+        autocompleteFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Log.d(TAG, "Place: " + place.getName() + ", " + place.getId());
+                String start = "" + mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude();
+                String destination = "place_id:" + place.getId();
+                calculateDirections(start, destination);
+            }
+            @Override
+            public void onError(Status status) {
+                Toast.makeText(context, "Error while selecting place.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "An error occurred: " + status);
+            }
+        });
+
+        autocompleteFragment.getView().findViewById(R.id.places_autocomplete_clear_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mGoogleMap != null) { mGoogleMap.clear(); }
+                        autocompleteFragment.setText("");
+                    }
+                });
+        autocompleteFragment.getView().setBackground(context.getResources().getDrawable(R.drawable.background_button_rectangle));
+
+        // Move location button below search bar
+        View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+        rlp.setMargins(0, 180, 0, 0);
+
         tvEnterData = ((MainActivity) getActivity()).findViewById(R.id.tvEnterData);
         tvEnterData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,12 +212,18 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                 if (!isTracking) {
                     isTracking = true;
                     if (mCurrentLocation != null) {
-                        Log.d(TAG, "start");
+                        autocompleteFragment.getView().setVisibility(View.GONE); // Hide searchbar
+                        rlp.setMargins(0, 20, 0, 0); // Move location button to top right
                         chronometer.setVisibility(View.VISIBLE);
                         chronometer.setBase(SystemClock.elapsedRealtime());
                         chronometer.start();
                         mLocations.add(mCurrentLocation);
                         mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude())));
+                        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()), ZOOM));
+                        if (endMarker != null) {
+                            endLocation.setLatitude(endMarker.getPosition().latitude);
+                            endLocation.setLongitude(endMarker.getPosition().longitude);
+                        }
                         btStart.setVisibility(View.INVISIBLE);
                         btStop.setVisibility(View.VISIBLE);
                     } else {
@@ -183,6 +242,10 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                     Toast.makeText(context, "You haven't started a route!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (endMarker != null) {
+                    endMarker.remove();
+                }
+
                 showProgressBar();
                 chronometer.stop();
                 long elapsedSeconds = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
@@ -257,7 +320,10 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                     public void onSuccess(Location location) {
                         if (location != null) {
                             updateCurrentLocation(location);
-                            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
+                            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), ZOOM));
+                            //Prefer place search results that are nearby
+                            LatLngBounds latLngBounds = new LatLngBounds.Builder().include(new LatLng(location.getLatitude(), location.getLongitude())).build();
+                            autocompleteFragment.setLocationBias(RectangularBounds.newInstance(latLngBounds));
                         }
                     }
                 })
@@ -312,6 +378,15 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
             }
             updateCurrentLocation(location);
         }
+
+        // Check if within
+        if (endMarker != null) {
+            final float distanceToDestination = mCurrentLocation.distanceTo(endLocation);
+            if (distanceToDestination < 10) {
+                btStop.performClick();
+            }
+        }
+
     }
 
     private void updateCurrentLocation (Location location) {
@@ -348,6 +423,131 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         return distance;
     }
 
+    private void showProgressBar() {
+        pbLoading.setVisibility(ProgressBar.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        pbLoading.setVisibility(ProgressBar.INVISIBLE);
+    }
+
+    private double toMiles(float meters) {
+        return (meters * 0.00062137);
+    }
+
+    private void setTravelMode() {
+        // Set TravelMode for Directions API request from our TransportationMode
+        switch (carbie.getTransportation()) {
+            case "SmallCar":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "MediumCar":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "LargeCar":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "Bike":
+                travelMode = TravelMode.BICYCLING;
+                break;
+            case "Hybrid":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "FossilFuel":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "Renewable":
+                travelMode = TravelMode.DRIVING;
+                break;
+            case "Bus":
+                travelMode = TravelMode.TRANSIT;
+                break;
+            case "Rail":
+                travelMode = TravelMode.TRANSIT;
+                break;
+            case "Walk":
+                travelMode = TravelMode.WALKING;
+                break;
+            case "Rideshare":
+                travelMode = TravelMode.DRIVING;
+                break;
+        }
+    }
+
+    private LatLngBounds findBounds() {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (Location location: mLocations) {
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            builder.include(latLng);
+        }
+        LatLngBounds bounds = builder.build();
+        return bounds;
+    }
+
+    private void calculateDirections(String startLocation, String endLocation){
+        showProgressBar();
+
+        DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
+
+        directions.alternatives(true);
+        directions.origin(
+                startLocation
+        );
+
+        Log.d(TAG, "calculateDirections: destination: " + endLocation);
+        directions.destination(endLocation)
+                .mode(travelMode)
+                .setCallback(new PendingResult.Callback<DirectionsResult>() {
+                    @Override
+                    public void onResult(DirectionsResult result) {
+                        hideProgressBar();
+                        // Start and End LatLng coordinates and user-friendly addresses
+                        final com.google.maps.model.LatLng startLatLng = result.routes[0].legs[0].startLocation;
+                        final com.google.maps.model.LatLng endLatLng = result.routes[0].legs[0].endLocation;
+                        final String startAddress = result.routes[0].legs[0].startAddress;
+                        final String endAddress= result.routes[0].legs[0].endAddress;
+
+                        Log.d(TAG, "startAddress: " + startAddress);
+                        Log.d(TAG, "endAddress: " + endAddress);
+
+//                        addMarker(startLatLng.lat, startLatLng.lng, startAddress, BitmapDescriptorFactory.HUE_RED, true);
+                        addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_ORANGE);
+//                        addPolylinesToMap(result);
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(endLatLng.lat, endLatLng.lng), ZOOM));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e) {
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getContext(), "Failed to get directions!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        hideProgressBar();
+                        Log.e(TAG, "calculateDirections: Failed to get directions: " + e.getMessage() );
+                    }
+                });
+    }
+
+    private void addMarker(double lat, double lng, String name, float color) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                final LatLng markerLocation = new LatLng(lat,lng);
+                endMarker = mGoogleMap.addMarker(
+                        new MarkerOptions().position(markerLocation)
+                                .title(name)
+                                .icon(BitmapDescriptorFactory.defaultMarker(color)));
+            }
+        });
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -369,7 +569,6 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onResume() {
-        Log.d(TAG, "onResume");
         super.onResume();
         mapView.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
@@ -383,14 +582,12 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onPause() {
-        Log.d(TAG, "onPause");
         super.onPause();
         mapView.onPause();
     }
 
     @Override
     public void onStop() {
-        Log.d(TAG, "onStop");
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -403,30 +600,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onDestroyView() {
-        Log.d(TAG, "onDestryView");
         super.onDestroyView();
         stopLocationUpdates();
-    }
-
-    private void showProgressBar() {
-        pbLoading.setVisibility(ProgressBar.VISIBLE);
-    }
-
-    private void hideProgressBar() {
-        pbLoading.setVisibility(ProgressBar.INVISIBLE);
-    }
-
-    private double toMiles(float meters) {
-        return (meters * 0.00062137);
-    }
-
-    private LatLngBounds findBounds() {
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Location location: mLocations) {
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            builder.include(latLng);
-        }
-        LatLngBounds bounds = builder.build();
-        return bounds;
     }
 }
