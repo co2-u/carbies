@@ -40,7 +40,6 @@ public class CurrentScoreFragment extends Fragment {
     @BindView(R.id.tvGeneralTips) TextView tvGeneralTips;
     @BindView(R.id.pbLoading) ProgressBar pbLoading;
 
-
     private int currentScore;
     private final String GREEN_SCORE = "Great job minimizing your carbon output! Keep walking and biking for " +
                                          "close distances and using other green modes of transportation";
@@ -49,7 +48,6 @@ public class CurrentScoreFragment extends Fragment {
     private int maxCarbon = 8000;
     private List<Carbie> mCarbies;
     private DailySummary yesterdaySummary;
-
 
     @Nullable
     @Override
@@ -75,6 +73,7 @@ public class CurrentScoreFragment extends Fragment {
                         .commit();
             }
         });
+
     }
 
     private void setScore(int currentScore) {

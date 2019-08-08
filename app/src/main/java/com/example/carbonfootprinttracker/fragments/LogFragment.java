@@ -64,6 +64,7 @@ public class LogFragment extends Fragment {
         viewPager.setCurrentItem(0);
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().hide();
     }
 
@@ -72,6 +73,7 @@ public class LogFragment extends Fragment {
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().show();
     }
 }

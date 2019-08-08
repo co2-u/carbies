@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 
 //import com.applandeo.materialcalendarview.EventDay;
 //import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
+import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.adapters.CalendarAdapter;
 import com.example.carbonfootprinttracker.models.Carbie;
@@ -134,7 +135,6 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
                 updateCalendar();
             }
         });
-
     }
 
     public void updateCalendar()
@@ -238,6 +238,20 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
     @Override
     public void onLongPress(MotionEvent e) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.setCalendarTabVisibility(false);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.setCalendarTabVisibility(true);
     }
 
 }

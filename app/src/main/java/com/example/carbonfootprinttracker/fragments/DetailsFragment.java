@@ -46,6 +46,8 @@ public class DetailsFragment extends Fragment {
     TextView tvSuggestion;
     @BindView(R.id.ivMapShot)
     ImageView ivMapShot;
+    @BindView(R.id.tvDuration2)
+    TextView tvDuration2;
 
     private FragmentManager fragmentManager;
     private Carbie carbie;
@@ -72,6 +74,7 @@ public class DetailsFragment extends Fragment {
             tvMode2.setText(carbie.getTransportation());
             tvDistance2.setText(carbie.getDistance().toString());
             tvScore2.setText(Integer.toString(carbie.getScore()));
+            tvDuration2.setText(formatSeconds(carbie.getTripLength()));
             setMessage(carbie.getTransportation());
             setScoreColor(carbie.getScore());
             photoFile = carbie.getMapShot();
@@ -155,6 +158,7 @@ public class DetailsFragment extends Fragment {
         super.onResume();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     @Override
@@ -162,6 +166,25 @@ public class DetailsFragment extends Fragment {
         super.onStop();
         AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
+        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+
+    private String formatSeconds(Long seconds) {
+        long p1 = seconds % 60;
+        long p2 = seconds / 60;
+        long p3 = p2 % 60;
+        p2 = p2 / 60;
+
+        String p1s = "" + p1;
+        String p2s = "" + p2;
+        String p3s = "" + p3;
+
+        if (p1 < 10) { p1s = "0" + p1; }
+        if (p2 < 10) { p2s = "0" + p2; }
+        if (p3 < 10) { p3s = "0" + p3; }
+
+        String res = p2s + ":" + p3s + ":" + p1s;
+        return res;
     }
 }
