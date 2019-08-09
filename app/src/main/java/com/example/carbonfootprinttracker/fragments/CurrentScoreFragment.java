@@ -41,14 +41,15 @@ public class CurrentScoreFragment extends Fragment {
     @BindView(R.id.pbLoading) ProgressBar pbLoading;
 
     private int currentScore;
-    private final String GREEN_SCORE = "Great job minimizing your carbon output! Keep walking and biking for " +
-                                         "close distances and using other green modes of transportation";
-    private final String YELLOW_SCORE = "watch out";
-    private final String RED_SCORE = "oof";
+    private final String GREEN_SCORE = "Great job minimizing your carbon output! " +
+                                       "Keep walking and biking for close distances and using other green modes of transportation";
+    private final String YELLOW_SCORE = "Careful you have slightly exceeded your recommended carbon output." +
+                                        "Try to utilize greener modes of transportation for the next day";
+    private final String RED_SCORE = "You have greatly exceeded your recommended carbon output." +
+                                     "Next time, consider using greener modes of transportation";
     private int maxCarbon = 8000;
     private List<Carbie> mCarbies;
-    private DailySummary yesterdaySummary;
-
+    private List<DailySummary> mDailySummaries;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class CurrentScoreFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mCarbies = new ArrayList<>();
+        mDailySummaries = new ArrayList<>();
         queryCarbies();
         ivQualScore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,13 +90,10 @@ public class CurrentScoreFragment extends Fragment {
         tvQuantScore.setText(String.valueOf(currentScore));
         if (currentScore > maxCarbon * 1.1) {
             ivQualScore.setBackground(getResources().getDrawable(R.drawable.red_circle));
-            tvGeneralTips.setText(RED_SCORE);
         } else if (currentScore > maxCarbon && currentScore <= maxCarbon * 1.1) {
             ivQualScore.setBackground(getResources().getDrawable(R.drawable.yellow_circle));
-            tvGeneralTips.setText(YELLOW_SCORE);
         } else {
             ivQualScore.setBackground(getResources().getDrawable(R.drawable.green_circle));
-            tvGeneralTips.setText(GREEN_SCORE);
         }
     }
 
@@ -111,7 +110,6 @@ public class CurrentScoreFragment extends Fragment {
         ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
         query.include(Carbie.KEY_USER);
         query.whereEqualTo(Carbie.KEY_USER, ParseUser.getCurrentUser());
-//        query.whereEqualTo(Carbie.KEY_IS_FAVORITED, false);
         query.whereEqualTo(Carbie.KEY_IS_DELETED, false);
         query.whereGreaterThanOrEqualTo(Carbie.KEY_CREATED_AT, calendarA.getTime());
         query.whereLessThan(Carbie.KEY_CREATED_AT, calendarB.getTime());
@@ -132,7 +130,7 @@ public class CurrentScoreFragment extends Fragment {
                     Carbie carbie = carbies.get(i);
                     currentScore += carbie.getScore();
                 }
-
+                queryDailySummaries();
                 if (getFragmentManager() != null) {
                     CurrentScoreFragment currentScoreFragment = (CurrentScoreFragment) getFragmentManager().findFragmentByTag("CurrentScoreFragment");
                     if (currentScoreFragment.isVisible()) {
@@ -148,25 +146,43 @@ public class CurrentScoreFragment extends Fragment {
     protected void queryDailySummaries() {
         Log.e(TAG, "queried");
         String message = "";
-        final Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
+        Calendar calendarA = Calendar.getInstance();
+        calendarA.add(Calendar.DATE, -1);
+        calendarA.set(Calendar.HOUR_OF_DAY, 0);
+        Calendar calendarB = Calendar.getInstance();
+        calendarB.add(Calendar.DATE, -1);
+        calendarB.set(Calendar.HOUR_OF_DAY, 23);
+        calendarB.set(Calendar.MINUTE, 59);
+
         ParseQuery<DailySummary> query = ParseQuery.getQuery(DailySummary.class);
         query.include(DailySummary.KEY_USER);
         query.whereEqualTo(DailySummary.KEY_USER, ParseUser.getCurrentUser());
-//        query.whereEqualTo(DailySummary.KEY_CREATED_AT, cal.getTime().getDate());
+        query.whereGreaterThanOrEqualTo(Carbie.KEY_CREATED_AT, calendarA.getTime());
+        query.whereLessThan(Carbie.KEY_CREATED_AT, calendarB.getTime());
         query.addDescendingOrder(DailySummary.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<DailySummary>() {
             @Override
-            public void done(List<DailySummary> objects, ParseException e) {
+            public void done(List<DailySummary> dailySummaries, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error with query");
                     e.printStackTrace();
                     return;
                 } else {
-                    Log.e(TAG, "" + objects.size());
-                    if (!(objects.isEmpty())) {
-                        //TODO make it for each day
-                        tvGeneralTips.setText("");
+                    Log.e(TAG, "" + dailySummaries.size());
+                    mDailySummaries.addAll(dailySummaries);
+                    if (currentScore == 0) {
+                        if (mDailySummaries.isEmpty()) {
+                            tvGeneralTips.setText("Remember to log your trips!");
+                        } else {
+                            DailySummary dailySummary = mDailySummaries.get(0);
+                            if (dailySummary.getScore() > maxCarbon * 1.1) {
+                                tvGeneralTips.setText("Yesterday you greatly exceeded your limit. Try to use greener modes of transportation today");
+                            } else if (dailySummary.getScore() > maxCarbon && dailySummary.getScore() <= maxCarbon * 1.1) {
+                                tvGeneralTips.setText("Yesterday you slighly exceeded your limit. Try to use greener modes of transportation today");
+                            } else {
+                                tvGeneralTips.setText("Yesterday you did a great job, keep up the good work!");
+                            }
+                        }
                     } else {
                         if (currentScore > maxCarbon * 1.1) {
                             tvGeneralTips.setText(RED_SCORE);

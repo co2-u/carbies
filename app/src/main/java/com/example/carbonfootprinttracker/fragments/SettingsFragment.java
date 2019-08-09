@@ -14,7 +14,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -42,6 +41,7 @@ public class SettingsFragment extends Fragment {
     @BindView(R.id.btnMoreInfo) public Button btnMoreInfo;
     @BindView(R.id.tvUsername) public TextView tvUsername;
     @BindView(R.id.ivCircleProfile) public ImageView ivProfileImage;
+    @BindView(R.id.ivPlus) public ImageView ivPlus;
     @BindView(R.id.switchUserPrivacy) public Switch switchPrivacy;
     @BindView(R.id.progressBar5) public ProgressBar pbLoading;
 
@@ -117,7 +117,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+        ivPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showChangeProfilePictureActivity();

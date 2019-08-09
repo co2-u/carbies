@@ -78,7 +78,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "LiveRouteFragment";
     private static final long UPDATE_INTERVAL = 2 * 1000;  /* 2 secs */
     private static final long FASTEST_INTERVAL = 1000; /* 1 sec */
-    private static final int ZOOM = 17; /* 1 sec */
+    private static final int ZOOM = 17;
 
     private GoogleMap mGoogleMap;
     private GeoApiContext mGeoApiContext = null;
@@ -142,10 +142,9 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
-                if(locationResult == null) {
-                    return;
+                if(locationResult != null) {
+                    onLocationChanged(locationResult.getLastLocation());
                 }
-                onLocationChanged(locationResult.getLastLocation());
             }
         };
 
@@ -226,6 +225,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
                         }
                         btStart.setVisibility(View.INVISIBLE);
                         btStop.setVisibility(View.VISIBLE);
+                        checkHasArrived();
                     } else {
                         Log.d(TAG, "mCurrentLocation is null");
                     }
@@ -367,26 +367,31 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         if (location == null) {
             return;
         }
-        // Only add locations that are at least 1 meter away from mCurrentLocation
+        // Only update location if >3 meters away from current location.
         final float distanceInMeters = mCurrentLocation.distanceTo(location);
-        if (distanceInMeters > 1) {
+        if (distanceInMeters > 3) {
             Log.d(TAG, "Distance: " + distanceInMeters);
             if (isTracking) {
                 mLocations.add(location);
                 drawPolyline(mCurrentLocation, location);
-                Log.d(TAG, mLocations.toString());
             }
             updateCurrentLocation(location);
         }
 
-        // Check if within
-        if (endMarker != null) {
-            final float distanceToDestination = mCurrentLocation.distanceTo(endLocation);
-            if (distanceToDestination < 10) {
-                btStop.performClick();
-            }
+        if (isTracking) {
+            checkHasArrived();
         }
 
+    }
+
+    private void checkHasArrived() {
+        // Check if within 40 meters of destination.
+        final float distanceToDestination = mCurrentLocation.distanceTo(endLocation);
+        if (distanceToDestination < 40) {
+            Log.d(TAG, "auto click stop");
+            btStop.performClick();
+        }
+        Log.d(TAG, "Distance to Destination: " + distanceToDestination);
     }
 
     private void updateCurrentLocation (Location location) {
@@ -394,7 +399,7 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-//        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, msg);
     }
 
     private void drawPolyline(Location from, Location to) {
@@ -512,7 +517,6 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
 
 //                        addMarker(startLatLng.lat, startLatLng.lng, startAddress, BitmapDescriptorFactory.HUE_RED, true);
                         addMarker(endLatLng.lat, endLatLng.lng, endAddress, BitmapDescriptorFactory.HUE_ORANGE);
-//                        addPolylinesToMap(result);
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
