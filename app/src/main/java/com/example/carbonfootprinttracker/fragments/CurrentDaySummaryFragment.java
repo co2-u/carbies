@@ -33,7 +33,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CurrentDaySummaryFragment extends Fragment {
-    @BindView(R.id.ivShare)
     ImageView ivShareScore;
     @BindView(R.id.tvWalked)
     TextView tvWalked;
@@ -72,6 +71,7 @@ public class CurrentDaySummaryFragment extends Fragment {
         mCarbies = new ArrayList<>();
         ((TextView)getActivity().findViewById(R.id.textView13)).setText(Html.fromHtml("8000g of C0<sub><small>2</small></sub>"));
         queryCarbies();
+        ivShareScore = ((MainActivity) getActivity()).findViewById(R.id.ivShare);
         ivShareScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +181,7 @@ public class CurrentDaySummaryFragment extends Fragment {
         super.onResume();
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.ivShare).setVisibility(View.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mainActivity.getSupportActionBar().setTitle("Daily Summary");
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -191,6 +192,7 @@ public class CurrentDaySummaryFragment extends Fragment {
         super.onStop();
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
+        mainActivity.findViewById(R.id.ivShare).setVisibility(View.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mainActivity.getSupportActionBar().setTitle("Daily Summary");
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);

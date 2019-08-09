@@ -28,7 +28,6 @@ import butterknife.ButterKnife;
 
 public class DailySummaryFragment extends Fragment {
 
-    @BindView(R.id.ivShare)
     ImageView ivShareScore;
     @BindView(R.id.tvWalked)
     TextView tvWalked;
@@ -85,6 +84,7 @@ public class DailySummaryFragment extends Fragment {
             Log.e("DSF", "Daily Summary was not passed in to Daily Summary Fragment");
             e.printStackTrace();
         }
+        ivShareScore = ((MainActivity) getActivity()).findViewById(R.id.ivShare);
         tvWalked.setText( "" + df.format(dailySummary.getMilesWalked()));
         tvBiked.setText( "" + df.format(dailySummary.getMilesBiked()));
         tvGas.setText( "" + df.format(dailySummary.getMilesGasDriven()));
@@ -124,6 +124,7 @@ public class DailySummaryFragment extends Fragment {
         super.onResume();
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
+        mainActivity.findViewById(R.id.ivShare).setVisibility(View.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mainActivity.getSupportActionBar().setTitle("Daily Summary");
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -134,6 +135,7 @@ public class DailySummaryFragment extends Fragment {
         super.onStop();
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
+        mainActivity.findViewById(R.id.ivShare).setVisibility(View.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mainActivity.getSupportActionBar().setTitle("Daily Summary");
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -227,9 +229,4 @@ public class DailySummaryFragment extends Fragment {
         }
         return message;
     }
-
-
-
-
-
 }
