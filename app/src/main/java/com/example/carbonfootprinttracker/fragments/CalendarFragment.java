@@ -33,6 +33,14 @@ import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.adapters.CalendarAdapter;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.example.carbonfootprinttracker.models.DailySummary;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -64,6 +72,8 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
     @BindView(R.id.btnPrevious) ImageButton btnPrevious;
     @BindView(R.id.gridView) GridView gridView;
     @BindView(R.id.tvCurrentDate) TextView tvCurrentDate;
+    @BindView(R.id.chart)
+    LineChart chart;
 
     private FragmentManager fragmentManager;
 
@@ -75,11 +85,11 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
 
     // date format
     private String dateFormat;
-
     private Calendar currentDate = Calendar.getInstance();
 
     Context context;
     private List<DailySummary> mDailySummaries;
+    private List<Integer> createdAt;
 
     // for the Calendar swipe
     private GestureDetector mGestureDetector;
@@ -106,12 +116,13 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
         DateFormat dateFormat = new SimpleDateFormat("MMMM YYYY");
         String month_name= dateFormat.format(currentDate.getTime());
         Date date = new Date();
-
+        createdAt = new ArrayList<>();
         tvCurrentDate.setText(month_name);
         queryDailySummaries();
 
         gridView.setOnTouchListener(this);
         mGestureDetector = new GestureDetector(this);
+
 
 
         //add one month and refresh the UI
@@ -135,6 +146,7 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
                 updateCalendar();
             }
         });
+
     }
 
     public void updateCalendar()
@@ -183,7 +195,11 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
                 } else {
                     Log.e(TAG, "" + objects.size());
                     mDailySummaries.addAll(objects);
+                    for (DailySummary d : objects) {
+                        createdAt.add(d.getCreatedAt().getDate());
+                    }
                     updateCalendar();
+                    updateChart();
                 }
             }
         });
@@ -262,5 +278,41 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         mainActivity.setCalendarTabVisibility(true);
     }
+
+    private void updateChart() {
+        List<Entry> entries = new ArrayList<Entry>();
+
+        List<Entry> valsComp1 = new ArrayList<Entry>();
+
+        for (int i = 0; i < mDailySummaries.size(); i++) {
+            DailySummary data = mDailySummaries.get(i);
+            Entry e = new Entry(i, data.getScore().floatValue());
+            entries.add(e);
+        }
+
+        valsComp1.addAll(entries);
+        LineDataSet setComp1 = new LineDataSet(valsComp1, "Company 1");
+        setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+        dataSets.add(setComp1);
+        LineData data = new LineData(dataSets);
+//        setComp1.setC
+        chart.setData(data);
+        chart.invalidate(); // refresh
+
+//        final String[] quarters = new String[] { "Q1", "Q2", "Q3", "Q4" };
+//        ValueFormatter formatter = new ValueFormatter() {
+//            @Override
+//            public String getAxisLabel(float value, AxisBase axis) {
+//                return quarters[(int) value];
+//            }
+//        };
+//        XAxis xAxis = mLineChart.getXAxis();
+//        xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
+//        xAxis.setValueFormatter(formatter);
+
+    }
+
 
 }

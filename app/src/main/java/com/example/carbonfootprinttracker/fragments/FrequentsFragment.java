@@ -11,17 +11,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.carbonfootprinttracker.ItemClickSupport;
 import com.example.carbonfootprinttracker.R;
-import com.example.carbonfootprinttracker.SwipeToDeleteCallback;
 import com.example.carbonfootprinttracker.adapters.CarbiesAdapter;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.FindCallback;
@@ -59,6 +55,7 @@ public class FrequentsFragment extends  Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        tvMessage.setVisibility(View.GONE);
         tvMessage.setText("You haven't added any Carbies to your Frequently Used yet!");
         fragmentManager = getFragmentManager();
         context = getContext();
