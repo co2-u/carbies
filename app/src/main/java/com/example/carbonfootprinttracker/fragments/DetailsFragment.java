@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
+import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.ParseException;
@@ -156,18 +157,22 @@ public class DetailsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
-        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mainActivity.getSupportActionBar().setTitle("Details View");
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        mainActivity.setCalendarTabVisibility(false);
     }
     @Override
     public void onStop() {
         super.onStop();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
-        mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mainActivity.getSupportActionBar().setTitle("Details View");
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mainActivity.setCalendarTabVisibility(true);
     }
 
     private String formatSeconds(Long seconds) {
