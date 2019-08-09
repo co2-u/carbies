@@ -90,7 +90,7 @@
     <TextView
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="20dp"
@@ -98,10 +98,10 @@
         android:layout_marginRight="8dp"
         android:elevation="18dp"
         android:fontFamily="@font/ubuntu_light"
-        android:text="grams of Carbon Dioxide today"
-        android:textStyle="bold"
+        android:text="grams of Carbon Dioxide"
         android:textColor="#b3000000"
         android:textSize="16dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pbLoading" />

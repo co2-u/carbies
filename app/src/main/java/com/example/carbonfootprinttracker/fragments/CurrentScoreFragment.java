@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,11 +41,11 @@ public class CurrentScoreFragment extends Fragment {
 
     private int currentScore;
     private final String GREEN_SCORE = "Great job minimizing your carbon output! " +
-                                       "Keep walking and biking for close distances and using other green modes of transportation";
+                                       "Keep walking and biking for close distances and using other green modes of transportation.";
     private final String YELLOW_SCORE = "Careful you have slightly exceeded your recommended carbon output. " +
-                                        "Try to utilize greener modes of transportation for the next day";
+                                        "Try to utilize greener modes of transportation for the next day.";
     private final String RED_SCORE = "You have greatly exceeded your recommended carbon output. " +
-                                     "Next time, consider using greener modes of transportation";
+                                     "Next time, consider using greener modes of transportation.";
     private int maxCarbon = 8000;
     private List<Carbie> mCarbies;
     private List<DailySummary> mDailySummaries;
