@@ -2,6 +2,7 @@ package com.example.carbonfootprinttracker.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
+import com.example.carbonfootprinttracker.models.Carbie;
 import com.example.carbonfootprinttracker.models.DailySummary;
 
 import java.text.DecimalFormat;
@@ -44,7 +46,9 @@ public class DailySummaryFragment extends Fragment {
     TextView tvDailyTitle;
     @BindView(R.id.tvDailyScore) TextView tvDailyScore;
     @BindView(R.id.tvCarbiesSaved) TextView tvCarbiesSaved;
+
     private static final DecimalFormat df = new DecimalFormat("0.00");
+    private static final Integer MAX_CARBON = 2000;
 
 
     Context context;
@@ -52,6 +56,7 @@ public class DailySummaryFragment extends Fragment {
     int date;
     int month;
     int day;
+    private Carbie carbie;
 
     @Nullable
     @Override
@@ -71,6 +76,11 @@ public class DailySummaryFragment extends Fragment {
             date = getArguments().getInt("date");
             month = getArguments().getInt("month");
             day = getArguments().getInt("day");
+
+            carbie = getArguments().getParcelable("carbie");
+            tvDailyScore.setText(Integer.toString(carbie.getScore()));
+            setScoreColor(carbie.getScore());
+
         } catch (NullPointerException e) {
             Log.e("DSF", "Daily Summary was not passed in to Daily Summary Fragment");
             e.printStackTrace();
@@ -81,7 +91,7 @@ public class DailySummaryFragment extends Fragment {
         tvElectric.setText( "" + df.format(dailySummary.getMilesEDriven()));
         tvCarpooled.setText( "" + df.format(dailySummary.getMilesCarpooled()));
         tvPTransport.setText( "" + df.format(dailySummary.getMilesPublicTransport()));
-        tvDailyScore.setText("" + dailySummary.getScore().intValue());
+//        tvDailyScore.setText("" + dailySummary.getScore().intValue());
         tvDailyTitle.setText(getDay(day) + ", " + getMonth(month) + " " + date);
         tvCarbiesSaved.setText(carbiesSaved());
         ivShareScore.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +106,16 @@ public class DailySummaryFragment extends Fragment {
             }
         });
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Daily Summary"); //"daily summary" instead of title
+    }
+
+    private void setScoreColor(int score){
+        if (carbie.getScore() > MAX_CARBON && score <= MAX_CARBON * 1.1){
+            tvDailyScore.setTextColor(Color.parseColor("#FFE401")); //yellow
+        } else if (carbie.getScore() > MAX_CARBON * 1.1){
+            tvDailyScore.setTextColor(Color.parseColor("#EC0000")); //red
+        } else{
+            tvDailyScore.setTextColor(Color.parseColor("#55C21B")); //green
+        }
     }
 
     @Override
