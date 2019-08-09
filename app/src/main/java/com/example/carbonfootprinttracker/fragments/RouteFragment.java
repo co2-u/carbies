@@ -101,7 +101,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
             } else {
                 title = transportation;
             }
-            ((MainActivity) getActivity()).getSupportActionBar().setTitle(title);
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle(title); //"daily summary" instead of title
         } catch (NullPointerException e) {
             Log.e(TAG, "Carbie was not passed into RouteFragment");
             e.printStackTrace();
@@ -387,6 +387,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.findViewById(R.id.calendarTab).setVisibility(TextView.GONE);
         mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.GONE);
+        //show the title
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (!etStart.getText().toString().isEmpty() && !etEnd.getText().toString().isEmpty()) {

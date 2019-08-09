@@ -83,6 +83,7 @@ public class CurrentDaySummaryFragment extends Fragment {
                 startActivity(sendIntent);
             }
         });
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Daily Summary"); //"daily summary" instead of title
     }
 
     private void setStrings() {
@@ -178,18 +179,22 @@ public class CurrentDaySummaryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
-        mainActivity.findViewById(R.id.tvDailySummary).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mainActivity.getSupportActionBar().setTitle("Daily Summary");
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        mainActivity.setCalendarTabVisibility(false);
     }
     @Override
     public void onStop() {
         super.onStop();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
-        mainActivity.findViewById(R.id.tvDailySummary).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mainActivity.getSupportActionBar().setTitle("Daily Summary");
+        mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mainActivity.setCalendarTabVisibility(true);
     }
     private String carbiesSaved() {
         //TODO make better messages ahaha
