@@ -98,7 +98,7 @@
         android:layout_marginRight="8dp"
         android:elevation="18dp"
         android:fontFamily="@font/ubuntu_light"
-        android:text="grams of Carbon Dioxide"
+        android:text="grams of Carbon Dioxide today"
         android:textStyle="bold"
         android:textColor="#b3000000"
         android:textSize="16dp"

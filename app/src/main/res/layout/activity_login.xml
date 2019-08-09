@@ -17,7 +17,7 @@
         android:layout_marginTop="156dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:fontFamily="@font/ubuntu_light"
+        android:fontFamily="@font/exo"
         android:gravity="center"
         android:text="CO2 &amp; U"
         android:textColor="#ffffff"
