@@ -132,7 +132,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:elevation="@dimen/cardview_default_elevation"
-        android:fontFamily="@font/ubuntu_light"
+        android:fontFamily="@font/exo"
         android:text="CO2 &amp; U"
         android:textColor="@android:color/holo_green_dark"
         android:textSize="40sp"

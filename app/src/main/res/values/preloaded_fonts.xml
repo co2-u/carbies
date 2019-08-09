@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
+        <item>@font/alef</item>
+        <item>@font/amaranth</item>
+        <item>@font/antic</item>
         <item>@font/berkshire_swash</item>
+        <item>@font/catamaran</item>
+        <item>@font/delius</item>
+        <item>@font/exo</item>
+        <item>@font/exo_thin</item>
+        <item>@font/gudea</item>
+        <item>@font/kanit_thin</item>
+        <item>@font/titillium_web</item>
         <item>@font/ubuntu_light</item>
+        <item>@font/viga</item>
     </array>
 </resources>
