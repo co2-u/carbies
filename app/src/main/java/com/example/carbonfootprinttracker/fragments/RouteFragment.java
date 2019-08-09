@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,6 +28,7 @@ import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.example.carbonfootprinttracker.models.Route;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -40,6 +40,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.PendingResult;
@@ -51,6 +54,7 @@ import com.google.maps.model.TravelMode;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -71,12 +75,14 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
     private Carbie carbie;
     private TravelMode travelMode;
     private LatLngBounds routeBounds;
+    private AutocompleteSupportFragment autocompleteFragmentStart;
+    private AutocompleteSupportFragment autocompleteFragmentEnd;
+    private String startPlace = "";
+    private String endPlace = "";
+
 
     @BindView(R.id.mapView) MapView mMapView;
-    @BindView(R.id.btSeeRoutes) Button btSeeRoutes;
     @BindView(R.id.btAcceptRoute) Button btAcceptRoute;
-    @BindView(R.id.etStart) EditText etStart;
-    @BindView(R.id.etEnd) EditText etEnd;
     @BindView(R.id.progressBar) ProgressBar pbLoading;
 
     @Override
@@ -153,24 +159,70 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                     .build();
         }
 
-        btSeeRoutes.setOnClickListener(new View.OnClickListener() {
+        autocompleteFragmentStart = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment1);
+        autocompleteFragmentStart.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragmentStart.setHint("Enter Origin");
+        autocompleteFragmentStart.getView().setBackground(getContext().getResources().getDrawable(R.drawable.background_button_rectangle));
+        autocompleteFragmentStart.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onClick(View v) {
-                final String start = etStart.getText().toString();
-                final String end = etEnd.getText().toString();
-
-                if (start.isEmpty() || end.isEmpty()) {
-                    Toast.makeText(getContext(), "Missing start/end location.", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "start:" + start);
-                } else {
-                    // clear map and mRoutes before adding new routes
-                    mGoogleMap.clear();
-                    mRoutes.clear();
-
-                    calculateDirections(start, end);
+            public void onPlaceSelected(Place place) {
+                startPlace = "place_id:" + place.getId();
+                Log.d(TAG, "Place: " + place.getName() + ", " + place.getId());
+                if (!startPlace.isEmpty() && !endPlace.isEmpty()) {
+                    seeRoutes();
                 }
             }
+            @Override
+            public void onError(Status status) {
+                Toast.makeText(getContext(), "Error while selecting start.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "An error occurred: " + status);
+            }
         });
+        autocompleteFragmentStart.getView().findViewById(R.id.places_autocomplete_clear_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mGoogleMap != null) { mGoogleMap.clear(); }
+                        selectedRoute = null;
+                        autocompleteFragmentStart.setText("");
+                        startPlace = "";
+                    }
+                });
+        autocompleteFragmentStart.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
+        autocompleteFragmentStart.getView().setPadding(100, 0,0,0);
+
+        autocompleteFragmentEnd = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment2);
+        autocompleteFragmentEnd.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragmentEnd.setHint("Enter Destination");
+        autocompleteFragmentEnd.getView().setBackground(getContext().getResources().getDrawable(R.drawable.background_button_rectangle));
+        autocompleteFragmentEnd.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                endPlace = "place_id:" + place.getId();
+                Log.d(TAG, "Place: " + place.getName() + ", " + place.getId());
+                if (!startPlace.isEmpty() && !endPlace.isEmpty()) {
+                    seeRoutes();
+                }
+            }
+            @Override
+            public void onError(Status status) {
+                Toast.makeText(getContext(), "Error while selecting end.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "An error occurred: " + status);
+            }
+        });
+        autocompleteFragmentEnd.getView().findViewById(R.id.places_autocomplete_clear_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mGoogleMap != null) { mGoogleMap.clear(); }
+                        autocompleteFragmentEnd.setText("");
+                        endPlace = "";
+                        selectedRoute = null;
+                    }
+                });
+        autocompleteFragmentEnd.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
+        autocompleteFragmentEnd.getView().setPadding(100, 0,0,0);
+
 
         btAcceptRoute.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,6 +314,17 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(googleplex));
     }
 
+    private void seeRoutes() {
+        if (startPlace.isEmpty() || endPlace.isEmpty()) {
+            Toast.makeText(getContext(), "Missing start/end location.", Toast.LENGTH_SHORT).show();
+        } else {
+            // clear map and mRoutes before adding new routes
+            mGoogleMap.clear();
+            mRoutes.clear();
+            calculateDirections(startPlace, endPlace);
+        }
+    }
+
     private void calculateDirections(String startLocation, String endLocation){
         showProgressBar();
         Log.d(TAG, "calculateDirections: calculating directions.");
@@ -342,7 +405,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                     // Highlight shortest route
                     if (minDistance == null || route.legs[0].distance.inMeters < minDistance.inMeters) {
                         minDistance = route.legs[0].distance;
-                        onPolylineClick(polyline);
+                        highlightEfficientRoute(polyline);
                     }
                 }
             }
@@ -389,8 +452,8 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (!etStart.getText().toString().isEmpty() && !etEnd.getText().toString().isEmpty()) {
-            btSeeRoutes.performClick();
+        if (!startPlace.isEmpty() && !endPlace.isEmpty()) {
+            seeRoutes();
         }
     }
 
@@ -431,6 +494,18 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
                                     "Duration: " + route.getDuration() + "\n" +
                                     "Score: " + calculateScore(carbie.getTransportation(), carbie.getRiders(), route.getDuration().inSeconds, route.getDistance().inMeters ));
                 endMarker.showInfoWindow();
+            }
+        }
+    }
+
+    private void highlightEfficientRoute(Polyline polyline){
+        for (Route route: mRoutes) {
+            if (!route.getPolyline().getId().equals(polyline.getId())) {
+                route.getPolyline().setColor(ContextCompat.getColor(getActivity(), R.color.colorGrey));
+                route.getPolyline().setZIndex(0); // sends polyline to back
+            } else {
+                route.getPolyline().setColor(ContextCompat.getColor(getActivity(), R.color.colorSkyBlue));
+                route.getPolyline().setZIndex(1); // brings polyline to front
             }
         }
     }
