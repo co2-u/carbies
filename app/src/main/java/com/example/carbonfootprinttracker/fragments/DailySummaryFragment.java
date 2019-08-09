@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.carbonfootprinttracker.MainActivity;
@@ -91,9 +91,10 @@ public class DailySummaryFragment extends Fragment {
         tvElectric.setText( "" + df.format(dailySummary.getMilesEDriven()));
         tvCarpooled.setText( "" + df.format(dailySummary.getMilesCarpooled()));
         tvPTransport.setText( "" + df.format(dailySummary.getMilesPublicTransport()));
-//        tvDailyScore.setText("" + dailySummary.getScore().intValue());
+        tvDailyScore.setText("" + dailySummary.getScore().intValue());
         tvDailyTitle.setText(getDay(day) + ", " + getMonth(month) + " " + date);
         tvCarbiesSaved.setText(carbiesSaved());
+        ((TextView)getActivity().findViewById(R.id.textView13)).setText(Html.fromHtml("8000g of C0<sub><small>2</small></sub>"));
         ivShareScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

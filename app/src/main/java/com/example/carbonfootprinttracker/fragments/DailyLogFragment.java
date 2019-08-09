@@ -6,23 +6,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.carbonfootprinttracker.ItemClickSupport;
 import com.example.carbonfootprinttracker.R;
-import com.example.carbonfootprinttracker.SwipeToDeleteCallback;
 import com.example.carbonfootprinttracker.adapters.CarbiesAdapter;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.parse.FindCallback;
@@ -64,6 +59,7 @@ public class DailyLogFragment extends Fragment {
         ButterKnife.bind(this, view);
         fragmentManager = getFragmentManager();
         context = getContext();
+        tvMessage.setVisibility(View.GONE);
         tvMessage.setText("You haven't added any Carbies to your daily log yet!");
 
         rvCarbies.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
@@ -142,7 +138,6 @@ public class DailyLogFragment extends Fragment {
             tvMessage.setVisibility(TextView.VISIBLE);
         }
     }
-
 
 
 }

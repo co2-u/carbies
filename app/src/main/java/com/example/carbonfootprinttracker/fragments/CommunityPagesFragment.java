@@ -68,6 +68,7 @@ public class CommunityPagesFragment extends Fragment {
         context = getContext();
         following = new HashSet<>();
 
+        tvMessage.setVisibility(View.GONE);
         if (mPage == 0) {
             tvMessage.setText("No one you follow has logged Carbies today yet!");
         } else { //mPage == 1

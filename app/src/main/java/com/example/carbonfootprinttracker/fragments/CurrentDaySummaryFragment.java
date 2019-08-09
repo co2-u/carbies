@@ -3,17 +3,16 @@ package com.example.carbonfootprinttracker.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.carbonfootprinttracker.MainActivity;
@@ -71,6 +70,7 @@ public class CurrentDaySummaryFragment extends Fragment {
         context = getContext();
         currentScore = 0;
         mCarbies = new ArrayList<>();
+        ((TextView)getActivity().findViewById(R.id.textView13)).setText(Html.fromHtml("8000g of C0<sub><small>2</small></sub>"));
         queryCarbies();
         ivShareScore.setOnClickListener(new View.OnClickListener() {
             @Override

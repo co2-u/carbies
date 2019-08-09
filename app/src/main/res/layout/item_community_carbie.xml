@@ -27,7 +27,7 @@
         android:layout_marginLeft="10dp"
         android:text="@string/usernameHint"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/ivCircleProfile"
         app:layout_constraintTop_toTopOf="@+id/ivCircleProfile" />
@@ -36,13 +36,13 @@
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="14dp"
         android:text="TextView"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tvScore"
         app:layout_constraintStart_toStartOf="@+id/tvDailyTitle"
@@ -55,7 +55,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:text="TextView"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDistance" />
 
@@ -64,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:textSize="12sp"
+        android:textSize="11sp"
         app:layout_constraintStart_toStartOf="@+id/tvUsername"
         app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
 
@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=" walked"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/tvUsername"
         app:layout_constraintTop_toTopOf="@+id/tvUsername" />
 
@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=" 1 mi."
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/tvMoved"
         app:layout_constraintTop_toTopOf="@+id/tvMoved" />
 </androidx.constraintlayout.widget.ConstraintLayout>

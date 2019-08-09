@@ -367,9 +367,9 @@ public class LiveRouteFragment extends Fragment implements OnMapReadyCallback {
         if (location == null) {
             return;
         }
-        // Only update location if >3 meters away from current location.
+        // Only update location if >1 meters away from current location.
         final float distanceInMeters = mCurrentLocation.distanceTo(location);
-        if (distanceInMeters > 3) {
+        if (distanceInMeters > 1) {
             Log.d(TAG, "Distance: " + distanceInMeters);
             if (isTracking) {
                 mLocations.add(location);
