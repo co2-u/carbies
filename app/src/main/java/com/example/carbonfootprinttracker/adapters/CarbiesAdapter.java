@@ -18,13 +18,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.fragments.DetailsFragment;
-import com.example.carbonfootprinttracker.fragments.FrequentsFragment;
 import com.example.carbonfootprinttracker.models.Carbie;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.DeleteCallback;
@@ -239,6 +237,7 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                         Log.d(TAG, "Success!");
                     }
                 });
+                carbies.remove(position);
                 notifyItemRemoved(position);
                 showUndoSnackbar(carbies.get(position));
             } else {
