@@ -291,13 +291,12 @@ public class CalendarFragment extends Fragment implements View.OnTouchListener, 
         }
 
         valsComp1.addAll(entries);
-        LineDataSet setComp1 = new LineDataSet(valsComp1, "Company 1");
+        LineDataSet setComp1 = new LineDataSet(valsComp1, "Daily Score");
         setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         dataSets.add(setComp1);
         LineData data = new LineData(dataSets);
-//        setComp1.setC
         chart.setData(data);
         chart.invalidate(); // refresh
 
