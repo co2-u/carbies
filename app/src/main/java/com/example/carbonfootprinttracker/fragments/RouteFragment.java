@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.maps.DirectionsApiRequest;
@@ -160,7 +161,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         }
 
         autocompleteFragmentStart = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment1);
-        autocompleteFragmentStart.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragmentStart.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
         autocompleteFragmentStart.setHint("Enter Origin");
         autocompleteFragmentStart.getView().setBackground(getContext().getResources().getDrawable(R.drawable.background_button_rectangle));
         autocompleteFragmentStart.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -168,6 +169,11 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
             public void onPlaceSelected(Place place) {
                 startPlace = "place_id:" + place.getId();
                 Log.d(TAG, "Place: " + place.getName() + ", " + place.getId());
+                if (autocompleteFragmentEnd != null) {
+                    //Prefer place search results that are nearby
+                    LatLngBounds latLngBounds = new LatLngBounds.Builder().include(place.getLatLng()).build();
+                    autocompleteFragmentEnd.setLocationBias(RectangularBounds.newInstance(latLngBounds));
+                }
                 if (!startPlace.isEmpty() && !endPlace.isEmpty()) {
                     seeRoutes();
                 }
@@ -192,7 +198,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
         autocompleteFragmentStart.getView().setPadding(100, 0,0,0);
 
         autocompleteFragmentEnd = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment2);
-        autocompleteFragmentEnd.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragmentEnd.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
         autocompleteFragmentEnd.setHint("Enter Destination");
         autocompleteFragmentEnd.getView().setBackground(getContext().getResources().getDrawable(R.drawable.background_button_rectangle));
         autocompleteFragmentEnd.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -200,6 +206,11 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
             public void onPlaceSelected(Place place) {
                 endPlace = "place_id:" + place.getId();
                 Log.d(TAG, "Place: " + place.getName() + ", " + place.getId());
+                if (autocompleteFragmentStart != null) {
+                    //Prefer place search results that are nearby
+                    LatLngBounds latLngBounds = new LatLngBounds.Builder().include(place.getLatLng()).build();
+                    autocompleteFragmentStart.setLocationBias(RectangularBounds.newInstance(latLngBounds));
+                }
                 if (!startPlace.isEmpty() && !endPlace.isEmpty()) {
                     seeRoutes();
                 }
@@ -507,6 +518,7 @@ public class RouteFragment extends Fragment implements OnMapReadyCallback, Googl
             } else {
                 route.getPolyline().setColor(ContextCompat.getColor(getActivity(), R.color.colorSkyBlue));
                 route.getPolyline().setZIndex(1); // brings polyline to front
+                selectedRoute = route;
             }
         }
     }

@@ -138,6 +138,10 @@ public class Carbie extends ParseObject {
         copied.setStartLocation(this.getStartLocation());
         copied.setEndLocation(this.getEndLocation());
         copied.setScore(this.getScore());
+        copied.setTripLength(this.getTripLength());
+        if (this.getMapShot() != null) {
+            copied.setMapShot(this.getMapShot());
+        }
         copied.setIsFavorited(this.getIsFavorited());
         copied.setIsDeleted(false);
         return copied;
