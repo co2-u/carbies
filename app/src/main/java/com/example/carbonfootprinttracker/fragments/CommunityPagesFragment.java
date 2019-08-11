@@ -107,14 +107,14 @@ public class CommunityPagesFragment extends Fragment {
                 } else {
                     if (mPage == 0) { // Following page
                         for (Carbie carbie: objects) {
-                            if (!carbie.getUser().getBoolean("isPrivate")
+                            if (carbie.getUser() != null && !carbie.getUser().getBoolean("isPrivate")
                                 && following.contains(carbie.getUser().getObjectId())) {
                                 mCarbies.add(carbie);
                             }
                         }
                     } else { // All page (public users)
                         for (Carbie carbie: objects) {
-                            if (!carbie.getUser().getBoolean("isPrivate")) {
+                            if (carbie.getUser() != null && !carbie.getUser().getBoolean("isPrivate")) {
                                 mCarbies.add(carbie);
                             }
                         }
