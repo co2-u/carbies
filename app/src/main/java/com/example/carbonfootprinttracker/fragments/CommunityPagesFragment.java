@@ -132,7 +132,7 @@ public class CommunityPagesFragment extends Fragment {
 
         ParseQuery<Carbie> query = ParseQuery.getQuery(Carbie.class);
         query.include(Carbie.KEY_USER);
-        query.whereEqualTo(Carbie.KEY_IS_FAVORITED, false);
+        query.whereEqualTo(Carbie.KEY_IS_DELETED, false);
         query.addDescendingOrder(Carbie.KEY_CREATED_AT);
         return query;
     }

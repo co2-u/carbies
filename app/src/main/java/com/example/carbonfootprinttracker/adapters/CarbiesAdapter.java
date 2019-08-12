@@ -237,9 +237,11 @@ public class CarbiesAdapter extends RecyclerView.Adapter<CarbiesAdapter.ViewHold
                         Log.d(TAG, "Success!");
                     }
                 });
+                mRecentlyDeletedItem = carbies.get(position);
+                mRecentlyDeletedItemPosition = position;
                 carbies.remove(position);
                 notifyItemRemoved(position);
-                showUndoSnackbar(carbies.get(position));
+                showUndoSnackbar(mRecentlyDeletedItem);
             } else {
                 mRecentlyDeletedItem = carbies.get(position);
                 mRecentlyDeletedItemPosition = position;

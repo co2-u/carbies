@@ -12,13 +12,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.carbonfootprinttracker.MainActivity;
 import com.example.carbonfootprinttracker.R;
 import com.example.carbonfootprinttracker.adapters.CommunityCarbiesAdapter;
 import com.example.carbonfootprinttracker.models.Carbie;
@@ -205,18 +205,20 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mainActivity.setCalendarTabVisibility(false);
 //        mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.GONE);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mainActivity.setCalendarTabVisibility(false);
 //        mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.VISIBLE);
     }
 }

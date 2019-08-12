@@ -96,6 +96,12 @@ public class CommunityCarbiesAdapter extends RecyclerView.Adapter<CommunityCarbi
             case "Electric":
                 transport = " drove ";
                 break;
+            case "FossilFuel":
+                transport = " drove ";
+                break;
+            case "Renewable":
+                transport = " drove ";
+                break;
             case "Bus":
                 transport = " took a bus for ";
                 break;

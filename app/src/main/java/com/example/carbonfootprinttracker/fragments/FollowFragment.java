@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -116,6 +115,7 @@ public class FollowFragment extends Fragment {
         ParseQuery<ParseUser> userParseQuery = ParseUser.getQuery();
         userParseQuery.whereStartsWith("username", prefix);
         userParseQuery.whereNotEqualTo("username", ParseUser.getCurrentUser().getUsername());
+        userParseQuery.whereNotEqualTo("isPrivate", true);
         userParseQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
