@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CarbonFootprintTracker</string>
+    <string name="app_name">CO2 &amp; U </string>
     <string name="passwordHint">Password</string>
     <string name="usernameHint">Username</string>
     <string name="log_in">Log In</string>

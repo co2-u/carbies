@@ -209,7 +209,6 @@ public class ProfileFragment extends Fragment {
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.GONE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mainActivity.setCalendarTabVisibility(false);
-//        mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.GONE);
     }
 
     @Override
@@ -218,7 +217,6 @@ public class ProfileFragment extends Fragment {
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.findViewById(R.id.tvName).setVisibility(TextView.VISIBLE);
         mainActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        mainActivity.setCalendarTabVisibility(false);
-//        mainActivity.findViewById(R.id.bottomNavigation).setVisibility(TextView.VISIBLE);
+        mainActivity.setCalendarTabVisibility(true);
     }
 }
